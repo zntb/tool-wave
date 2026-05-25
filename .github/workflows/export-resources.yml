@@ -87,5 +87,5 @@ jobs:
             - [ ] Verify the changes look correct
             - [ ] Merge to update the main resources.md file
           branch: auto-update/resources-md
-          base: master
+          base: main
           delete-branch: true
