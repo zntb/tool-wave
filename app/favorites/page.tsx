@@ -6,8 +6,7 @@ export const metadata: Metadata = {
   description:
     'Your saved design resources - browse and manage your favorite design resources',
   alternates: {
-    canonical:
-      'https://design-resources-for-developers-tau.vercel.app/favorites',
+    canonical: 'https://tool-wave.vercel.app/favorites',
   },
 };
 

@@ -43,10 +43,8 @@ export async function generateMetadata({
       : 'Search through curated design resources for developers',
     alternates: {
       canonical: query
-        ? `https://design-resources-for-developers-tau.vercel.app/search?q=${encodeURIComponent(
-            query,
-          )}`
-        : 'https://design-resources-for-developers-tau.vercel.app/search',
+        ? `https://tool-wave.vercel.app/search?q=${encodeURIComponent(query)}`
+        : 'https://tool-wave.vercel.app/search',
     },
   };
 }

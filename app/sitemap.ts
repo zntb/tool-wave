@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next';
 import { getCategories } from '@/lib/data';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://design-resources-for-developers-tau.vercel.app';
+  const baseUrl = 'https://tool-wave.vercel.app';
 
   // Static pages
   const staticPages = [

@@ -27,7 +27,7 @@ export const metadata: Metadata = {
   description:
     'Discover the best design resources for your web and mobile projects',
   alternates: {
-    canonical: 'https://design-resources-for-developers-tau.vercel.app/',
+    canonical: 'https://tool-wave.vercel.app/',
   },
 };
 
@@ -281,7 +281,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
         {/* Header */}
         <header className='text-center mb-12 space-y-4 animate-fade-in'>
           <h1 className='text-4xl md:text-5xl lg:text-6xl font-display font-bold tracking-tight'>
-            <span className='gradient-text'>Design Resources</span>
+            <span className='gradient-text'>Tool Wave</span>
           </h1>
           <p className='text-lg md:text-xl text-slate-500 dark:text-slate-400 max-w-2xl mx-auto'>
             A curated collection of design resources for developers
