@@ -59,7 +59,7 @@ export async function generateMetadata({
       category.description ||
       `Browse ${category.name} design resources for developers`,
     alternates: {
-      canonical: `https://design-resources-for-developers-tau.vercel.app/${slug}`,
+      canonical: `https://tool-wave.vercel.app/${slug}`,
     },
   };
 }
@@ -264,11 +264,11 @@ export default async function CategoryPage({
           items={[
             {
               name: 'Home',
-              url: 'https://design-resources-for-developers-tau.vercel.app/',
+              url: 'https://tool-wave.vercel.app/',
             },
             {
               name: category.name,
-              url: `https://design-resources-for-developers-tau.vercel.app/${slug}`,
+              url: `https://tool-wave.vercel.app/${slug}`,
             },
           ]}
         />

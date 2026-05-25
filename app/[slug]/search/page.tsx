@@ -61,10 +61,10 @@ export async function generateMetadata({
       : `Browse ${category.name} design resources for developers`,
     alternates: {
       canonical: query
-        ? `https://design-resources-for-developers-tau.vercel.app/${slug}/search?q=${encodeURIComponent(
+        ? `https://tool-wave.vercel.app/${slug}/search?q=${encodeURIComponent(
             query,
           )}`
-        : `https://design-resources-for-developers-tau.vercel.app/${slug}`,
+        : `https://tool-wave.vercel.app/${slug}`,
     },
   };
 }

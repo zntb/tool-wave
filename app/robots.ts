@@ -9,7 +9,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ['/api/', '/_next/'],
       },
     ],
-    sitemap:
-      'https://design-resources-for-developers-tau.vercel.app/sitemap.xml',
+    sitemap: 'https://tool-wave.vercel.app/sitemap.xml',
   };
 }

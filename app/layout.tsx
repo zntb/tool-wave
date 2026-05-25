@@ -19,22 +19,19 @@ const jsonLd = {
   name: 'Tool Wave',
   description:
     'A curated collection of design resources for developers - UI graphics, fonts, colors, icons, and more.',
-  url: 'https://design-resources-for-developers-tau.vercel.app',
+  url: 'https://tool-wave.vercel.app',
   potentialAction: {
     '@type': 'SearchAction',
     target: {
       '@type': 'EntryPoint',
-      urlTemplate:
-        'https://design-resources-for-developers-tau.vercel.app/search?q={search_term_string}',
+      urlTemplate: 'https://tool-wave.vercel.app/search?q={search_term_string}',
     },
     'query-input': 'required name=search_term_string',
   },
 };
 
 export const metadata: Metadata = {
-  metadataBase: new URL(
-    'https://design-resources-for-developers-tau.vercel.app',
-  ),
+  metadataBase: new URL('https://tool-wave.vercel.app'),
   title: {
     default: 'Tool Wave',
     template: '%s | Tool Wave',
@@ -75,7 +72,7 @@ export const metadata: Metadata = {
     images: ['/og-image.png'],
   },
   alternates: {
-    canonical: 'https://design-resources-for-developers-tau.vercel.app',
+    canonical: 'https://tool-wave.vercel.app',
   },
   icons: {
     icon: '/favicon.ico',
