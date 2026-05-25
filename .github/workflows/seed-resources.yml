@@ -3,7 +3,7 @@ name: Seed Resources on resources.md Change
 on:
   pull_request:
     branches:
-      - master
+      - main
     paths:
       - 'resources.md'
     types:
@@ -23,7 +23,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          ref: master
+          ref: main
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
