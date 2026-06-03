@@ -820,6 +820,7 @@ Available for MacOS, Linux, & Windows<br>
 | [CSS Grid Generator](https://cssgrid-generator.netlify.app/)                                                   | An open-source project that allow users to quickly create dynamic layout based on CSS Grid.                                                                                          |
 | [Moving Letters](https://tobiasahlin.com/moving-letters/)                                                      | Animated Text with JavaScript and anime.js                                                                                                                                           |
 | [Loading.io](https://loading.io/)                                                                              | Online service provider for creating simple animations, spinners, progress bar and more                                                                                              |
+| [IT Tools](https://it-tools.tech/)                                                                             | A free and open-source collection of handy online tools for developers & people working in IT.                                                                                       |
 
 <div align="right">
     <b><a href="#table-of-contents">↥ Back To Top</a></b>
@@ -1270,6 +1271,7 @@ Available for MacOS, Linux, & Windows<br>
 | [CompressJPEG](https://compressjpeg.com/)                                                                | Compress JPEG images with size even greater than 5MB                                                                                                                               |
 | [Promo Image Resizer](https://promo.com/tools/image-resizer/)                                            | Free Image and Photo Resizer                                                                                                                                                       |
 | [PNG Compressor](https://99tools.net/png-compressor/)                                                    | A fast and simple PNG Compressor that reduces image file size without noticeable quality loss. Optimize PNGs instantly in your browser—no uploads, secure, and developer-friendly. |
+| [ToolKnit](https://toolknit.com)                                                                         | A 100% browser-based online toolkit offering 65+ free utilities including image optimization, PDF editing, and UI tools.                                                           |
 
 <div align="right">
     <b><a href="#table-of-contents">↥ Back To Top</a></b>
