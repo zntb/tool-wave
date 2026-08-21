@@ -6,7 +6,7 @@ import { LinkGridSkeleton, NavSkeleton } from '@/components/skeletons';
 import { CategoryNav } from '@/components/category-nav';
 import { ViewToggle } from '@/components/view-toggle';
 import type { Link as LinkType, ViewMode } from '@/lib/types';
-import { cn } from '@/lib/utils';
+import { LinkGrid } from '@/components/link-grid';
 import { BackgroundPattern } from '@/components/background-pattern';
 import { Footer } from '@/components/footer';
 import {
@@ -131,18 +131,11 @@ async function SearchResults({
             <h2 className='text-xl font-semibold text-slate-800 dark:text-slate-200'>
               {categoryName}
             </h2>
-            <div
-              className={cn(
-                'stagger-children',
-                view === 'list'
-                  ? 'flex flex-col gap-2'
-                  : 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4',
-              )}
-            >
+            <LinkGrid view={view}>
               {categoryLinks.map((link, index) => (
                 <LinkCard key={link.id} link={link} index={index} view={view} />
               ))}
-            </div>
+            </LinkGrid>
           </section>
         ),
       )}

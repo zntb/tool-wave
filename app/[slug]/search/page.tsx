@@ -11,7 +11,7 @@ import { LinkGridSkeleton, NavSkeleton } from '@/components/skeletons';
 import { CategoryNav } from '@/components/category-nav';
 import { ViewToggle } from '@/components/view-toggle';
 import { SearchInput } from '@/components/search-input';
-import { cn } from '@/lib/utils';
+import { LinkGrid } from '@/components/link-grid';
 import { BackgroundPattern } from '@/components/background-pattern';
 import { Footer } from '@/components/footer';
 import type { ViewMode } from '@/lib/types';
@@ -134,18 +134,11 @@ async function CategorySearchResults({
         </p>
       </div>
 
-      <div
-        className={cn(
-          'stagger-children',
-          view === 'list'
-            ? 'flex flex-col gap-2'
-            : 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4',
-        )}
-      >
+      <LinkGrid view={view}>
         {paginatedLinks.map((link, index) => (
           <LinkCard key={link.id} link={link} index={index} view={view} />
         ))}
-      </div>
+      </LinkGrid>
 
       {/* Pagination */}
       {totalPages > 1 && (

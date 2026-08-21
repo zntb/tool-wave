@@ -9,6 +9,7 @@ import { useFavorites } from '@/lib/hooks/use-favorites';
 import { getAllCategoriesWithLinksAction } from '@/app/actions';
 import type { Link as LinkType, CategoryWithLinks, ViewMode } from '@/lib/types';
 import { cn } from '@/lib/utils';
+import { LinkGrid } from '@/components/link-grid';
 import { BackgroundPattern } from '@/components/background-pattern';
 import { Footer } from '@/components/footer';
 import { getStoredFavorites } from '@/lib/favorites-storage';
@@ -194,14 +195,7 @@ export function FavoritesClient() {
             </Link>
           </div>
         ) : (
-          <div
-            className={cn(
-              'stagger-children',
-              viewMode === 'list'
-                ? 'flex flex-col gap-2'
-                : 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4',
-            )}
-          >
+          <LinkGrid view={viewMode}>
             {favoriteLinks.map((link, index) => (
               <LinkCard
                 key={link.id}
@@ -210,7 +204,7 @@ export function FavoritesClient() {
                 view={viewMode}
               />
             ))}
-          </div>
+          </LinkGrid>
         )}
       </main>
 

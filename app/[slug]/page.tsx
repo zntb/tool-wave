@@ -14,7 +14,7 @@ import { SearchInput } from '@/components/search-input';
 import { LinkGridSkeleton, NavSkeleton } from '@/components/skeletons';
 import { getCategoriesAction } from '../actions';
 import { BreadcrumbJsonLd } from '@/components/json-ld';
-import { cn } from '@/lib/utils';
+import { LinkGrid } from '@/components/link-grid';
 import { BackgroundPattern } from '@/components/background-pattern';
 import { Footer } from '@/components/footer';
 import type { ViewMode, SortOrder } from '@/lib/types';
@@ -138,18 +138,11 @@ async function CategoryContent({
       </div>
 
       {/* Links Grid */}
-      <div
-        className={cn(
-          'stagger-children',
-          view === 'list'
-            ? 'flex flex-col gap-2'
-            : 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4',
-        )}
-      >
+      <LinkGrid view={view}>
         {category.links.map((link, index) => (
           <LinkCard key={link.id} link={link} index={index} view={view} />
         ))}
-      </div>
+      </LinkGrid>
 
       {category.links.length === 0 && (
         <div className='text-center py-12'>

@@ -11,8 +11,8 @@ import { ViewToggle } from '@/components/view-toggle';
 import { SortDropdown } from '@/components/sort-dropdown';
 import { LinkCard } from '@/components/link-card';
 import { LinkGridSkeleton, NavSkeleton } from '@/components/skeletons';
+import { LinkGrid } from '@/components/link-grid';
 import { BackgroundPattern } from '@/components/background-pattern';
-import { cn } from '@/lib/utils';
 import type { ViewMode, SortOrder } from '@/lib/types';
 import {
   Pagination,
@@ -98,18 +98,11 @@ async function LinksByCategory({
           </p>
         </header>
 
-        <div
-          className={cn(
-            'stagger-children',
-            view === 'list'
-              ? 'flex flex-col gap-2'
-              : 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4',
-          )}
-        >
+        <LinkGrid view={view}>
           {links.map((link, index) => (
             <LinkCard key={link.id} link={link} index={index} view={view} />
           ))}
-        </div>
+        </LinkGrid>
 
         {links.length === 0 && (
           <p className='text-slate-400 dark:text-slate-500 text-center py-8'>
