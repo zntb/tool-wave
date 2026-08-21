@@ -66,6 +66,9 @@ jest.mock('@/lib/resources-md', () => ({
   deleteLinkFromResourcesMD: jest.fn().mockReturnValue({ success: true }),
   deleteCategoryFromResourcesMD: jest.fn().mockReturnValue({ success: true }),
 }));
+jest.mock('@/lib/ssrf-prevention', () => ({
+  checkSSRF: jest.fn().mockResolvedValue({ allowed: true }),
+}));
 
 import * as data from '@/lib/data';
 const mockData = data as jest.Mocked<typeof data>;

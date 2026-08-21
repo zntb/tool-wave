@@ -9,6 +9,7 @@ import { getCurrentAdminEmail } from '@/lib/admin-auth';
 import { checkRateLimit } from '@/lib/rate-limit';
 import { requireCsrfToken } from '@/lib/csrf';
 import { sanitizeString, sanitizeOptional } from '@/lib/sanitize';
+import { checkSSRF } from '@/lib/ssrf-prevention';
 
 // Create a new resource submission (public endpoint)
 export async function POST(request: NextRequest) {
@@ -37,6 +38,15 @@ export async function POST(request: NextRequest) {
     if (!data.title || !data.url) {
       return NextResponse.json(
         { error: 'Title and URL are required' },
+        { status: 400 },
+      );
+    }
+
+    // SSRF prevention: reject URLs pointing to private/internal IPs
+    const ssrfCheck = await checkSSRF(data.url);
+    if (!ssrfCheck.allowed) {
+      return NextResponse.json(
+        { error: `Invalid URL: ${ssrfCheck.reason}` },
         { status: 400 },
       );
     }

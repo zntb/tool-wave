@@ -33,6 +33,7 @@ import {
 import { revalidatePath } from 'next/cache';
 import { getCurrentAdminEmail } from '@/lib/admin-auth';
 import { sanitizeString, sanitizeOptional } from '@/lib/sanitize';
+import { checkSSRF } from '@/lib/ssrf-prevention';
 import {
   addLinkToResourcesMD,
   addCategoryToResourcesMD,
@@ -218,6 +219,12 @@ export async function createLink(
       categoryId: formData.get('categoryId') as string,
     };
 
+    // SSRF prevention: reject URLs pointing to private/internal IPs
+    const ssrfCheck = await checkSSRF(data.url);
+    if (!ssrfCheck.allowed) {
+      return { success: false, error: `Invalid URL: ${ssrfCheck.reason}` };
+    }
+
     const validated = linkSchema.parse(data);
     const link = await createLinkData(validated);
 
@@ -259,11 +266,19 @@ export async function updateLinkAction(
     const data = {
       id: formData.get('id') as string,
       title: formData.get('title') ? sanitizeString(formData.get('title') as string) : undefined,
-      url: formData.get('url') || undefined,
+      url: (formData.get('url') as string) || undefined,
       description: sanitizeOptional(formData.get('description') as string),
       icon: sanitizeOptional(formData.get('icon') as string),
       categoryId: formData.get('categoryId') as string,
     };
+
+    // SSRF prevention: reject URLs pointing to private/internal IPs
+    if (data.url) {
+      const ssrfCheck = await checkSSRF(data.url);
+      if (!ssrfCheck.allowed) {
+        return { success: false, error: `Invalid URL: ${ssrfCheck.reason}` };
+      }
+    }
 
     const validated = updateLinkSchema.parse(data);
 

@@ -99,8 +99,8 @@ Verified that `.env` is in `.gitignore` and not tracked by Git. Audited all serv
 ### 6. Admin Session Hardening ✅
 Three-layer defense: (1) Changed session cookie from `SameSite=lax` to `SameSite=strict` to prevent cross-origin cookie sending. (2) Added HMAC-based CSRF token validation on admin API routes. (3) Session rotation — every login generates a unique random session ID (`randomUUID`) embedded in the cookie as `{email}:{sessionId}:{signature}` where the HMAC covers `{email}:{sessionId}`. This prevents session fixation attacks where an attacker pre-sets a cookie before the user authenticates. Added `verifySessionValue()` helper for clean verification.
 
-### 7. URL Validation on Submission
-The submission API validates URLs with Zod, but consider adding a DNS resolution check to reject URLs pointing to internal/private IPs (SSRF prevention).
+### 7. URL Validation on Submission ✅
+Created `lib/ssrf-prevention.ts` with `checkSSRF()` function that resolves URLs via DNS and checks all resolved IPs against private/internal ranges (10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16, 127.0.0.0/8, 169.254.0.0/10, IPv6 loopback/link-local/ULA). Blocked hostnames include localhost, 0.0.0.0, 127.0.0.1, 169.254.169.254, and metadata.google.internal. Applied to `POST /api/submissions`, `createLink`, and `updateLinkAction` server actions. DNS resolution failures are blocked by default.
 
 ---
 
