@@ -57,6 +57,15 @@ export function Header({ className }: HeaderProps) {
     router.push('/');
   };
 
+  const handleSearch = (query: string) => {
+    if (query.trim()) {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set('q', query.trim());
+      router.push(`/search?${params.toString()}`);
+      setIsMobileMenuOpen(false);
+    }
+  };
+
   return (
     <>
       <header
@@ -108,16 +117,7 @@ export function Header({ className }: HeaderProps) {
               <div className='glass-strong rounded-xl px-1 py-1.5'>
                 <Autocomplete
                   placeholder='Search all resources...'
-                  onSearch={query => {
-                    if (query.trim()) {
-                      // Preserve the current view parameter if it exists
-                      const params = new URLSearchParams(
-                        searchParams.toString(),
-                      );
-                      params.set('q', query.trim());
-                      router.push(`/search?${params.toString()}`);
-                    }
-                  }}
+                  onSearch={handleSearch}
                 />
               </div>
             </div>
@@ -180,17 +180,7 @@ export function Header({ className }: HeaderProps) {
               <div className='glass-strong rounded-xl p-1.5'>
                 <Autocomplete
                   placeholder='Search all resources...'
-                  onSearch={query => {
-                    if (query.trim()) {
-                      // Preserve the current view parameter if it exists
-                      const params = new URLSearchParams(
-                        searchParams.toString(),
-                      );
-                      params.set('q', query.trim());
-                      router.push(`/search?${params.toString()}`);
-                      setIsMobileMenuOpen(false);
-                    }
-                  }}
+                  onSearch={handleSearch}
                 />
               </div>
             </div>

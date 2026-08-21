@@ -126,22 +126,9 @@ This document lists duplicate code patterns across the codebase that could be re
 
 ## 16. Search Query Parameter Handling in Header
 
-**Duplicate locations in `components/header.tsx`:**
-- Desktop search `onSearch` callback (lines 114-120)
-- Mobile search `onSearch` callback (lines 186-192)
+**Status:** ✅ RESOLVED
 
-**Identical logic:**
-```ts
-onSearch={query => {
-  if (query.trim()) {
-    const params = new URLSearchParams(searchParams.toString());
-    params.set('q', query.trim());
-    router.push(`/search?${params.toString()}`);
-  }
-}}
-```
-
-**Recommendation:** Extract to a shared `handleSearch` function within the component.
+**Resolution:** Extracted a shared `handleSearch(query: string)` function within `components/header.tsx` that handles URL construction and navigation. Both desktop and mobile `<Autocomplete>` components now use `onSearch={handleSearch}`.
 
 ---
 
@@ -164,7 +151,7 @@ onSearch={query => {
 | 13 | `nullToUndefined` mapping | 15+ | **High** | ✅ RESOLVED |
 | 14 | Sort order mapping | 3 | Medium | ✅ RESOLVED |
 | 15 | `mounted` hydration pattern | 2 | Low | ✅ RESOLVED |
-| 16 | Search param handling | 2 | Low |
+| 16 | Search param handling | 2 | Low | ✅ RESOLVED |
 
 **High-impact refactoring candidates (do first):**
 1. Footer component → single `<Footer />`
