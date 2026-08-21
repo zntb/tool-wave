@@ -6,7 +6,7 @@ import {
   getAllCategoriesWithLinksCountAction,
 } from './actions';
 import { CategoriesNav } from '@/components/category-nav-server';
-import { ViewToggle } from '@/components/view-toggle';
+import { ViewToggleWrapper } from '@/components/view-toggle';
 import { SortDropdown } from '@/components/sort-dropdown';
 import { LinkCard } from '@/components/link-card';
 import { LinkGridSkeleton, NavSkeleton } from '@/components/skeletons';
@@ -107,9 +107,7 @@ async function LinksByCategory({
   );
 }
 
-function ViewToggleWrapper() {
-  return <ViewToggle className='hidden sm:block' />;
-}
+
 
 async function StatsDisplay() {
   const [totalCategories, totalLinks] = await Promise.all([

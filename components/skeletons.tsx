@@ -73,4 +73,8 @@ function PageSkeleton() {
   );
 }
 
-export { Skeleton, CardSkeleton, NavSkeleton, LinkGridSkeleton, PageSkeleton };
+function LoadingState() {
+  return <LinkGridSkeleton count={6} />;
+}
+
+export { Skeleton, CardSkeleton, NavSkeleton, LinkGridSkeleton, PageSkeleton, LoadingState };

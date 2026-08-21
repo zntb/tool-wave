@@ -94,22 +94,9 @@ This document lists duplicate code patterns across the codebase that could be re
 
 ## 12. `LoadingState` / `ViewToggleWrapper` Helper Components
 
-**Duplicate locations:**
-- `LoadingState` in: `app/[slug]/page.tsx`, `app/[slug]/search/page.tsx`, `app/search/page.tsx`
-- `ViewToggleWrapper` in: `app/page.tsx`, `app/[slug]/search/page.tsx`, `app/search/page.tsx`
+**Status:** ✅ RESOLVED
 
-**Identical implementations:**
-```tsx
-function LoadingState() {
-  return <LinkGridSkeleton count={6} />;
-}
-
-function ViewToggleWrapper() {
-  return <ViewToggle className='hidden sm:block' />;
-}
-```
-
-**Recommendation:** Export these from their respective component files or move to a shared helpers file.
+**Resolution:** Exported `LoadingState` from `components/skeletons.tsx` and `ViewToggleWrapper` from `components/view-toggle.tsx`. Updated all 4 app pages to import from the shared modules and removed local definitions.
 
 ---
 
@@ -210,7 +197,7 @@ onSearch={query => {
 | 9 | Grid/list layout | 5 | Medium | ✅ RESOLVED |
 | 10 | Pagination block | 4 | **High** | ✅ RESOLVED |
 | 11 | `CategoriesNav` server component | 4 | Medium | ✅ RESOLVED |
-| 12 | `LoadingState` / `ViewToggleWrapper` | 3 each | Low |
+| 12 | `LoadingState` / `ViewToggleWrapper` | 3 each | Low | ✅ RESOLVED |
 | 13 | `nullToUndefined` mapping | 15+ | **High** |
 | 14 | Sort order mapping | 3 | Medium |
 | 15 | `mounted` hydration pattern | 2 | Low |

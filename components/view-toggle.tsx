@@ -81,3 +81,7 @@ export function ViewToggle({ className }: ViewToggleProps) {
     </div>
   );
 }
+
+export function ViewToggleWrapper() {
+  return <ViewToggle className='hidden sm:block' />;
+}

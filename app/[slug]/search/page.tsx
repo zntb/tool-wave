@@ -6,9 +6,9 @@ import {
   searchLinksByCategoryAction,
 } from '../../actions';
 import { LinkCard } from '@/components/link-card';
-import { LinkGridSkeleton, NavSkeleton } from '@/components/skeletons';
+import { NavSkeleton, LoadingState } from '@/components/skeletons';
 import { CategoriesNav } from '@/components/category-nav-server';
-import { ViewToggle } from '@/components/view-toggle';
+import { ViewToggleWrapper } from '@/components/view-toggle';
 import { SearchInput } from '@/components/search-input';
 import { LinkGrid } from '@/components/link-grid';
 import { BackgroundPattern } from '@/components/background-pattern';
@@ -136,13 +136,7 @@ async function CategorySearchResults({
   );
 }
 
-function LoadingState() {
-  return <LinkGridSkeleton count={6} />;
-}
 
-function ViewToggleWrapper() {
-  return <ViewToggle className='hidden sm:block' />;
-}
 
 export default async function CategorySearchPage({
   params,

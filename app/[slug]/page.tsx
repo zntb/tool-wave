@@ -11,7 +11,7 @@ import { ViewToggle } from '@/components/view-toggle';
 import { SortDropdown } from '@/components/sort-dropdown';
 import { LinkCard } from '@/components/link-card';
 import { SearchInput } from '@/components/search-input';
-import { LinkGridSkeleton, NavSkeleton } from '@/components/skeletons';
+import { NavSkeleton, LoadingState } from '@/components/skeletons';
 
 import { BreadcrumbJsonLd } from '@/components/json-ld';
 import { LinkGrid } from '@/components/link-grid';
@@ -147,9 +147,7 @@ async function CategoryContent({
   );
 }
 
-async function LoadingState() {
-  return <LinkGridSkeleton count={6} />;
-}
+
 
 export default async function CategoryPage({
   params,
