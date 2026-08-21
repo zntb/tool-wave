@@ -121,8 +121,8 @@ Created `components/back-to-top.tsx` — a floating button fixed at bottom-right
 ### 5. Better Empty States ✅
 Created `components/empty-state.tsx` — a server component with a search icon illustration, customizable title/description/query, and a "Popular Resources" section fetched from `getPopularResources()` showing the top 5 most-clicked links. Applied to 4 pages: global search, category search, category page (empty category), and homepage (no resources). Replaced plain text empty states across the app.
 
-### 6. Search History
-Store the last 5 searches in localStorage and show them as suggestions when the search input is focused but empty.
+### 6. Search History ✅
+Created `lib/hooks/use-search-history.ts` with `addSearch()`, `removeSearch()`, and `clearHistory()`. Stores last 5 unique searches in localStorage under `tool-wave-search-history`. Integrated into `Autocomplete` — shows "Recent Searches" dropdown when the input is focused but empty, each item clickable to re-run the search, with individual remove buttons.
 
 ### 7. Print Stylesheet
 Add `@media print` styles so users can print a category page or search results cleanly (hide nav, footer, background effects).

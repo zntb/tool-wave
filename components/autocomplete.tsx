@@ -7,6 +7,7 @@ import { Search, Loader2 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 import { IconFallback } from '@/components/icon-fallback';
+import { useSearchHistory } from '@/lib/hooks/use-search-history';
 import type { Link } from '@/lib/types';
 
 interface AutocompleteProps {
@@ -33,6 +34,7 @@ export function Autocomplete({
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const containerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const { history, addSearch, removeSearch } = useSearchHistory();
 
   // Debounced fetch of suggestions
   useEffect(() => {
@@ -88,6 +90,7 @@ export function Autocomplete({
       e.preventDefault();
       if (query.trim()) {
         setIsOpen(false);
+        addSearch(query.trim());
         if (onSearch) {
           onSearch(query.trim());
         } else {
@@ -98,13 +101,14 @@ export function Autocomplete({
         }
       }
     },
-    [query, onSearch, router, searchParams],
+    [query, onSearch, router, searchParams, addSearch],
   );
 
   const handleSuggestionClick = useCallback(
     (suggestion: Link & { categorySlug?: string }) => {
       setQuery(suggestion.title);
       setIsOpen(false);
+      addSearch(suggestion.title);
       if (onSearch) {
         onSearch(suggestion.title);
       } else {
@@ -115,7 +119,7 @@ export function Autocomplete({
         router.push(path);
       }
     },
-    [router, onSearch],
+    [router, onSearch, addSearch],
   );
 
   const handleKeyDown = useCallback(
@@ -177,8 +181,33 @@ export function Autocomplete({
   const handleInputFocus = () => {
     if (query.length >= 2 && suggestions.length > 0) {
       setIsOpen(true);
+    } else if (query.length === 0 && history.length > 0) {
+      setIsOpen(true);
     }
   };
+
+  const handleHistoryClick = useCallback(
+    (searchQuery: string) => {
+      setQuery(searchQuery);
+      setIsOpen(false);
+      if (onSearch) {
+        onSearch(searchQuery);
+      } else {
+        const params = new URLSearchParams(searchParams.toString());
+        params.set('q', searchQuery);
+        router.push(`/search?${params.toString()}`);
+      }
+    },
+    [onSearch, router, searchParams],
+  );
+
+  const handleHistoryRemove = useCallback(
+    (e: React.MouseEvent, searchQuery: string) => {
+      e.stopPropagation();
+      removeSearch(searchQuery);
+    },
+    [removeSearch],
+  );
 
   const handleClear = () => {
     setQuery('');
@@ -328,6 +357,56 @@ export function Autocomplete({
             </li>
           ))}
         </ul>
+      )}
+
+      {/* Search History - shown when input is focused but empty */}
+      {isOpen &&
+        query.length === 0 &&
+        history.length > 0 && (
+        <div
+          className={cn(
+            'absolute z-50 w-full mt-2 rounded-xl',
+            'bg-white/90 dark:bg-slate-900/90',
+            'backdrop-blur-xl backdrop-saturate-150',
+            'border border-slate-200/50 dark:border-slate-700/50',
+            'shadow-2xl shadow-black/10 dark:shadow-black/30',
+            'p-2 animate-fade-in',
+          )}
+        >
+          <p className='px-3 py-1.5 text-xs font-medium text-slate-400 dark:text-slate-500 uppercase tracking-wider'>
+            Recent Searches
+          </p>
+          <ul role='listbox'>
+            {history.map((searchQuery) => (
+              <li
+                key={searchQuery}
+                role='option'
+                aria-selected={false}
+                className={cn(
+                  'px-3 py-2.5 cursor-pointer transition-all duration-150',
+                  'flex items-center gap-3 rounded-lg',
+                  'hover:bg-slate-100/50 dark:hover:bg-slate-800/50',
+                )}
+                onClick={() => handleHistoryClick(searchQuery)}
+              >
+                <Search className='w-3.5 h-3.5 text-slate-300 dark:text-slate-600 flex-shrink-0' />
+                <span className='flex-1 text-sm text-slate-700 dark:text-slate-300 truncate'>
+                  {searchQuery}
+                </span>
+                <button
+                  type='button'
+                  onClick={(e) => handleHistoryRemove(e, searchQuery)}
+                  className='p-1 rounded-md hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors opacity-0 group-hover:opacity-100'
+                  aria-label={`Remove "${searchQuery}" from history`}
+                >
+                  <svg className='w-3 h-3 text-slate-400' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={2}>
+                    <path strokeLinecap='round' strokeLinejoin='round' d='M6 18L18 6M6 6l12 12' />
+                  </svg>
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
       )}
 
       {/* Empty state when no suggestions but query exists */}
