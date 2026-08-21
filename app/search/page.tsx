@@ -9,6 +9,7 @@ import type { Link as LinkType, ViewMode } from '@/lib/types';
 import { LinkGrid } from '@/components/link-grid';
 import { BackgroundPattern } from '@/components/background-pattern';
 import { Footer } from '@/components/footer';
+import { Breadcrumbs } from '@/components/breadcrumbs';
 import { PaginationControls } from '@/components/pagination-controls';
 
 interface SearchPageProps {
@@ -153,6 +154,15 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
       <BackgroundPattern />
 
       <main className='container mx-auto px-4 py-8 md:py-12 lg:py-16 max-w-7xl'>
+        {/* Breadcrumbs */}
+        <Breadcrumbs
+          items={[
+            { label: 'Home', href: '/' },
+            { label: 'Search Results' },
+          ]}
+          className='mb-6'
+        />
+
         {/* Category Navigation */}
         <div className='mb-8'>
           <Suspense fallback={<NavSkeleton />}>

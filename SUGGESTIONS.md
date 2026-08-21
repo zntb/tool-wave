@@ -112,8 +112,8 @@ Created `lib/hooks/use-keyboard-navigation.ts` with global keyboard shortcuts: `
 ### 2. Skip-to-Content Link ✅
 Added a visually hidden `<a>` link as the first focusable element in `app/layout.tsx`. Uses Tailwind's `sr-only` class to hide it visually while keeping it available to screen readers. On focus (first Tab press), it becomes visible as a fixed cyan pill button at the top-left. Links to `#main-content` on the `<main>` element.
 
-### 3. Breadcrumb Navigation
-Show breadcrumbs on category and search pages (e.g., Home > Frontend > React). The `BreadcrumbJsonLd` component already exists — add the visible counterpart.
+### 3. Breadcrumb Navigation ✅
+Created `components/breadcrumbs.tsx` — a server component with accessible `<nav aria-label="Breadcrumb">` and `<ol>` structure. Each item is a `<Link>` except the last (marked `aria-current="page"`), separated by chevron icons. Added to three pages: category page (Home > Category), category search (Home > Category > Search Results), and global search (Home > Search Results). Complements the existing `BreadcrumbJsonLd` for SEO.
 
 ### 4. Back-to-Top Button
 Show a floating button when the user scrolls past the fold. Quick win for long pages.

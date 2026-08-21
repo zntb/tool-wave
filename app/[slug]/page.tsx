@@ -14,6 +14,7 @@ import { SearchInput } from '@/components/search-input';
 import { NavSkeleton, LoadingState } from '@/components/skeletons';
 
 import { BreadcrumbJsonLd } from '@/components/json-ld';
+import { Breadcrumbs } from '@/components/breadcrumbs';
 import { LinkGrid } from '@/components/link-grid';
 import { BackgroundPattern } from '@/components/background-pattern';
 import { Footer } from '@/components/footer';
@@ -181,6 +182,17 @@ export default async function CategoryPage({
         <BackgroundPattern />
 
         <main className='container mx-auto px-4 py-8 md:py-12 lg:py-16 max-w-7xl'>
+          {/* Breadcrumbs */}
+          {category && (
+            <Breadcrumbs
+              items={[
+                { label: 'Home', href: '/' },
+                { label: category.name },
+              ]}
+              className='mb-6'
+            />
+          )}
+
           {/* Category Navigation */}
           <div className='mb-12'>
             <Suspense fallback={<NavSkeleton />}>
