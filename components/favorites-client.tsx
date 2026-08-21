@@ -9,23 +9,7 @@ import { useFavorites } from '@/lib/hooks/use-favorites';
 import { getAllCategoriesWithLinksAction } from '@/app/actions';
 import type { Link as LinkType, CategoryWithLinks, ViewMode } from '@/lib/types';
 import { cn } from '@/lib/utils';
-
-const FAVORITES_STORAGE_KEY = 'tool-wave';
-
-interface StoredFavorite {
-  id: string;
-  addedAt: number;
-}
-
-function getStoredFavorites(): StoredFavorite[] {
-  if (typeof window === 'undefined') return [];
-  try {
-    const stored = localStorage.getItem(FAVORITES_STORAGE_KEY);
-    return stored ? JSON.parse(stored) : [];
-  } catch {
-    return [];
-  }
-}
+import { getStoredFavorites } from '@/lib/favorites-storage';
 
 export function FavoritesClient() {
   const [, setFavoriteIds] = useState<Set<string>>(new Set());

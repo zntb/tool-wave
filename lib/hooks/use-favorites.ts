@@ -2,13 +2,7 @@
 
 import { useSyncExternalStore, useCallback, useEffect, useMemo } from 'react';
 import type { Link } from '@/lib/types';
-
-const FAVORITES_STORAGE_KEY = 'tool-wave';
-
-interface StoredFavorite {
-  id: string;
-  addedAt: number;
-}
+import { FAVORITES_STORAGE_KEY, type StoredFavorite } from '@/lib/favorites-storage';
 
 // Module-level store (shared across all hook instances)
 let favorites: StoredFavorite[] = [];

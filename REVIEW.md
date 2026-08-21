@@ -30,23 +30,9 @@ This document lists duplicate code patterns across the codebase that could be re
 
 ## 4. `StoredFavorite` Interface & `FAVORITES_STORAGE_KEY`
 
-**Duplicate locations:**
-- `components/favorites-client.tsx` (lines 13, 15-18, 20-28)
-- `lib/hooks/use-favorites.ts` (lines 6, 8-11, 21-33)
+**Status:** ✅ RESOLVED
 
-**Identical definitions:**
-```ts
-const FAVORITES_STORAGE_KEY = 'tool-wave';
-
-interface StoredFavorite {
-  id: string;
-  addedAt: number;
-}
-```
-
-**Identical logic:** Both files read from localStorage with the same key, same interface, and same error handling.
-
-**Recommendation:** Create `lib/favorites-storage.ts` to centralize the storage key, interface, and read/write operations. The `use-favorites.ts` hook should import from there.
+**Resolution:** Created `lib/favorites-storage.ts` with the shared `FAVORITES_STORAGE_KEY`, `StoredFavorite` interface, and `getStoredFavorites()` helper. Updated `components/favorites-client.tsx` and `lib/hooks/use-favorites.ts` to import from the shared module.
 
 ---
 
@@ -314,7 +300,7 @@ onSearch={query => {
 | 1 | `isUrl` function | 2 | Low | ✅ RESOLVED |
 | 2 | `ViewMode` type | 7 | Medium | ✅ RESOLVED |
 | 3 | `SortOrder` type | 4 | Medium | ✅ RESOLVED |
-| 4 | `StoredFavorite` / storage key | 2 | High |
+| 4 | `StoredFavorite` / storage key | 2 | High | ✅ RESOLVED |
 | 5 | Click-outside hook | 2 | Medium |
 | 6 | Copy-to-clipboard hook | 2 | Medium |
 | 7 | Background pattern | 5 | Medium |
