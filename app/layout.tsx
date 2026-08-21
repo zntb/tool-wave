@@ -8,6 +8,7 @@ import { Geist_Mono } from 'next/font/google';
 import { Suspense } from 'react';
 import { Toaster } from 'sonner';
 import { ThemeProvider } from 'next-themes';
+import { BackToTop } from '@/components/back-to-top';
 
 const geistMono = Geist_Mono({
   subsets: ['latin'],
@@ -132,6 +133,7 @@ export default function RootLayout({
               <Suspense fallback={null}>{children}</Suspense>
             </main>
             <Toaster position='top-right' richColors />
+            <BackToTop />
           </TooltipProvider>
         </ThemeProvider>
       </body>

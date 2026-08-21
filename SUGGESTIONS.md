@@ -115,8 +115,8 @@ Added a visually hidden `<a>` link as the first focusable element in `app/layout
 ### 3. Breadcrumb Navigation ✅
 Created `components/breadcrumbs.tsx` — a server component with accessible `<nav aria-label="Breadcrumb">` and `<ol>` structure. Each item is a `<Link>` except the last (marked `aria-current="page"`), separated by chevron icons. Added to three pages: category page (Home > Category), category search (Home > Category > Search Results), and global search (Home > Search Results). Complements the existing `BreadcrumbJsonLd` for SEO.
 
-### 4. Back-to-Top Button
-Show a floating button when the user scrolls past the fold. Quick win for long pages.
+### 4. Back-to-Top Button ✅
+Created `components/back-to-top.tsx` — a floating button fixed at bottom-right that appears after scrolling 400px. Uses opacity and translate-y transitions for smooth fade-in/out. `window.scrollTo({ behavior: 'smooth' })` for smooth return. Includes `aria-label` and `title` for accessibility. Added to root layout.
 
 ### 5. Better Empty States
 When search returns no results, show an illustration and suggestions (popular resources, recent additions) instead of just "No results found."
