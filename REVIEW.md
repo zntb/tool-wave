@@ -19,23 +19,8 @@ Moved the `<Suspense fallback={<NavSkeleton />}>` boundary into `CategoriesNav` 
 
 ---
 
-## 4. View Toggle + Sort Dropdown Section
-
-**Duplicate locations (2 occurrences):**
-- `app/page.tsx` (lines 193-197)
-- `app/[slug]/page.tsx` (lines 136-140)
-
-**Identical pattern:**
-```tsx
-<div className='flex justify-end items-center gap-2 mb-6 animate-fade-in'>
-  <Suspense fallback={null}>
-    <ViewToggleWrapper />
-  </Suspense>
-  <SortDropdown defaultValue={currentSort} />
-</div>
-```
-
-**Recommendation:** Create a `<ViewSortControls sort={defaultValue}>` component that combines the ViewToggle and SortDropdown.
+## 4. View Toggle + Sort Dropdown Section ✅
+Created `components/view-sort-controls.tsx` — a `<ViewSortControls>` client component wrapping `<ViewToggle>` (with Suspense) and `<SortDropdown>`. Props: `defaultValue` (SortOrder), `className`. Applied to `app/page.tsx` and `app/[slug]/page.tsx`. Removed unused imports from both pages.
 
 ---
 
@@ -276,7 +261,7 @@ try {
 | 1 | Search params parsing ✅ | 4× | Boilerplate reduction |
 | 2 | Page layout wrapper ✅ | 5× | Consistent layout, easy global changes |
 | 3 | CategoriesNav Suspense ✅ | 4× | Boilerplate reduction |
-| 4 | View + Sort controls | 2× | Component cohesion |
+| 4 | View + Sort controls ✅ | 2× | Component cohesion |
 | 5 | Pagination URL builder | 3× | DRY utility |
 | 6 | Server action error handling | 8× | Consistent error responses |
 | 7 | Admin auth check | 6× | Security + DRY |

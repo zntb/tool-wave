@@ -7,8 +7,7 @@ import {
   getCategoryWithLinksCountAction,
 } from '../actions';
 import { CategoriesNav } from '@/components/category-nav-server';
-import { ViewToggle } from '@/components/view-toggle';
-import { SortDropdown } from '@/components/sort-dropdown';
+import { ViewSortControls } from '@/components/view-sort-controls';
 import { LinkCard } from '@/components/link-card';
 import { SearchInput } from '@/components/search-input';
 import { LoadingState } from '@/components/skeletons';
@@ -119,12 +118,7 @@ async function CategoryContent({
       </div>
 
       {/* View Toggle and Sort */}
-      <div className='flex justify-end items-center gap-2 mb-4'>
-        <Suspense fallback={null}>
-          <ViewToggle />
-        </Suspense>
-        <SortDropdown defaultValue={sortBy} />
-      </div>
+      <ViewSortControls defaultValue={sortBy} className='mb-4' />
 
       {/* Links Grid */}
       <LinkGrid view={view}>

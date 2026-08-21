@@ -6,8 +6,7 @@ import {
   getAllCategoriesWithLinksCountAction,
 } from './actions';
 import { CategoriesNav } from '@/components/category-nav-server';
-import { ViewToggleWrapper } from '@/components/view-toggle';
-import { SortDropdown } from '@/components/sort-dropdown';
+import { ViewSortControls } from '@/components/view-sort-controls';
 import { LinkCard } from '@/components/link-card';
 import { LinkGridSkeleton } from '@/components/skeletons';
 import { LinkGrid } from '@/components/link-grid';
@@ -187,12 +186,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
       </div>
 
       {/* View Toggle and Sort */}
-      <div className='flex justify-end items-center gap-2 mb-6 animate-fade-in'>
-        <Suspense fallback={null}>
-          <ViewToggleWrapper />
-        </Suspense>
-        <SortDropdown defaultValue={currentSort} />
-      </div>
+      <ViewSortControls defaultValue={currentSort} className='mb-6 animate-fade-in' />
 
       {/* Links Grid/List */}
       <Suspense fallback={<LinkGridSkeleton />}>
