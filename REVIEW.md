@@ -54,24 +54,9 @@ This document lists duplicate code patterns across the codebase that could be re
 
 ## 7. Background Pattern (Page Decoration)
 
-**Duplicate locations (5 occurrences):**
-- `app/page.tsx` (lines 271-277)
-- `app/[slug]/page.tsx` (lines 277-282)
-- `app/[slug]/search/page.tsx` (lines 272-278)
-- `app/search/page.tsx` (lines 259-265)
-- `components/favorites-client.tsx` (lines 110-117)
+**Status:** ✅ RESOLVED
 
-**Identical JSX:**
-```tsx
-<div className='fixed inset-0 -z-10 opacity-30 dark:opacity-10'
-  style={{
-    backgroundImage: `radial-gradient(circle at 1px 1px, rgb(148 163 184) 1px, transparent 0)`,
-    backgroundSize: '40px 40px',
-  }}
-/>
-```
-
-**Recommendation:** Extract to a `<BackgroundPattern />` component in `components/`.
+**Resolution:** Created `components/background-pattern.tsx` as a reusable `<BackgroundPattern />` component. Updated all 5 locations (`app/page.tsx`, `app/[slug]/page.tsx`, `app/[slug]/search/page.tsx`, `app/search/page.tsx`, `components/favorites-client.tsx`) to use the shared component.
 
 ---
 
@@ -272,7 +257,7 @@ onSearch={query => {
 | 4 | `StoredFavorite` / storage key | 2 | High | ✅ RESOLVED |
 | 5 | Click-outside hook | 2 | Medium | ✅ RESOLVED |
 | 6 | Copy-to-clipboard hook | 2 | Medium | ✅ RESOLVED |
-| 7 | Background pattern | 5 | Medium |
+| 7 | Background pattern | 5 | Medium | ✅ RESOLVED |
 | 8 | Footer component | 4 | **High** |
 | 9 | Grid/list layout | 5 | Medium |
 | 10 | Pagination block | 3 | **High** |

@@ -12,6 +12,7 @@ import { CategoryNav } from '@/components/category-nav';
 import { ViewToggle } from '@/components/view-toggle';
 import { SearchInput } from '@/components/search-input';
 import { cn } from '@/lib/utils';
+import { BackgroundPattern } from '@/components/background-pattern';
 import type { ViewMode } from '@/lib/types';
 import {
   Pagination,
@@ -268,14 +269,7 @@ export default async function CategorySearchPage({
 
   return (
     <div className='min-h-screen bg-slate-50 dark:bg-slate-950'>
-      {/* Background pattern */}
-      <div
-        className='fixed inset-0 -z-10 opacity-30 dark:opacity-10'
-        style={{
-          backgroundImage: `radial-gradient(circle at 1px 1px, rgb(148 163 184) 1px, transparent 0)`,
-          backgroundSize: '40px 40px',
-        }}
-      />
+      <BackgroundPattern />
 
       <main className='container mx-auto px-4 py-8 md:py-12 lg:py-16 max-w-7xl'>
         {/* Category Navigation */}
