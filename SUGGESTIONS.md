@@ -90,8 +90,8 @@ Implemented sliding window rate limiting via `lib/rate-limit.ts`: 5 req/min for 
 ### 3. Input Sanitization ✅
 Created `lib/sanitize.ts` with `sanitizeString()` and `sanitizeOptional()` helpers that strip `<script>` tags, event handlers (`onclick`, `onerror`, etc.), and `javascript:` URIs. Applied to all user input fields in `POST /api/submissions`, `app/actions.ts` (create/update category and link), and `lib/analytics.ts` (bulk import).
 
-### 4. Content Security Policy
-Add a CSP header via `next.config.ts` or middleware to restrict script sources, prevent inline scripts, and block loading resources from untrusted origins.
+### 4. Content Security Policy ✅
+Added comprehensive security headers in `next.config.ts` via the `headers()` function. CSP restricts script/style sources to `self` + `unsafe-inline` (required by Next.js/React), allows images from `https:` (for remote resource icons), fonts from Google Fonts, and blocks plugins/objects. Also added `X-Content-Type-Options`, `X-Frame-Options`, `X-XSS-Protection`, `Referrer-Policy`, `Permissions-Policy`, and `Strict-Transport-Security` headers.
 
 ### 5. Environment Variable Exposure ✅
 Verified that `.env` is in `.gitignore` and not tracked by Git. Audited all server-side logs, error messages, and API responses for secret leaks — none found. Created `.env.example` for documentation. Added `sameSite=strict` cookies and input sanitization to reduce attack surface.
