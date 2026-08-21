@@ -9,6 +9,7 @@ import { Suspense } from 'react';
 import { Toaster } from 'sonner';
 import { ThemeProvider } from 'next-themes';
 import { BackToTop } from '@/components/back-to-top';
+import { PageTransition } from '@/components/page-transition';
 
 const geistMono = Geist_Mono({
   subsets: ['latin'],
@@ -130,7 +131,9 @@ export default function RootLayout({
                 <Header />
               </Suspense>
               <main id='main-content' className='relative'>
-              <Suspense fallback={null}>{children}</Suspense>
+              <PageTransition>
+                <Suspense fallback={null}>{children}</Suspense>
+              </PageTransition>
             </main>
             <Toaster position='top-right' richColors />
             <BackToTop />

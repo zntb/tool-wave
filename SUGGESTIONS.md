@@ -71,8 +71,8 @@ Rewrote skeletons to match exact shapes: `NavSkeleton` mirrors `CategoryNav` pil
 ### 4. Image Fallback Component ✅
 Created `<IconFallback>` component with 3 size variants (sm/md/lg). URL icons fall back to the first letter of the title on error. Emoji/text icons render directly. Missing icons show a default search icon. Replaced inline `onError` DOM manipulation in `link-card.tsx` and hardcoded icon rendering in `autocomplete.tsx`.
 
-### 5. Smooth Page Transitions
-Add route transition animations (fade/slide) when navigating between pages. The `stagger-children` animation already exists — extend this concept to page-level transitions.
+### 5. Smooth Page Transitions ✅
+Created `components/page-transition.tsx` — a client component that detects pathname changes via `usePathname()` and applies a 300ms opacity fade transition. Uses `useRef` to track the previous path and triggers a brief fade-out on navigation, then fades back in with the new content. Integrated into root layout wrapping `{children}` inside `<main>`.
 
 ### 6. Tooltip Consistency ✅
 Audited all icon-only buttons and added missing `title` attributes: Mobile Menu ("Open menu"), Favorite ("Add to favorites" / "Remove from favorites"), Copy ("Copy link" / "Copied!"), Close Menu ("Close menu"). Every icon-only button now has both `aria-label` and `title`.
