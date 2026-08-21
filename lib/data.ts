@@ -1,4 +1,5 @@
-import { Category, Link, CategoryWithLinks } from './types';
+import { Category, Link, CategoryWithLinks, SortOrder } from './types';
+export type { SortOrder } from './types';
 import { slugify } from './utils';
 import { prisma } from './db';
 import { Prisma } from '@prisma/client';
@@ -141,8 +142,6 @@ export async function getAllLinksCount(): Promise<number> {
   const count = await prisma.link.count();
   return count;
 }
-
-export type SortOrder = 'newest' | 'popular' | 'az' | 'za';
 
 export async function getAllLinksPaginated(options?: {
   limit?: number;

@@ -9,8 +9,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { cn } from '@/lib/utils';
-
-type SortOrder = 'newest' | 'popular' | 'az' | 'za';
+import type { SortOrder } from '@/lib/types';
 
 interface SortDropdownProps {
   className?: string;

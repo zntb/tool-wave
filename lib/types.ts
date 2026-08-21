@@ -53,6 +53,9 @@ export interface UpdateCategoryInput extends Partial<CreateCategoryInput> {
 // View types
 export type ViewMode = 'grid' | 'list';
 
+// Sort types
+export type SortOrder = 'newest' | 'popular' | 'az' | 'za';
+
 // Resource Submission types
 export type SubmissionStatus = 'PENDING' | 'APPROVED' | 'REJECTED';
 

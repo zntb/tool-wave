@@ -22,18 +22,9 @@ This document lists duplicate code patterns across the codebase that could be re
 
 ## 3. `SortOrder` Type
 
-**Duplicate locations:**
-- `components/sort-dropdown.tsx` (line 9)
-- `app/page.tsx` (line 42)
-- `app/[slug]/page.tsx` (line 29)
-- `lib/data.ts` (line 137) — exported as `SortOrder`
+**Status:** ✅ RESOLVED
 
-**Identical definition:**
-```ts
-type SortOrder = 'newest' | 'popular' | 'az' | 'za';
-```
-
-**Recommendation:** Export from `lib/types.ts` and import everywhere. The `data.ts` export should be re-exported from `lib/types.ts`.
+**Resolution:** Added `SortOrder` to `lib/types.ts` as a shared export. Updated `lib/data.ts` to import and re-export from `lib/types.ts` for backward compatibility. Updated `components/sort-dropdown.tsx`, `app/page.tsx`, and `app/[slug]/page.tsx` to import from `@/lib/types`.
 
 ---
 
@@ -322,7 +313,7 @@ onSearch={query => {
 |---|-----------|-------------|--------|
 | 1 | `isUrl` function | 2 | Low | ✅ RESOLVED |
 | 2 | `ViewMode` type | 7 | Medium | ✅ RESOLVED |
-| 3 | `SortOrder` type | 4 | Medium |
+| 3 | `SortOrder` type | 4 | Medium | ✅ RESOLVED |
 | 4 | `StoredFavorite` / storage key | 2 | High |
 | 5 | Click-outside hook | 2 | Medium |
 | 6 | Copy-to-clipboard hook | 2 | Medium |
