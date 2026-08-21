@@ -9,6 +9,7 @@ import { requireAdmin, requireAuthenticatedAdmin } from '@/lib/admin-auth';
 import { checkRateLimit } from '@/lib/rate-limit';
 import { sanitizeString, sanitizeOptional } from '@/lib/sanitize';
 import { checkSSRF } from '@/lib/ssrf-prevention';
+import { handleApiError } from '@/lib/utils';
 
 // Create a new resource submission (public endpoint)
 export async function POST(request: NextRequest) {
@@ -65,15 +66,7 @@ export async function POST(request: NextRequest) {
       { status: 200 },
     );
   } catch (error) {
-    return NextResponse.json(
-      {
-        error:
-          error instanceof Error
-            ? error.message
-            : 'Failed to create submission',
-      },
-      { status: 500 },
-    );
+    return handleApiError(error, 'Failed to create submission');
   }
 }
 
@@ -96,15 +89,7 @@ export async function GET(request: NextRequest) {
       { status: 200 },
     );
   } catch (error) {
-    return NextResponse.json(
-      {
-        error:
-          error instanceof Error
-            ? error.message
-            : 'Failed to fetch submissions',
-      },
-      { status: 500 },
-    );
+    return handleApiError(error, 'Failed to fetch submissions');
   }
 }
 
@@ -140,15 +125,7 @@ export async function PATCH(request: NextRequest) {
       { status: 200 },
     );
   } catch (error) {
-    return NextResponse.json(
-      {
-        error:
-          error instanceof Error
-            ? error.message
-            : 'Failed to update submission',
-      },
-      { status: 500 },
-    );
+    return handleApiError(error, 'Failed to update submission');
   }
 }
 
@@ -168,14 +145,6 @@ export async function DELETE(request: NextRequest) {
     await deleteResourceSubmission(id);
     return NextResponse.json({ success: true }, { status: 200 });
   } catch (error) {
-    return NextResponse.json(
-      {
-        error:
-          error instanceof Error
-            ? error.message
-            : 'Failed to delete submission',
-      },
-      { status: 500 },
-    );
+    return handleApiError(error, 'Failed to delete submission');
   }
 }

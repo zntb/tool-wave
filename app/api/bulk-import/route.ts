@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { bulkImportResources } from '@/lib/analytics';
 import { requireAdmin } from '@/lib/admin-auth';
+import { handleApiError } from '@/lib/utils';
 
 const MAX_BODY_SIZE_BYTES = 1 * 1024 * 1024; // 1 MB
 const MAX_RESOURCES = 500;
@@ -39,12 +40,6 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ success: true, data: result });
   } catch (error) {
-    return NextResponse.json(
-      {
-        error:
-          error instanceof Error ? error.message : 'Failed to import resources',
-      },
-      { status: 500 },
-    );
+    return handleApiError(error, 'Failed to import resources');
   }
 }

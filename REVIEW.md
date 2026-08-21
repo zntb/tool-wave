@@ -49,29 +49,8 @@ Extended `FormToastHandler` with render props (`{ isPending })` to expose loadin
 
 ---
 
-## 10. API Response Error Pattern
-
-**Duplicate locations (8+ occurrences):**
-- `app/api/submissions/route.ts` (lines 62-65, 73-76, 85-88, 97-100, 119-122, 140-143)
-- `app/api/bulk-import/route.ts` (lines 34-37)
-- `app/api/analytics/route.ts`
-
-**Identical pattern:**
-```ts
-} catch (error) {
-  return NextResponse.json(
-    {
-      error:
-        error instanceof Error
-          ? error.message
-          : 'Failed to ...',
-    },
-    { status: 500 },
-  );
-}
-```
-
-**Recommendation:** Create a `handleApiError(error, context)` utility that returns a consistent `NextResponse` error. Could also log the error with `logger.error`.
+## 10. API Response Error Pattern ✅
+Created `handleApiError(error, fallbackMessage)` in `lib/utils.ts` returning a `Response` with `{ error: message }` and status 500. Applied to 6 catch blocks across `app/api/submissions/route.ts` (4 handlers), `app/api/bulk-import/route.ts`, and `app/api/analytics/route.ts`.
 
 ---
 
@@ -188,7 +167,7 @@ try {
 | 7 | Admin auth check ✅ | 6× | Security + DRY |
 | 8 | CSRF check ✅ | 2× | Security + DRY |
 | 9 | Admin form submission ✅ | 6× | Use existing FormToastHandler |
-| 10 | API response error | 8+× | Consistent error format |
+| 10 | API response error ✅ | 8+× | Consistent error format |
 | 11 | Search navigation | 2× | DRY hook |
 | 12 | Admin fetch pattern | 3× | DRY utility |
 | 15 | console.error → logger | 3× | Structured logging consistency |

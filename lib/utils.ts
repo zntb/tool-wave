@@ -1,5 +1,6 @@
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import { NextResponse } from 'next/server';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -83,4 +84,12 @@ export async function withErrorHandling(
     }
     return { success: false, error: fallbackMessage };
   }
+}
+
+export function handleApiError(
+  error: unknown,
+  fallbackMessage: string,
+): Response {
+  const message = error instanceof Error ? error.message : fallbackMessage;
+  return NextResponse.json({ error: message }, { status: 500 });
 }

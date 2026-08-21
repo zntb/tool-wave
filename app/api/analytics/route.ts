@@ -5,6 +5,7 @@ import {
   getTrendData,
 } from '@/lib/analytics';
 import { getCurrentAdminEmail } from '@/lib/admin-auth';
+import { handleApiError } from '@/lib/utils';
 
 export async function GET(request: NextRequest) {
   const adminEmail = await getCurrentAdminEmail();
@@ -37,12 +38,6 @@ export async function GET(request: NextRequest) {
         );
     }
   } catch (error) {
-    return NextResponse.json(
-      {
-        error:
-          error instanceof Error ? error.message : 'Failed to fetch analytics',
-      },
-      { status: 500 },
-    );
+    return handleApiError(error, 'Failed to fetch analytics');
   }
 }
