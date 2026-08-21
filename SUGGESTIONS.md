@@ -65,8 +65,8 @@ Add a `/api/health` endpoint that verifies the database connection is alive. Use
 ### 2. Improved Mobile Navigation
 The current mobile menu only shows search. Add a slide-out drawer with links to Home, Favorites, Submit, and (if admin) Admin.
 
-### 3. Better Loading Skeletons
-The existing skeletons are functional but generic. Tailor them to match the exact shape of grid cards, list items, and the category nav for a more polished loading state.
+### 3. Better Loading Skeletons ✅
+Rewrote skeletons to match exact shapes: `NavSkeleton` mirrors `CategoryNav` pill layout, `GridCardSkeleton` matches grid `LinkCard` with icon/title/description/URL/buttons, `ListCardSkeleton` matches horizontal list view. Staggered animation delays preserved.
 
 ### 4. Image Fallback Component
 When a resource icon (URL) fails to load, show a styled fallback (first letter of the title or a default icon) instead of a broken image. A shared `<IconFallback>` component would handle this.
