@@ -46,8 +46,8 @@ Add a service worker or `navigator.onLine` check to show a banner when the user 
 ### 4. Structured Logging
 Replace `console.warn` / `console.error` calls in server actions with a lightweight logger (e.g., `pino` or `tinylog`) that includes request context and severity levels.
 
-### 5. Environment Variable Validation
-Add a startup check (Zod schema) that validates all required env vars (`DATABASE_URL`, `ADMIN_EMAILS`, `ADMIN_PASSWORD`, `ADMIN_SESSION_SECRET`) are present and well-formed. Fail fast with a clear error message.
+### 5. Environment Variable Validation ✅
+Created `lib/env.ts` with Zod schema validating `DATABASE_URL` (MongoDB URL format), `ADMIN_EMAILS` (comma-separated emails), `ADMIN_PASSWORD` (min 8 chars), and `ADMIN_SESSION_SECRET` (min 16 chars). Called in `lib/db.ts` on first import — fails fast with a clear error listing all issues. Replaced the old manual URL check.
 
 ### 6. Request Size Limits
 The bulk import endpoint accepts JSON without a size limit. Add a max body size (e.g., 1 MB) to prevent abuse.
