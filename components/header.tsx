@@ -11,6 +11,7 @@ import { ThemeToggle } from '@/components/theme-toggle';
 import { useCsrfHeaders } from '@/lib/hooks/use-csrf-token';
 import { Autocomplete } from '@/components/autocomplete';
 import { MobileNavDrawer } from '@/components/mobile-nav-drawer';
+import { useKeyboardNavigation } from '@/lib/hooks/use-keyboard-navigation';
 
 interface HeaderProps {
   className?: string;
@@ -23,6 +24,9 @@ export function Header({ className }: HeaderProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { getHeaders } = useCsrfHeaders();
+
+  // Global keyboard navigation: / to focus search, arrow keys for cards
+  useKeyboardNavigation();
 
   useEffect(() => {
     const handleScroll = () => {

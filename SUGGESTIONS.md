@@ -106,12 +106,8 @@ Created `lib/ssrf-prevention.ts` with `checkSSRF()` function that resolves URLs 
 
 ## 👤 User Experience
 
-### 1. Keyboard Navigation
-Add full keyboard support:
-- `/` to focus search
-- `Esc` to close modals/menus
-- Arrow keys to navigate link cards
-- `Enter` to open resource preview
+### 1. Keyboard Navigation ✅
+Created `lib/hooks/use-keyboard-navigation.ts` with global keyboard shortcuts: `/` to focus and select the search input, `ArrowRight`/`ArrowDown` and `ArrowLeft`/`ArrowUp` to navigate between link cards with visible cyan outline and smooth scroll, `Enter` to open the preview dialog of the selected card, `Escape` to deselect. `Esc` for modals/menus was already handled by the mobile drawer and Radix Dialog. Integrated into `Header` component.
 
 ### 2. Skip-to-Content Link
 Add a visually hidden "Skip to main content" link as the first focusable element for screen reader users.
