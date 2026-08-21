@@ -35,6 +35,7 @@ import { getCurrentAdminEmail } from '@/lib/admin-auth';
 import { sanitizeString, sanitizeOptional } from '@/lib/sanitize';
 import { checkSSRF } from '@/lib/ssrf-prevention';
 import { logger } from '@/lib/logger';
+import { withErrorHandling } from '@/lib/utils';
 import {
   addLinkToResourcesMD,
   addCategoryToResourcesMD,
@@ -95,8 +96,8 @@ export async function getAllLinksPaginatedAction(options?: {
 
 export async function createCategory(
   formData: FormData,
-): Promise<{ success: boolean; error?: string }> {
-  try {
+) {
+  return withErrorHandling(async () => {
     await ensureAdmin();
     const data = {
       name: sanitizeString(formData.get('name') as string),
@@ -119,19 +120,13 @@ export async function createCategory(
     }
 
     revalidatePath('/');
-    return { success: true };
-  } catch (error) {
-    if (error instanceof Error) {
-      return { success: false, error: error.message };
-    }
-    return { success: false, error: 'Failed to create category' };
-  }
+  }, 'Failed to create category');
 }
 
 export async function updateCategoryAction(
   formData: FormData,
-): Promise<{ success: boolean; error?: string }> {
-  try {
+) {
+  return withErrorHandling(async () => {
     await ensureAdmin();
     const data = {
       id: formData.get('id') as string,
@@ -162,19 +157,13 @@ export async function updateCategoryAction(
     }
 
     revalidatePath('/');
-    return { success: true };
-  } catch (error) {
-    if (error instanceof Error) {
-      return { success: false, error: error.message };
-    }
-    return { success: false, error: 'Failed to update category' };
-  }
+  }, 'Failed to update category');
 }
 
 export async function deleteCategoryAction(
   formData: FormData,
-): Promise<{ success: boolean; error?: string }> {
-  try {
+) {
+  return withErrorHandling(async () => {
     await ensureAdmin();
     const data = {
       id: formData.get('id') as string,
@@ -197,20 +186,14 @@ export async function deleteCategoryAction(
     }
 
     revalidatePath('/');
-    return { success: true };
-  } catch (error) {
-    if (error instanceof Error) {
-      return { success: false, error: error.message };
-    }
-    return { success: false, error: 'Failed to delete category' };
-  }
+  }, 'Failed to delete category');
 }
 
 // Link Actions
 export async function createLink(
   formData: FormData,
-): Promise<{ success: boolean; error?: string }> {
-  try {
+) {
+  return withErrorHandling(async () => {
     await ensureAdmin();
     const data = {
       title: sanitizeString(formData.get('title') as string),
@@ -223,7 +206,7 @@ export async function createLink(
     // SSRF prevention: reject URLs pointing to private/internal IPs
     const ssrfCheck = await checkSSRF(data.url);
     if (!ssrfCheck.allowed) {
-      return { success: false, error: `Invalid URL: ${ssrfCheck.reason}` };
+      throw new Error(`Invalid URL: ${ssrfCheck.reason}`);
     }
 
     const validated = linkSchema.parse(data);
@@ -250,19 +233,13 @@ export async function createLink(
     }
 
     revalidatePath('/');
-    return { success: true };
-  } catch (error) {
-    if (error instanceof Error) {
-      return { success: false, error: error.message };
-    }
-    return { success: false, error: 'Failed to create link' };
-  }
+  }, 'Failed to create link');
 }
 
 export async function updateLinkAction(
   formData: FormData,
-): Promise<{ success: boolean; error?: string }> {
-  try {
+) {
+  return withErrorHandling(async () => {
     await ensureAdmin();
     const data = {
       id: formData.get('id') as string,
@@ -277,7 +254,7 @@ export async function updateLinkAction(
     if (data.url) {
       const ssrfCheck = await checkSSRF(data.url);
       if (!ssrfCheck.allowed) {
-        return { success: false, error: `Invalid URL: ${ssrfCheck.reason}` };
+        throw new Error(`Invalid URL: ${ssrfCheck.reason}`);
       }
     }
 
@@ -313,19 +290,13 @@ export async function updateLinkAction(
     }
 
     revalidatePath('/');
-    return { success: true };
-  } catch (error) {
-    if (error instanceof Error) {
-      return { success: false, error: error.message };
-    }
-    return { success: false, error: 'Failed to update link' };
-  }
+  }, 'Failed to update link');
 }
 
 export async function deleteLinkAction(
   formData: FormData,
-): Promise<{ success: boolean; error?: string }> {
-  try {
+) {
+  return withErrorHandling(async () => {
     await ensureAdmin();
     const data = {
       id: formData.get('id') as string,
@@ -358,23 +329,14 @@ export async function deleteLinkAction(
     }
 
     revalidatePath('/');
-    return { success: true };
-  } catch (error) {
-    if (error instanceof Error) {
-      return { success: false, error: error.message };
-    }
-    return { success: false, error: 'Failed to delete link' };
-  }
+  }, 'Failed to delete link');
 }
 
 export async function searchLinksAction(query: string) {
   try {
-    return { success: true, data: await searchLinks(query) };
+    return { success: true as const, data: await searchLinks(query) };
   } catch (error) {
-    if (error instanceof Error) {
-      return { success: false, error: error.message };
-    }
-    return { success: false, error: 'Failed to search links' };
+    return { success: false as const, error: error instanceof Error ? error.message : 'Failed to search links' };
   }
 }
 
@@ -383,15 +345,9 @@ export async function searchLinksByCategoryAction(
   categorySlug: string,
 ) {
   try {
-    return {
-      success: true,
-      data: await searchLinksByCategory(query, categorySlug),
-    };
+    return { success: true as const, data: await searchLinksByCategory(query, categorySlug) };
   } catch (error) {
-    if (error instanceof Error) {
-      return { success: false, error: error.message };
-    }
-    return { success: false, error: 'Failed to search links' };
+    return { success: false as const, error: error instanceof Error ? error.message : 'Failed to search links' };
   }
 }
 
@@ -406,7 +362,7 @@ export async function getAutocompleteSuggestionsAction(
 ) {
   try {
     if (!query || query.trim().length < 2) {
-      return { success: true, data: [] };
+      return { success: true as const, data: [] };
     }
     const suggestions = await searchLinksWithCategorySlug(
       query.trim(),
@@ -414,11 +370,8 @@ export async function getAutocompleteSuggestionsAction(
     );
     // Limit to 8 suggestions for autocomplete
     const limitedSuggestions = suggestions.slice(0, 8);
-    return { success: true, data: limitedSuggestions };
+    return { success: true as const, data: limitedSuggestions };
   } catch (error) {
-    if (error instanceof Error) {
-      return { success: false, error: error.message };
-    }
-    return { success: false, error: 'Failed to get suggestions' };
+    return { success: false as const, error: error instanceof Error ? error.message : 'Failed to get suggestions' };
   }
 }

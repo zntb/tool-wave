@@ -64,3 +64,23 @@ export function buildPaginationUrl(
   }
   return `${basePath}?${params.toString()}`;
 }
+
+export interface ActionResult {
+  success: boolean;
+  error?: string;
+}
+
+export async function withErrorHandling(
+  fn: () => Promise<void>,
+  fallbackMessage: string,
+): Promise<ActionResult> {
+  try {
+    await fn();
+    return { success: true };
+  } catch (error) {
+    if (error instanceof Error) {
+      return { success: false, error: error.message };
+    }
+    return { success: false, error: fallbackMessage };
+  }
+}

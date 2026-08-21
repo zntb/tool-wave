@@ -29,25 +29,8 @@ Created `buildPaginationUrl(basePath, pageNum, { view?, sort? })` in `lib/utils.
 
 ---
 
-## 6. Server Action Error Handling Pattern
-
-**Duplicate locations (8 occurrences):**
-- `app/actions.ts` — `createCategory`, `updateCategoryAction`, `deleteCategoryAction`, `createLink`, `updateLinkAction`, `deleteLinkAction`, `searchLinksAction`, `searchLinksByCategoryAction`
-
-**Identical pattern:**
-```ts
-try {
-  // ... business logic
-  return { success: true };
-} catch (error) {
-  if (error instanceof Error) {
-    return { success: false, error: error.message };
-  }
-  return { success: false, error: 'Failed to ...' };
-}
-```
-
-**Recommendation:** Create a `withErrorHandling(fn, fallbackMessage)` wrapper that catches errors and returns the `{ success, error }` shape. Or create a generic `ActionResult<T>` type with a helper function.
+## 6. Server Action Error Handling Pattern ✅
+Created `ActionResult` type and `withErrorHandling(fn, fallbackMessage)` in `lib/utils.ts`. Applied to 6 CRUD actions (`createCategory`, `updateCategoryAction`, `deleteCategoryAction`, `createLink`, `updateLinkAction`, `deleteLinkAction`) — each now wraps its body in `withErrorHandling()`. The 3 data-returning actions (`searchLinksAction`, `searchLinksByCategoryAction`, `getAutocompleteSuggestionsAction`) were simplified with `as const` return types but kept inline since they return `data` alongside `success`.
 
 ---
 
@@ -246,7 +229,7 @@ try {
 | 3 | CategoriesNav Suspense ✅ | 4× | Boilerplate reduction |
 | 4 | View + Sort controls ✅ | 2× | Component cohesion |
 | 5 | Pagination URL builder ✅ | 3× | DRY utility |
-| 6 | Server action error handling | 8× | Consistent error responses |
+| 6 | Server action error handling ✅ | 8× | Consistent error responses |
 | 7 | Admin auth check | 6× | Security + DRY |
 | 8 | CSRF check | 2× | Security + DRY |
 | 9 | Admin form submission | 6× | Use existing FormToastHandler |

@@ -34,7 +34,7 @@ describe('GET /api/suggestions', () => {
     mockGetAutocompleteSuggestionsAction.mockResolvedValue({
       success: true,
       data: mockSuggestions,
-    } as { success: boolean; data: Link[] } | { success: false; error: string });
+    } as { success: true; data: Link[] });
 
     const request = new NextRequest(
       'http://localhost:3000/api/suggestions?q=goo',
@@ -62,7 +62,7 @@ describe('GET /api/suggestions', () => {
     mockGetAutocompleteSuggestionsAction.mockResolvedValue({
       success: true,
       data: mockSuggestions,
-    } as { success: boolean; data: Link[] } | { success: false; error: string });
+    } as { success: true; data: Link[] });
 
     const request = new NextRequest(
       'http://localhost:3000/api/suggestions?q=react&category=frontend',
