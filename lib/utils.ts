@@ -20,3 +20,12 @@ export function generateId(): string {
     Math.random().toString(36).substring(2, 15)
   );
 }
+
+export function isUrl(string: string): boolean {
+  try {
+    new URL(string);
+    return true;
+  } catch {
+    return false;
+  }
+}

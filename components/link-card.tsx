@@ -12,22 +12,13 @@ import {
   DialogTitle,
   DialogDescription,
 } from '@/components/ui/dialog';
-import { cn } from '@/lib/utils';
+import { cn, isUrl } from '@/lib/utils';
 import type { Link as LinkType } from '@/lib/types';
 import { useFavorites } from '@/lib/hooks/use-favorites';
 import { ShareButtons } from '@/components/share-buttons';
 import { trackLinkClick } from '@/app/actions';
 
 type ViewMode = 'grid' | 'list';
-
-function isUrl(string: string): boolean {
-  try {
-    new URL(string);
-    return true;
-  } catch {
-    return false;
-  }
-}
 
 interface LinkCardProps {
   link: LinkType;

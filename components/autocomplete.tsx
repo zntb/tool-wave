@@ -5,17 +5,8 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { Search, Loader2 } from 'lucide-react';
 import Image from 'next/image';
 import { Input } from '@/components/ui/input';
-import { cn } from '@/lib/utils';
+import { cn, isUrl } from '@/lib/utils';
 import type { Link } from '@/lib/types';
-
-function isUrl(string: string): boolean {
-  try {
-    new URL(string);
-    return true;
-  } catch {
-    return false;
-  }
-}
 
 interface AutocompleteProps {
   className?: string;
