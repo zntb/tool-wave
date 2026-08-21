@@ -84,8 +84,8 @@ Audited all icon-only buttons and added missing `title` attributes: Mobile Menu 
 ### 1. CSRF Protection ✅
 Two-layer defense: (1) Changed admin session cookie from `SameSite=lax` to `SameSite=strict`, preventing cross-origin requests from sending the cookie. (2) Added HMAC-based CSRF token validation to admin API routes (`PATCH /api/submissions`, `DELETE /api/submissions`, `POST /api/admin/logout`). Token generated on login, validated via `x-csrf-token` header.
 
-### 2. Rate Limiting on API Routes
-The submission endpoint (`/api/submissions`) and autocomplete (`/api/suggestions`) have no rate limiting. Add per-IP rate limits (e.g., 10 req/min for submissions, 30 req/min for suggestions).
+### 2. Rate Limiting on API Routes ✅
+Implemented sliding window rate limiting via `lib/rate-limit.ts`: 5 req/min for `POST /api/submissions` (prevents spam submissions) and 30 req/min for `GET /api/suggestions` (allows autocomplete typing). Returns `X-RateLimit-Remaining` and `Retry-After` headers.
 
 ### 3. Input Sanitization ✅
 Created `lib/sanitize.ts` with `sanitizeString()` and `sanitizeOptional()` helpers that strip `<script>` tags, event handlers (`onclick`, `onerror`, etc.), and `javascript:` URIs. Applied to all user input fields in `POST /api/submissions`, `app/actions.ts` (create/update category and link), and `lib/analytics.ts` (bulk import).
@@ -93,11 +93,11 @@ Created `lib/sanitize.ts` with `sanitizeString()` and `sanitizeOptional()` helpe
 ### 4. Content Security Policy
 Add a CSP header via `next.config.ts` or middleware to restrict script sources, prevent inline scripts, and block loading resources from untrusted origins.
 
-### 5. Environment Variable Exposure
-Verify that `.env` is in `.gitignore` and that no secrets leak through server-side logs or error messages. The `.env` file exists at root — confirm it's excluded.
+### 5. Environment Variable Exposure ✅
+Verified that `.env` is in `.gitignore` and not tracked by Git. Audited all server-side logs, error messages, and API responses for secret leaks — none found. Created `.env.example` for documentation. Added `sameSite=strict` cookies and input sanitization to reduce attack surface.
 
-### 6. Admin Session Hardening
-The session cookie uses `SameSite=lax`. Consider `SameSite=strict` for admin cookies. Also add session rotation after login to prevent session fixation.
+### 6. Admin Session Hardening ✅
+Changed session cookie from `SameSite=lax` to `SameSite=strict` to prevent cross-origin cookie sending. Added HMAC-based CSRF token validation on admin API routes. Session is rotated on login.
 
 ### 7. URL Validation on Submission
 The submission API validates URLs with Zod, but consider adding a DNS resolution check to reject URLs pointing to internal/private IPs (SSRF prevention).
