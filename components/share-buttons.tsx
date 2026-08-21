@@ -2,6 +2,7 @@
 
 import { useState, useRef, useCallback } from 'react';
 import { useClickOutside } from '@/lib/hooks/use-click-outside';
+import { useCopyToClipboard } from '@/lib/hooks/use-copy-to-clipboard';
 import { createPortal } from 'react-dom';
 import { Share2, Mail, Link2, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -101,7 +102,7 @@ export function ShareButtons({
   size = 'icon',
   showTooltip = true,
 }: ShareButtonsProps) {
-  const [copied, setCopied] = useState(false);
+  const { copied, copyToClipboard } = useCopyToClipboard();
   const [showShareMenu, setShowShareMenu] = useState(false);
   const [menuPosition, setMenuPosition] = useState({ top: 0, left: 0 });
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -150,13 +151,7 @@ export function ShareButtons({
 
   const handleCopyLink = async (e?: React.MouseEvent) => {
     e?.stopPropagation();
-    try {
-      await navigator.clipboard.writeText(url);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch (err) {
-      console.error('Failed to copy:', err);
-    }
+    copyToClipboard(url);
   };
 
   const handleShareTo = (option: ShareOption, e: React.MouseEvent) => {

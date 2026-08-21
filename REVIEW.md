@@ -46,25 +46,9 @@ This document lists duplicate code patterns across the codebase that could be re
 
 ## 6. Copy-to-Clipboard Pattern
 
-**Duplicate locations:**
-- `components/link-card.tsx` (lines 57-64)
-- `components/share-buttons.tsx` (lines 161-167)
+**Status:** ✅ RESOLVED
 
-**Similar pattern:**
-```ts
-const handleCopy = async (e?: React.MouseEvent) => {
-  e?.stopPropagation();
-  try {
-    await navigator.clipboard.writeText(url);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  } catch (err) {
-    console.error('Failed to copy:', err);
-  }
-};
-```
-
-**Recommendation:** Create a `useCopyToClipboard()` hook returning `{ copied, handleCopy }`.
+**Resolution:** Created `lib/hooks/use-copy-to-clipboard.ts` with a reusable `useCopyToClipboard()` hook returning `{ copied, copyToClipboard }`. Updated `components/link-card.tsx` and `components/share-buttons.tsx` to use the shared hook.
 
 ---
 
@@ -287,7 +271,7 @@ onSearch={query => {
 | 3 | `SortOrder` type | 4 | Medium | ✅ RESOLVED |
 | 4 | `StoredFavorite` / storage key | 2 | High | ✅ RESOLVED |
 | 5 | Click-outside hook | 2 | Medium | ✅ RESOLVED |
-| 6 | Copy-to-clipboard hook | 2 | Medium |
+| 6 | Copy-to-clipboard hook | 2 | Medium | ✅ RESOLVED |
 | 7 | Background pattern | 5 | Medium |
 | 8 | Footer component | 4 | **High** |
 | 9 | Grid/list layout | 5 | Medium |

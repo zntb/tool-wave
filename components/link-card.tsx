@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import { useCopyToClipboard } from '@/lib/hooks/use-copy-to-clipboard';
 import Image from 'next/image';
 import { ExternalLink, Copy, Check, Heart } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
@@ -31,7 +32,7 @@ export function LinkCard({
   showFavoriteButton = true,
   view = 'grid',
 }: LinkCardProps) {
-  const [copied, setCopied] = useState(false);
+  const { copied, copyToClipboard } = useCopyToClipboard();
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const { isFavorite, toggleFavorite } = useFavorites();
@@ -44,16 +45,13 @@ export function LinkCard({
   // During SSR and initial hydration, render as not favorited to avoid mismatch
   const displayIsFavorited = mounted ? isFavorite(link.id) : false;
 
-  const handleCopy = async (e: React.MouseEvent) => {
-    e.stopPropagation();
-    try {
-      await navigator.clipboard.writeText(link.url);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch (err) {
-      console.error('Failed to copy:', err);
-    }
-  };
+  const handleCopy = useCallback(
+    (e: React.MouseEvent) => {
+      e.stopPropagation();
+      copyToClipboard(link.url);
+    },
+    [copyToClipboard, link.url],
+  );
 
   const handleCardClick = () => {
     setIsPreviewOpen(true);
