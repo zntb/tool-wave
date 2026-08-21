@@ -2,10 +2,22 @@ import { NextRequest, NextResponse } from 'next/server';
 import { bulkImportResources } from '@/lib/analytics';
 import { getCurrentAdminEmail } from '@/lib/admin-auth';
 
+const MAX_BODY_SIZE_BYTES = 1 * 1024 * 1024; // 1 MB
+const MAX_RESOURCES = 500;
+
 export async function POST(request: NextRequest) {
   const adminEmail = await getCurrentAdminEmail();
   if (!adminEmail) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  // Check Content-Length header before parsing
+  const contentLength = request.headers.get('content-length');
+  if (contentLength && parseInt(contentLength, 10) > MAX_BODY_SIZE_BYTES) {
+    return NextResponse.json(
+      { error: `Request body too large. Maximum size is ${MAX_BODY_SIZE_BYTES / 1024 / 1024} MB.` },
+      { status: 413 },
+    );
   }
 
   try {
@@ -14,6 +26,13 @@ export async function POST(request: NextRequest) {
     if (!data.resources || !Array.isArray(data.resources)) {
       return NextResponse.json(
         { error: 'Resources array is required' },
+        { status: 400 },
+      );
+    }
+
+    if (data.resources.length > MAX_RESOURCES) {
+      return NextResponse.json(
+        { error: `Too many resources. Maximum is ${MAX_RESOURCES} per import.` },
         { status: 400 },
       );
     }

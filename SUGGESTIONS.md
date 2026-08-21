@@ -49,8 +49,8 @@ Created `lib/logger.ts` — a zero-dependency structured logger with `debug`/`in
 ### 5. Environment Variable Validation ✅
 Created `lib/env.ts` with Zod schema validating `DATABASE_URL` (MongoDB URL format), `ADMIN_EMAILS` (comma-separated emails), `ADMIN_PASSWORD` (min 8 chars), and `ADMIN_SESSION_SECRET` (min 16 chars). Called in `lib/db.ts` on first import — fails fast with a clear error listing all issues. Replaced the old manual URL check.
 
-### 6. Request Size Limits
-The bulk import endpoint accepts JSON without a size limit. Add a max body size (e.g., 1 MB) to prevent abuse.
+### 6. Request Size Limits ✅
+Added max body size validation to the bulk import endpoint (`POST /api/bulk-import`) and submission endpoint (`POST /api/submissions`) — both limited to 1 MB. Requests exceeding the limit are rejected with a `413 Payload Too Large` response. Prevents memory abuse and denial-of-service through oversized payloads.
 
 ### 7. Database Connection Health Check ✅
 Added `GET /api/health` endpoint that runs a lightweight Prisma query (`findFirst` on Link table) to verify database connectivity. Returns `200 { status: 'healthy', database: 'connected' }` on success, `503 { status: 'unhealthy', database: 'disconnected', error }` on failure. Useful for uptime monitoring and deployment health checks.
