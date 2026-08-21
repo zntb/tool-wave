@@ -1,12 +1,11 @@
 import { Suspense } from 'react';
 import type { Metadata } from 'next';
 import {
-  getCategoriesAction,
   getAllLinksPaginatedAction,
   getAllLinksCountAction,
   getAllCategoriesWithLinksCountAction,
 } from './actions';
-import { CategoryNav } from '@/components/category-nav';
+import { CategoriesNav } from '@/components/category-nav-server';
 import { ViewToggle } from '@/components/view-toggle';
 import { SortDropdown } from '@/components/sort-dropdown';
 import { LinkCard } from '@/components/link-card';
@@ -24,11 +23,6 @@ export const metadata: Metadata = {
     canonical: 'https://tool-wave.vercel.app/',
   },
 };
-
-async function CategoriesNav() {
-  const categories = await getCategoriesAction();
-  return <CategoryNav categories={categories} />;
-}
 
 const ITEMS_PER_PAGE = 12;
 

@@ -86,21 +86,9 @@ This document lists duplicate code patterns across the codebase that could be re
 
 ## 11. `CategoriesNav` Async Server Component
 
-**Duplicate locations (4 occurrences):**
-- `app/page.tsx` (lines 47-50)
-- `app/[slug]/page.tsx` (lines 62-65)
-- `app/[slug]/search/page.tsx` (lines 65-68)
-- `app/search/page.tsx` (lines 47-50)
+**Status:** ✅ RESOLVED
 
-**Identical implementation:**
-```ts
-async function CategoriesNav() {
-  const categories = await getCategoriesAction();
-  return <CategoryNav categories={categories} />;
-}
-```
-
-**Recommendation:** Create this as a single server component in `components/category-nav-server.tsx` or add a wrapper in `components/category-nav.tsx`.
+**Resolution:** Created `components/category-nav-server.tsx` as a shared server component that fetches categories and renders `CategoryNav`. Updated all 4 app pages to import from the shared module, removing local definitions and unused `getCategoriesAction`/`CategoryNav` imports.
 
 ---
 
@@ -221,7 +209,7 @@ onSearch={query => {
 | 8 | Footer component | 4 | **High** | ✅ RESOLVED |
 | 9 | Grid/list layout | 5 | Medium | ✅ RESOLVED |
 | 10 | Pagination block | 4 | **High** | ✅ RESOLVED |
-| 11 | `CategoriesNav` server component | 4 | Medium |
+| 11 | `CategoriesNav` server component | 4 | Medium | ✅ RESOLVED |
 | 12 | `LoadingState` / `ViewToggleWrapper` | 3 each | Low |
 | 13 | `nullToUndefined` mapping | 15+ | **High** |
 | 14 | Sort order mapping | 3 | Medium |

@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import { searchLinksAction, getCategoriesAction } from '../actions';
 import { LinkCard } from '@/components/link-card';
 import { LinkGridSkeleton, NavSkeleton } from '@/components/skeletons';
-import { CategoryNav } from '@/components/category-nav';
+import { CategoriesNav } from '@/components/category-nav-server';
 import { ViewToggle } from '@/components/view-toggle';
 import type { Link as LinkType, ViewMode } from '@/lib/types';
 import { LinkGrid } from '@/components/link-grid';
@@ -39,11 +39,6 @@ export async function generateMetadata({
         : 'https://tool-wave.vercel.app/search',
     },
   };
-}
-
-async function CategoriesNav() {
-  const categories = await getCategoriesAction();
-  return <CategoryNav categories={categories} />;
 }
 
 async function SearchResults({

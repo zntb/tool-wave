@@ -6,13 +6,13 @@ import {
   getCategoryWithLinksAction,
   getCategoryWithLinksCountAction,
 } from '../actions';
-import { CategoryNav } from '@/components/category-nav';
+import { CategoriesNav } from '@/components/category-nav-server';
 import { ViewToggle } from '@/components/view-toggle';
 import { SortDropdown } from '@/components/sort-dropdown';
 import { LinkCard } from '@/components/link-card';
 import { SearchInput } from '@/components/search-input';
 import { LinkGridSkeleton, NavSkeleton } from '@/components/skeletons';
-import { getCategoriesAction } from '../actions';
+
 import { BreadcrumbJsonLd } from '@/components/json-ld';
 import { LinkGrid } from '@/components/link-grid';
 import { BackgroundPattern } from '@/components/background-pattern';
@@ -54,11 +54,6 @@ export async function generateMetadata({
       canonical: `https://tool-wave.vercel.app/${slug}`,
     },
   };
-}
-
-async function CategoriesNav() {
-  const categories = await getCategoriesAction();
-  return <CategoryNav categories={categories} />;
 }
 
 async function CategoryContent({
