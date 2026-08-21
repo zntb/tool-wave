@@ -62,8 +62,8 @@ Add a `/api/health` endpoint that verifies the database connection is alive. Use
 ### 1. Dark Mode Toggle Button ✅
 Redesigned as a pill-shaped toggle with a sliding white indicator, sun/moon icons that scale and color-shift on transition, and smooth 300ms animations. Removed Button wrapper dependency.
 
-### 2. Improved Mobile Navigation
-The current mobile menu only shows search. Add a slide-out drawer with links to Home, Favorites, Submit, and (if admin) Admin.
+### 2. Improved Mobile Navigation ✅
+Replaced inline search panel with a slide-out drawer containing search, navigation links (Home, Favorites, Submit, Admin), theme toggle, and logout. Includes backdrop, Escape key close, scroll lock, and click-outside dismiss.
 
 ### 3. Better Loading Skeletons ✅
 Rewrote skeletons to match exact shapes: `NavSkeleton` mirrors `CategoryNav` pill layout, `GridCardSkeleton` matches grid `LinkCard` with icon/title/description/URL/buttons, `ListCardSkeleton` matches horizontal list view. Staggered animation delays preserved.
