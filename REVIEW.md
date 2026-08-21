@@ -118,18 +118,9 @@ This document lists duplicate code patterns across the codebase that could be re
 
 ## 15. SSR Hydration Safety Pattern (`mounted` state)
 
-**Duplicate locations:**
-- `components/favorites-button.tsx` (lines 9-15)
-- `components/link-card.tsx` (lines 39-45)
+**Status:** ✅ RESOLVED
 
-**Similar pattern:**
-```tsx
-const [mounted, setMounted] = useState(false);
-useEffect(() => { setMounted(true); }, []);
-const displayValue = mounted ? actualValue : fallbackValue;
-```
-
-**Recommendation:** Create a `useMounted()` hook returning a boolean.
+**Resolution:** Created `lib/hooks/use-mounted.ts` with a reusable `useMounted()` hook returning a boolean. Updated `components/favorites-button.tsx` and `components/link-card.tsx` to use the shared hook, removing local mounted state logic and unused `useEffect`/`useState` imports.
 
 ---
 
@@ -172,7 +163,7 @@ onSearch={query => {
 | 12 | `LoadingState` / `ViewToggleWrapper` | 3 each | Low | ✅ RESOLVED |
 | 13 | `nullToUndefined` mapping | 15+ | **High** | ✅ RESOLVED |
 | 14 | Sort order mapping | 3 | Medium | ✅ RESOLVED |
-| 15 | `mounted` hydration pattern | 2 | Low |
+| 15 | `mounted` hydration pattern | 2 | Low | ✅ RESOLVED |
 | 16 | Search param handling | 2 | Low |
 
 **High-impact refactoring candidates (do first):**

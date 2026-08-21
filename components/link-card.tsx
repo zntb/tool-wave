@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { useCopyToClipboard } from '@/lib/hooks/use-copy-to-clipboard';
 import Image from 'next/image';
 import { ExternalLink, Copy, Check, Heart } from 'lucide-react';
@@ -16,6 +16,7 @@ import {
 import { cn, isUrl } from '@/lib/utils';
 import type { Link as LinkType, ViewMode } from '@/lib/types';
 import { useFavorites } from '@/lib/hooks/use-favorites';
+import { useMounted } from '@/lib/hooks/use-mounted';
 import { ShareButtons } from '@/components/share-buttons';
 import { trackLinkClick } from '@/app/actions';
 
@@ -34,13 +35,8 @@ export function LinkCard({
 }: LinkCardProps) {
   const { copied, copyToClipboard } = useCopyToClipboard();
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
+  const mounted = useMounted();
   const { isFavorite, toggleFavorite } = useFavorites();
-
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setMounted(true);
-  }, []);
 
   // During SSR and initial hydration, render as not favorited to avoid mismatch
   const displayIsFavorited = mounted ? isFavorite(link.id) : false;
