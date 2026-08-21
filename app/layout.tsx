@@ -7,6 +7,7 @@ import { cn } from '@/lib/utils';
 import { Geist_Mono } from 'next/font/google';
 import { Suspense } from 'react';
 import { Toaster } from 'sonner';
+import { ThemeProvider } from 'next-themes';
 
 const geistMono = Geist_Mono({
   subsets: ['latin'],
@@ -105,20 +106,27 @@ export default function RootLayout({
           geistMono.variable,
         )}
       >
-        {/* Atmospheric background effects */}
-        <div className='atmosphere' aria-hidden='true' />
-        <div className='noise-overlay' aria-hidden='true' />
+        <ThemeProvider
+          attribute='class'
+          defaultTheme='system'
+          enableSystem
+          disableTransitionOnChange
+        >
+          {/* Atmospheric background effects */}
+          <div className='atmosphere' aria-hidden='true' />
+          <div className='noise-overlay' aria-hidden='true' />
 
-        <JsonLd data={jsonLd} />
-        <TooltipProvider delayDuration={100} skipDelayDuration={50}>
-          <Suspense fallback={null}>
-            <Header />
-          </Suspense>
-          <main className='relative'>
-            <Suspense fallback={null}>{children}</Suspense>
-          </main>
-          <Toaster position='top-right' richColors />
-        </TooltipProvider>
+          <JsonLd data={jsonLd} />
+          <TooltipProvider delayDuration={100} skipDelayDuration={50}>
+            <Suspense fallback={null}>
+              <Header />
+            </Suspense>
+            <main className='relative'>
+              <Suspense fallback={null}>{children}</Suspense>
+            </main>
+            <Toaster position='top-right' richColors />
+          </TooltipProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

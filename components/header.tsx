@@ -7,6 +7,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { FavoritesButton } from '@/components/favorites-button';
+import { ThemeToggle } from '@/components/theme-toggle';
 import { Autocomplete } from '@/components/autocomplete';
 
 interface HeaderProps {
@@ -147,6 +148,11 @@ export function Header({ className }: HeaderProps) {
                 </>
               )}
 
+              {/* Desktop Theme Toggle */}
+              <div className='hidden md:block'>
+                <ThemeToggle />
+              </div>
+
               {/* Desktop Favorites Button */}
               <div className='hidden md:block'>
                 <FavoritesButton />
@@ -166,6 +172,11 @@ export function Header({ className }: HeaderProps) {
                   <Search className='w-5 h-5' />
                 )}
               </Button>
+
+              {/* Mobile Theme Toggle */}
+              <div className='md:hidden'>
+                <ThemeToggle />
+              </div>
 
               {/* Mobile Favorites Button */}
               <div className='md:hidden'>
