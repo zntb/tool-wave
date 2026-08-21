@@ -124,8 +124,8 @@ Created `components/empty-state.tsx` — a server component with a search icon i
 ### 6. Search History ✅
 Created `lib/hooks/use-search-history.ts` with `addSearch()`, `removeSearch()`, and `clearHistory()`. Stores last 5 unique searches in localStorage under `tool-wave-search-history`. Integrated into `Autocomplete` — shows "Recent Searches" dropdown when the input is focused but empty, each item clickable to re-run the search, with individual remove buttons.
 
-### 7. Print Stylesheet
-Add `@media print` styles so users can print a category page or search results cleanly (hide nav, footer, background effects).
+### 7. Print Stylesheet ✅
+Added `@media print` rules in `globals.css`: hides header, nav, footer, search inputs, back-to-top button, favorite/copy/share buttons, atmospheric background effects, shadows, and gradient decorations. Resets body to white background with black text. Link cards get clean borders with `break-inside: avoid`. Links show their URL in parentheses (except navigation links). Main content goes full-width.
 
 ### 8. Accessibility Audit
 Run a Lighthouse or axe-core accessibility audit. Key items to address:

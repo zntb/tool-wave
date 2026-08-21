@@ -444,3 +444,68 @@
     display: none !important;
   }
 }
+
+/* Print styles — hide navigation, decorations, and non-essential UI */
+@media print {
+  /* Hide non-essential elements */
+  header,
+  nav,
+  footer,
+  [data-testid='search-input'],
+  .atmosphere,
+  .noise-overlay,
+  [aria-label='Back to top'],
+  [aria-label='Open menu'],
+  [aria-label='Back to main content'],
+  button[title='Add to favorites'],
+  button[title='Remove from favorites'],
+  button[title='Copy link'],
+  button[title='Copied!'],
+  [data-testid='favorite-button'],
+  .stagger-children > *,
+  [class*='bg-gradient'],
+  [class*='shadow-'] {
+    display: none !important;
+  }
+
+  /* Reset body styles */
+  body {
+    background: white !important;
+    color: black !important;
+    font-size: 12pt;
+  }
+
+  /* Make main content full-width */
+  main {
+    padding: 0 !important;
+    margin: 0 !important;
+    max-width: none !important;
+  }
+
+  /* Ensure links show their URL */
+  a[href]::after {
+    content: ' (' attr(href) ')';
+    font-size: 0.8em;
+    color: #666;
+  }
+
+  /* Don't show URL for navigation links */
+  nav a[href]::after,
+  header a[href]::after {
+    content: none !important;
+  }
+
+  /* Ensure link cards display cleanly */
+  [data-testid='link-card'] {
+    break-inside: avoid;
+    border: 1px solid #ddd !important;
+    box-shadow: none !important;
+    margin-bottom: 0.5rem;
+  }
+
+  /* Show page title */
+  h1 {
+    color: black !important;
+    -webkit-text-fill-color: black !important;
+  }
+}
