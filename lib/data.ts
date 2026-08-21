@@ -9,17 +9,41 @@ function nullToUndefined<T>(value: T | null): T | undefined {
   return value === null ? undefined : value;
 }
 
+// Mapping helpers to reduce nullToUndefined boilerplate
+function mapPrismaCategory<
+  T extends { description: string | null; icon: string | null; color?: string | null },
+>(c: T): Omit<T, 'description' | 'icon'> & { description?: string; icon?: string; color?: string } {
+  return {
+    ...c,
+    description: nullToUndefined(c.description),
+    icon: nullToUndefined(c.icon),
+    color: nullToUndefined(c.color),
+  };
+}
+
+function mapPrismaLink<T extends { description: string | null; icon: string | null }>(
+  l: T,
+): Omit<T, 'description' | 'icon'> & { description?: string; icon?: string } {
+  return {
+    ...l,
+    description: nullToUndefined(l.description),
+    icon: nullToUndefined(l.icon),
+  };
+}
+
+function getSortOrder(sortBy?: SortOrder): Prisma.LinkOrderByWithRelationInput {
+  if (sortBy === 'popular') return { clicks: 'desc' };
+  if (sortBy === 'az') return { title: 'asc' };
+  if (sortBy === 'za') return { title: 'desc' };
+  return { createdAt: 'desc' };
+}
+
 // Category operations
 export async function getCategories(): Promise<Category[]> {
   const categories = await prisma.category.findMany({
     orderBy: { order: 'asc' },
   });
-  return categories.map(c => ({
-    ...c,
-    description: nullToUndefined(c.description),
-    icon: nullToUndefined(c.icon),
-    color: nullToUndefined(c.color),
-  }));
+  return categories.map(mapPrismaCategory);
 }
 
 export async function getCategoryBySlug(
@@ -29,12 +53,7 @@ export async function getCategoryBySlug(
     where: { slug },
   });
   if (!category) return null;
-  return {
-    ...category,
-    description: nullToUndefined(category.description),
-    icon: nullToUndefined(category.icon),
-    color: nullToUndefined(category.color),
-  };
+  return mapPrismaCategory(category);
 }
 
 export async function getCategoryById(id: string): Promise<Category | null> {
@@ -42,12 +61,7 @@ export async function getCategoryById(id: string): Promise<Category | null> {
     where: { id },
   });
   if (!category) return null;
-  return {
-    ...category,
-    description: nullToUndefined(category.description),
-    icon: nullToUndefined(category.icon),
-    color: nullToUndefined(category.color),
-  };
+  return mapPrismaCategory(category);
 }
 
 export async function getCategoryWithLinks(
@@ -55,18 +69,8 @@ export async function getCategoryWithLinks(
   options?: { limit?: number; skip?: number; sortBy?: SortOrder },
 ): Promise<CategoryWithLinks | null> {
   const { limit, skip, sortBy } = options || {};
-  let orderBy: Prisma.LinkOrderByWithRelationInput;
-  if (sortBy === 'popular') {
-    orderBy = { clicks: 'desc' };
-  } else if (sortBy === 'az') {
-    orderBy = { title: 'asc' };
-  } else if (sortBy === 'za') {
-    orderBy = { title: 'desc' };
-  } else {
-    orderBy = { createdAt: 'desc' };
-  }
   const linksInclude: Prisma.LinkFindManyArgs = {
-    orderBy,
+    orderBy: getSortOrder(sortBy),
   };
   if (limit !== undefined) {
     linksInclude.take = limit;
@@ -82,15 +86,8 @@ export async function getCategoryWithLinks(
   });
   if (!category) return null;
   return {
-    ...category,
-    description: nullToUndefined(category.description),
-    icon: nullToUndefined(category.icon),
-    color: nullToUndefined(category.color),
-    links: category.links.map(l => ({
-      ...l,
-      description: nullToUndefined(l.description),
-      icon: nullToUndefined(l.icon),
-    })),
+    ...mapPrismaCategory(category),
+    links: category.links.map(mapPrismaLink),
   };
 }
 
@@ -121,15 +118,8 @@ export async function getAllCategoriesWithLinks(options?: {
     },
   });
   return categories.map(c => ({
-    ...c,
-    description: nullToUndefined(c.description),
-    icon: nullToUndefined(c.icon),
-    color: nullToUndefined(c.color),
-    links: c.links.map(l => ({
-      ...l,
-      description: nullToUndefined(l.description),
-      icon: nullToUndefined(l.icon),
-    })),
+    ...mapPrismaCategory(c),
+    links: c.links.map(mapPrismaLink),
   }));
 }
 
@@ -149,26 +139,12 @@ export async function getAllLinksPaginated(options?: {
   sortBy?: SortOrder;
 }): Promise<Link[]> {
   const { limit, skip, sortBy } = options || {};
-  let orderBy: Prisma.LinkOrderByWithRelationInput;
-  if (sortBy === 'popular') {
-    orderBy = { clicks: 'desc' };
-  } else if (sortBy === 'az') {
-    orderBy = { title: 'asc' };
-  } else if (sortBy === 'za') {
-    orderBy = { title: 'desc' };
-  } else {
-    orderBy = { createdAt: 'desc' };
-  }
   const links = await prisma.link.findMany({
     take: limit,
     skip,
-    orderBy,
+    orderBy: getSortOrder(sortBy),
   });
-  return links.map(l => ({
-    ...l,
-    description: nullToUndefined(l.description),
-    icon: nullToUndefined(l.icon),
-  }));
+  return links.map(mapPrismaLink);
 }
 
 export async function createCategory(data: {
@@ -193,12 +169,7 @@ export async function createCategory(data: {
       order: newOrder,
     },
   });
-  return {
-    ...category,
-    description: nullToUndefined(category.description),
-    icon: nullToUndefined(category.icon),
-    color: nullToUndefined(category.color),
-  };
+  return mapPrismaCategory(category);
 }
 
 export async function updateCategory(
@@ -226,12 +197,7 @@ export async function updateCategory(
     return null;
   }
 
-  return {
-    ...category,
-    description: nullToUndefined(category.description),
-    icon: nullToUndefined(category.icon),
-    color: nullToUndefined(category.color),
-  };
+  return mapPrismaCategory(category);
 }
 
 export async function deleteCategory(id: string): Promise<boolean> {
@@ -246,25 +212,11 @@ export async function getLinksByCategory(
   categoryId: string,
   sortBy?: SortOrder,
 ): Promise<Link[]> {
-  let orderBy: Prisma.LinkOrderByWithRelationInput;
-  if (sortBy === 'popular') {
-    orderBy = { clicks: 'desc' };
-  } else if (sortBy === 'az') {
-    orderBy = { title: 'asc' };
-  } else if (sortBy === 'za') {
-    orderBy = { title: 'desc' };
-  } else {
-    orderBy = { createdAt: 'desc' };
-  }
   const links = await prisma.link.findMany({
     where: { categoryId },
-    orderBy,
+    orderBy: getSortOrder(sortBy),
   });
-  return links.map(l => ({
-    ...l,
-    description: nullToUndefined(l.description),
-    icon: nullToUndefined(l.icon),
-  }));
+  return links.map(mapPrismaLink);
 }
 
 export async function getLinkById(id: string): Promise<Link | null> {
@@ -272,11 +224,7 @@ export async function getLinkById(id: string): Promise<Link | null> {
     where: { id },
   });
   if (!link) return null;
-  return {
-    ...link,
-    description: nullToUndefined(link.description),
-    icon: nullToUndefined(link.icon),
-  };
+  return mapPrismaLink(link);
 }
 
 export async function createLink(data: {
@@ -295,11 +243,7 @@ export async function createLink(data: {
       categoryId: data.categoryId,
     },
   });
-  return {
-    ...link,
-    description: nullToUndefined(link.description),
-    icon: nullToUndefined(link.icon),
-  };
+  return mapPrismaLink(link);
 }
 
 export async function updateLink(
@@ -318,11 +262,7 @@ export async function updateLink(
     where: { id },
     data: updateData,
   });
-  return {
-    ...link,
-    description: nullToUndefined(link.description),
-    icon: nullToUndefined(link.icon),
-  };
+  return mapPrismaLink(link);
 }
 
 export async function deleteLink(id: string): Promise<boolean> {
@@ -350,11 +290,7 @@ export async function searchLinks(query: string): Promise<Link[]> {
       ],
     },
   });
-  return links.map(l => ({
-    ...l,
-    description: nullToUndefined(l.description),
-    icon: nullToUndefined(l.icon),
-  }));
+  return links.map(mapPrismaLink);
 }
 
 export async function searchLinksByCategory(
@@ -372,11 +308,7 @@ export async function searchLinksByCategory(
       },
     },
   });
-  return links.map(l => ({
-    ...l,
-    description: nullToUndefined(l.description),
-    icon: nullToUndefined(l.icon),
-  }));
+  return links.map(mapPrismaLink);
 }
 
 export async function searchLinksWithCategorySlug(
@@ -402,9 +334,7 @@ export async function searchLinksWithCategorySlug(
     },
   });
   return links.map(l => ({
-    ...l,
-    description: nullToUndefined(l.description),
-    icon: nullToUndefined(l.icon),
+    ...mapPrismaLink(l),
     categorySlug: l.category?.slug,
   }));
 }

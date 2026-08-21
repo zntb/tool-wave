@@ -102,20 +102,9 @@ This document lists duplicate code patterns across the codebase that could be re
 
 ## 13. `nullToUndefined` Helper & Category/Link Mapping
 
-**Duplicate locations in `lib/data.ts`:**
-- Applied in every single query function (15+ occurrences)
+**Status:** ✅ RESOLVED
 
-**Pattern:**
-```ts
-return {
-  ...result,
-  description: nullToUndefined(result.description),
-  icon: nullToUndefined(result.icon),
-  color: nullToUndefined(result.color),
-};
-```
-
-**Recommendation:** Create a generic `mapPrismaCategory(c)` and `mapPrismaLink(l)` helper to reduce boilerplate in data access functions.
+**Resolution:** Created `mapPrismaCategory()` and `mapPrismaLink()` generic helper functions in `lib/data.ts` to reduce boilerplate. Updated all 15+ query functions to use the shared mappers.
 
 ---
 
@@ -198,7 +187,7 @@ onSearch={query => {
 | 10 | Pagination block | 4 | **High** | ✅ RESOLVED |
 | 11 | `CategoriesNav` server component | 4 | Medium | ✅ RESOLVED |
 | 12 | `LoadingState` / `ViewToggleWrapper` | 3 each | Low | ✅ RESOLVED |
-| 13 | `nullToUndefined` mapping | 15+ | **High** |
+| 13 | `nullToUndefined` mapping | 15+ | **High** | ✅ RESOLVED |
 | 14 | Sort order mapping | 3 | Medium |
 | 15 | `mounted` hydration pattern | 2 | Low |
 | 16 | Search param handling | 2 | Low |
