@@ -78,14 +78,9 @@ This document lists duplicate code patterns across the codebase that could be re
 
 ## 10. Pagination Component (Large Block)
 
-**Duplicate locations (3 occurrences):**
-- `app/page.tsx` (lines 148-195)
-- `app/[slug]/page.tsx` (lines 149-203)
-- `app/search/page.tsx` (lines 143-185)
+**Status:** ✅ RESOLVED
 
-**Very similar pagination logic** with minor differences in URL construction.
-
-**Recommendation:** Create a `<PaginationControls page={totalPages} buildUrl={(p) => ...}>` component that accepts a URL builder function.
+**Resolution:** Created `components/pagination-controls.tsx` with a reusable `<PaginationControls page={totalPages} buildUrl={(p) => ...}>` component. Updated all 4 pagination blocks (`app/page.tsx`, `app/[slug]/page.tsx`, `app/[slug]/search/page.tsx`, `app/search/page.tsx`) to use the shared component.
 
 ---
 
@@ -225,7 +220,7 @@ onSearch={query => {
 | 7 | Background pattern | 5 | Medium | ✅ RESOLVED |
 | 8 | Footer component | 4 | **High** | ✅ RESOLVED |
 | 9 | Grid/list layout | 5 | Medium | ✅ RESOLVED |
-| 10 | Pagination block | 3 | **High** |
+| 10 | Pagination block | 4 | **High** | ✅ RESOLVED |
 | 11 | `CategoriesNav` server component | 4 | Medium |
 | 12 | `LoadingState` / `ViewToggleWrapper` | 3 each | Low |
 | 13 | `nullToUndefined` mapping | 15+ | **High** |

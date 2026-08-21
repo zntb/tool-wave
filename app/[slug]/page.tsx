@@ -18,15 +18,7 @@ import { LinkGrid } from '@/components/link-grid';
 import { BackgroundPattern } from '@/components/background-pattern';
 import { Footer } from '@/components/footer';
 import type { ViewMode, SortOrder } from '@/lib/types';
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from '@/components/ui/pagination';
+import { PaginationControls } from '@/components/pagination-controls';
 
 interface CategoryPageProps {
   params: Promise<{
@@ -150,86 +142,12 @@ async function CategoryContent({
             No links found in this category yet.
           </p>
         </div>
-      )}
-
-      {/* Pagination */}
-      {totalPages > 1 && (
-        <Pagination className='mt-8'>
-          <PaginationContent>
-            {page > 1 && (
-              <PaginationItem>
-                <PaginationPrevious href={buildUrl(page - 1)} />
-              </PaginationItem>
-            )}
-
-            {/* First page */}
-            <PaginationItem>
-              <PaginationLink href={buildUrl(1)} isActive={page === 1}>
-                1
-              </PaginationLink>
-            </PaginationItem>
-
-            {/* Ellipsis if needed */}
-            {page > 3 && (
-              <PaginationItem>
-                <PaginationEllipsis />
-              </PaginationItem>
-            )}
-
-            {/* Previous page */}
-            {page > 2 && (
-              <PaginationItem>
-                <PaginationLink href={buildUrl(page - 1)}>
-                  {page - 1}
-                </PaginationLink>
-              </PaginationItem>
-            )}
-
-            {/* Current page */}
-            {page !== 1 && page !== totalPages && (
-              <PaginationItem>
-                <PaginationLink href={buildUrl(page)} isActive>
-                  {page}
-                </PaginationLink>
-              </PaginationItem>
-            )}
-
-            {/* Next page */}
-            {page < totalPages - 1 && (
-              <PaginationItem>
-                <PaginationLink href={buildUrl(page + 1)}>
-                  {page + 1}
-                </PaginationLink>
-              </PaginationItem>
-            )}
-
-            {/* Ellipsis if needed */}
-            {page < totalPages - 2 && (
-              <PaginationItem>
-                <PaginationEllipsis />
-              </PaginationItem>
-            )}
-
-            {/* Last page */}
-            {totalPages > 1 && (
-              <PaginationItem>
-                <PaginationLink
-                  href={buildUrl(totalPages)}
-                  isActive={page === totalPages}
-                >
-                  {totalPages}
-                </PaginationLink>
-              </PaginationItem>
-            )}
-
-            {page < totalPages && (
-              <PaginationItem>
-                <PaginationNext href={buildUrl(page + 1)} />
-              </PaginationItem>
-            )}
-          </PaginationContent>
-        </Pagination>
-      )}
+      )}      {/* Pagination */}
+      <PaginationControls
+        page={page}
+        totalPages={totalPages}
+        buildUrl={buildUrl}
+      />
     </div>
   );
 }
