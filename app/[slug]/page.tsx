@@ -19,6 +19,7 @@ import { LinkGrid } from '@/components/link-grid';
 import { BackgroundPattern } from '@/components/background-pattern';
 import { Footer } from '@/components/footer';
 import type { ViewMode, SortOrder } from '@/lib/types';
+import { parseSearchParams } from '@/lib/utils';
 import { PaginationControls } from '@/components/pagination-controls';
 import { EmptyState } from '@/components/empty-state';
 
@@ -155,11 +156,8 @@ export default async function CategoryPage({
   searchParams,
 }: CategoryPageProps) {
   const { slug } = await params;
-  const { page, view, sort } = await searchParams;
-  const currentPage = page ? parseInt(page, 10) : 1;
-  const validPage = isNaN(currentPage) || currentPage < 1 ? 1 : currentPage;
-  const currentView = (view as ViewMode) || 'grid';
-  const currentSort = (sort as SortOrder) || 'newest';
+  const { page: pageStr, view: viewStr, sort: sortStr } = await searchParams;
+  const { page: validPage, view: currentView, sort: currentSort } = parseSearchParams({ page: pageStr, view: viewStr, sort: sortStr });
   const category = await getCategoryBySlugAction(slug);
 
   return (

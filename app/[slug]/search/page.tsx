@@ -15,6 +15,7 @@ import { BackgroundPattern } from '@/components/background-pattern';
 import { Footer } from '@/components/footer';
 import { Breadcrumbs } from '@/components/breadcrumbs';
 import type { ViewMode } from '@/lib/types';
+import { parseSearchParams } from '@/lib/utils';
 import { PaginationControls } from '@/components/pagination-controls';
 import { EmptyState } from '@/components/empty-state';
 
@@ -144,11 +145,9 @@ export default async function CategorySearchPage({
   searchParams,
 }: CategorySearchPageProps) {
   const { slug } = await params;
-  const { q, page, view } = await searchParams;
+  const { q, page: pageStr, view: viewStr } = await searchParams;
   const query = q?.trim();
-  const currentPage = page ? parseInt(page, 10) : 1;
-  const validPage = isNaN(currentPage) || currentPage < 1 ? 1 : currentPage;
-  const currentView = (view as ViewMode) || 'grid';
+  const { page: validPage, view: currentView } = parseSearchParams({ page: pageStr, view: viewStr });
   const searchQuery = query || '';
   const category = await getCategoryBySlugAction(slug);
 

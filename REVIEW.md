@@ -4,23 +4,8 @@ Audit of duplicate functions, components, and patterns across the codebase.
 
 ---
 
-## 1. Search Params Parsing Pattern
-
-**Duplicate locations (4 occurrences):**
-- `app/page.tsx` (lines 155-159)
-- `app/[slug]/page.tsx` (lines 143-147)
-- `app/[slug]/search/page.tsx` (lines 148-152)
-- `app/search/page.tsx` (lines 141-145)
-
-**Identical pattern:**
-```ts
-const currentPage = page ? parseInt(page, 10) : 1;
-const validPage = isNaN(currentPage) || currentPage < 1 ? 1 : currentPage;
-const currentView = (view as ViewMode) || 'grid';
-const currentSort = (sort as SortOrder) || 'newest';
-```
-
-**Recommendation:** Create a `parseSearchParams(searchParams, defaults)` helper in `lib/utils.ts` that returns `{ page: number, view: ViewMode, sort: SortOrder }`.
+## 1. Search Params Parsing Pattern ✅
+Created `parseSearchParams()` in `lib/utils.ts` returning `{ page, view, sort }`. Applied to all 4 pages: `app/page.tsx`, `app/[slug]/page.tsx`, `app/[slug]/search/page.tsx`, and `app/search/page.tsx`. Each page now calls `parseSearchParams({ page, view, sort })` instead of duplicating the parseInt/isNaN/cast logic.
 
 ---
 
@@ -323,7 +308,7 @@ try {
 
 | # | Issue | Occurrences | Impact |
 |---|-------|-------------|--------|
-| 1 | Search params parsing | 4× | Boilerplate reduction |
+| 1 | Search params parsing ✅ | 4× | Boilerplate reduction |
 | 2 | Page layout wrapper | 5× | Consistent layout, easy global changes |
 | 3 | CategoriesNav Suspense | 4× | Boilerplate reduction |
 | 4 | View + Sort controls | 2× | Component cohesion |

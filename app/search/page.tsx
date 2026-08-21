@@ -6,6 +6,7 @@ import { NavSkeleton, LoadingState } from '@/components/skeletons';
 import { CategoriesNav } from '@/components/category-nav-server';
 import { ViewToggleWrapper } from '@/components/view-toggle';
 import type { Link as LinkType, ViewMode } from '@/lib/types';
+import { parseSearchParams } from '@/lib/utils';
 import { LinkGrid } from '@/components/link-grid';
 import { BackgroundPattern } from '@/components/background-pattern';
 import { Footer } from '@/components/footer';
@@ -142,11 +143,9 @@ async function SearchResults({
 
 
 export default async function SearchPage({ searchParams }: SearchPageProps) {
-  const { q, page, view } = await searchParams;
+  const { q, page: pageStr, view: viewStr } = await searchParams;
   const query = q?.trim();
-  const currentPage = page ? parseInt(page, 10) : 1;
-  const validPage = isNaN(currentPage) || currentPage < 1 ? 1 : currentPage;
-  const currentView = (view as ViewMode) || 'grid';
+  const { page: validPage, view: currentView } = parseSearchParams({ page: pageStr, view: viewStr });
 
   const searchQuery = query || '';
 

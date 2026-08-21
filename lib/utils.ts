@@ -29,3 +29,22 @@ export function isUrl(string: string): boolean {
     return false;
   }
 }
+
+export interface ParsedSearchParams {
+  page: number;
+  view: 'grid' | 'list';
+  sort: 'newest' | 'popular' | 'az' | 'za';
+}
+
+export function parseSearchParams(params: {
+  page?: string;
+  view?: string;
+  sort?: string;
+}): ParsedSearchParams {
+  const currentPage = params.page ? parseInt(params.page, 10) : 1;
+  return {
+    page: isNaN(currentPage) || currentPage < 1 ? 1 : currentPage,
+    view: (params.view as ParsedSearchParams['view']) || 'grid',
+    sort: (params.sort as ParsedSearchParams['sort']) || 'newest',
+  };
+}
