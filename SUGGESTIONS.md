@@ -59,8 +59,8 @@ Add a `/api/health` endpoint that verifies the database connection is alive. Use
 
 ## 🎨 Aesthetics
 
-### 1. Dark Mode Toggle Button
-(Also a functionality item.) A pill-shaped toggle in the header with a smooth icon transition would polish the experience.
+### 1. Dark Mode Toggle Button ✅
+Redesigned as a pill-shaped toggle with a sliding white indicator, sun/moon icons that scale and color-shift on transition, and smooth 300ms animations. Removed Button wrapper dependency.
 
 ### 2. Improved Mobile Navigation
 The current mobile menu only shows search. Add a slide-out drawer with links to Home, Favorites, Submit, and (if admin) Admin.
