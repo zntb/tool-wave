@@ -114,14 +114,21 @@ export default function RootLayout({
         >
           {/* Atmospheric background effects */}
           <div className='atmosphere' aria-hidden='true' />
-          <div className='noise-overlay' aria-hidden='true' />
+          <div className='noise-overlay' aria-hidden='true' />            <JsonLd data={jsonLd} />
 
-          <JsonLd data={jsonLd} />
-          <TooltipProvider delayDuration={100} skipDelayDuration={50}>
-            <Suspense fallback={null}>
-              <Header />
-            </Suspense>
-            <main className='relative'>
+            {/* Skip to main content — first focusable element for keyboard/screen reader users */}
+            <a
+              href='#main-content'
+              className='sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:rounded-lg focus:bg-cyan-600 focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-white focus:shadow-lg focus:outline-none'
+            >
+              Skip to main content
+            </a>
+
+            <TooltipProvider delayDuration={100} skipDelayDuration={50}>
+              <Suspense fallback={null}>
+                <Header />
+              </Suspense>
+              <main id='main-content' className='relative'>
               <Suspense fallback={null}>{children}</Suspense>
             </main>
             <Toaster position='top-right' richColors />

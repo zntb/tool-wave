@@ -109,8 +109,8 @@ Created `lib/ssrf-prevention.ts` with `checkSSRF()` function that resolves URLs 
 ### 1. Keyboard Navigation ✅
 Created `lib/hooks/use-keyboard-navigation.ts` with global keyboard shortcuts: `/` to focus and select the search input, `ArrowRight`/`ArrowDown` and `ArrowLeft`/`ArrowUp` to navigate between link cards with visible cyan outline and smooth scroll, `Enter` to open the preview dialog of the selected card, `Escape` to deselect. `Esc` for modals/menus was already handled by the mobile drawer and Radix Dialog. Integrated into `Header` component.
 
-### 2. Skip-to-Content Link
-Add a visually hidden "Skip to main content" link as the first focusable element for screen reader users.
+### 2. Skip-to-Content Link ✅
+Added a visually hidden `<a>` link as the first focusable element in `app/layout.tsx`. Uses Tailwind's `sr-only` class to hide it visually while keeping it available to screen readers. On focus (first Tab press), it becomes visible as a fixed cyan pill button at the top-left. Links to `#main-content` on the `<main>` element.
 
 ### 3. Breadcrumb Navigation
 Show breadcrumbs on category and search pages (e.g., Home > Frontend > React). The `BreadcrumbJsonLd` component already exists — add the visible counterpart.
