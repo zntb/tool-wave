@@ -12,7 +12,7 @@ import { LinkGridSkeleton } from '@/components/skeletons';
 import { LinkGrid } from '@/components/link-grid';
 import { PageLayout } from '@/components/page-layout';
 import type { ViewMode, SortOrder } from '@/lib/types';
-import { parseSearchParams } from '@/lib/utils';
+import { parseSearchParams, buildPaginationUrl } from '@/lib/utils';
 import { PaginationControls } from '@/components/pagination-controls';
 import { EmptyState } from '@/components/empty-state';
 
@@ -53,14 +53,7 @@ async function LinksByCategory({
   const totalLinks = await getAllLinksCountAction();
   const totalPages = Math.ceil(totalLinks / ITEMS_PER_PAGE);
 
-  // Helper to build URL with preserved query params
-  const buildUrl = (pageNum: number) => {
-    const params = new URLSearchParams();
-    params.set('page', String(pageNum));
-    if (view !== 'grid') params.set('view', view);
-    if (sortBy !== 'newest') params.set('sort', sortBy);
-    return `/?${params.toString()}`;
-  };
+  const buildUrl = (pageNum: number) => buildPaginationUrl('/', pageNum, { view, sort: sortBy });
 
   if (links.length === 0) {
     return (

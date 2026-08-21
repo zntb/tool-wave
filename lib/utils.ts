@@ -48,3 +48,19 @@ export function parseSearchParams(params: {
     sort: (params.sort as ParsedSearchParams['sort']) || 'newest',
   };
 }
+
+export function buildPaginationUrl(
+  basePath: string,
+  pageNum: number,
+  options?: { view?: string; sort?: string },
+): string {
+  const params = new URLSearchParams();
+  params.set('page', String(pageNum));
+  if (options?.view && options.view !== 'grid') {
+    params.set('view', options.view);
+  }
+  if (options?.sort && options.sort !== 'newest') {
+    params.set('sort', options.sort);
+  }
+  return `${basePath}?${params.toString()}`;
+}

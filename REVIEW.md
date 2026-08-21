@@ -24,25 +24,8 @@ Created `components/view-sort-controls.tsx` — a `<ViewSortControls>` client co
 
 ---
 
-## 5. Pagination URL Builder
-
-**Duplicate locations (3 occurrences):**
-- `app/page.tsx` (lines 64-70)
-- `app/[slug]/page.tsx` (lines 75-81)
-- `app/search/page.tsx` (line 169, inline)
-
-**Similar pattern:**
-```ts
-const buildUrl = (pageNum: number) => {
-  const params = new URLSearchParams();
-  params.set('page', String(pageNum));
-  if (view !== 'grid') params.set('view', view);
-  if (sortBy !== 'newest') params.set('sort', sortBy);
-  return `/?${params.toString()}`;
-};
-```
-
-**Recommendation:** Create a `buildPaginationUrl(basePath, pageNum, { view, sort })` utility in `lib/utils.ts`.
+## 5. Pagination URL Builder ✅
+Created `buildPaginationUrl(basePath, pageNum, { view?, sort? })` in `lib/utils.ts`. Replaced 7-line `buildUrl` functions in `app/page.tsx` and `app/[slug]/page.tsx` with one-liner calls. Updated inline lambda in `app/search/page.tsx` to use the utility as well.
 
 ---
 
@@ -262,7 +245,7 @@ try {
 | 2 | Page layout wrapper ✅ | 5× | Consistent layout, easy global changes |
 | 3 | CategoriesNav Suspense ✅ | 4× | Boilerplate reduction |
 | 4 | View + Sort controls ✅ | 2× | Component cohesion |
-| 5 | Pagination URL builder | 3× | DRY utility |
+| 5 | Pagination URL builder ✅ | 3× | DRY utility |
 | 6 | Server action error handling | 8× | Consistent error responses |
 | 7 | Admin auth check | 6× | Security + DRY |
 | 8 | CSRF check | 2× | Security + DRY |

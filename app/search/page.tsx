@@ -6,7 +6,7 @@ import { LoadingState } from '@/components/skeletons';
 import { CategoriesNav } from '@/components/category-nav-server';
 import { ViewToggleWrapper } from '@/components/view-toggle';
 import type { Link as LinkType, ViewMode } from '@/lib/types';
-import { parseSearchParams } from '@/lib/utils';
+import { parseSearchParams, buildPaginationUrl } from '@/lib/utils';
 import { LinkGrid } from '@/components/link-grid';
 import { PageLayout } from '@/components/page-layout';
 import { Breadcrumbs } from '@/components/breadcrumbs';
@@ -133,7 +133,7 @@ async function SearchResults({
       <PaginationControls
         page={page}
         totalPages={totalPages}
-        buildUrl={p => `/search?q=${query}&page=${p}`}
+        buildUrl={p => buildPaginationUrl(`/search?q=${encodeURIComponent(query)}`, p)}
       />
     </div>
   );
