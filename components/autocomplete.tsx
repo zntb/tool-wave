@@ -4,9 +4,9 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { useClickOutside } from '@/lib/hooks/use-click-outside';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Search, Loader2 } from 'lucide-react';
-import Image from 'next/image';
 import { Input } from '@/components/ui/input';
-import { cn, isUrl } from '@/lib/utils';
+import { cn } from '@/lib/utils';
+import { IconFallback } from '@/components/icon-fallback';
 import type { Link } from '@/lib/types';
 
 interface AutocompleteProps {
@@ -299,22 +299,12 @@ export function Autocomplete({
               onMouseEnter={() => setSelectedIndex(index)}
             >
               {/* Icon */}
-              <div className='w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center flex-shrink-0 overflow-hidden'>
-                {suggestion.icon ? (
-                  isUrl(suggestion.icon) ? (
-                    <Image
-                      src={suggestion.icon}
-                      alt=''
-                      width={32}
-                      height={32}
-                      className='w-8 h-8 object-cover'
-                    />
-                  ) : (
-                    <span className='text-lg'>{suggestion.icon}</span>
-                  )
-                ) : (
-                  <Search className='w-4 h-4 text-slate-400' />
-                )}
+              <div className='flex-shrink-0'>
+                <IconFallback
+                  icon={suggestion.icon}
+                  title={suggestion.title}
+                  size='sm'
+                />
               </div>
 
               {/* Content */}

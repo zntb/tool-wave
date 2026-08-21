@@ -2,7 +2,6 @@
 
 import { useState, useCallback } from 'react';
 import { useCopyToClipboard } from '@/lib/hooks/use-copy-to-clipboard';
-import Image from 'next/image';
 import { ExternalLink, Copy, Check, Heart } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -18,6 +17,7 @@ import type { Link as LinkType, ViewMode } from '@/lib/types';
 import { useFavorites } from '@/lib/hooks/use-favorites';
 import { useMounted } from '@/lib/hooks/use-mounted';
 import { ShareButtons } from '@/components/share-buttons';
+import { IconFallback } from '@/components/icon-fallback';
 import { trackLinkClick } from '@/app/actions';
 
 interface LinkCardProps {
@@ -149,23 +149,14 @@ export function LinkCard({
               isListView && 'items-center flex-1',
             )}
           >
-            {/* Icon/Thumbnail - only show for non-URL icons (emoji/text) */}
-            {link.icon && !isImageIcon && (
-              <div
-                className={cn(
-                  'flex-shrink-0 w-10 h-10 md:w-12 md:h-12',
-                  'rounded-xl',
-                  'overflow-hidden',
-                  'bg-gradient-to-br from-slate-100 to-slate-200',
-                  'dark:from-slate-800 dark:to-slate-900',
-                  'flex items-center justify-center',
-                  'shadow-inner',
-                  'group-hover:scale-110 transition-transform duration-300',
-                )}
-              >
-                <span className='text-2xl md:text-3xl'>{link.icon}</span>
-              </div>
-            )}
+            {/* Icon/Thumbnail */}
+            <div className='group-hover:scale-110 transition-transform duration-300'>
+              <IconFallback
+                icon={link.icon}
+                title={link.title}
+                size='md'
+              />
+            </div>
 
             <div
               className={cn(
@@ -345,29 +336,12 @@ export function LinkCard({
                 <h4 className='text-sm font-medium text-slate-500 dark:text-slate-400 mb-2 uppercase tracking-wider'>
                   Preview
                 </h4>
-                <div className='rounded-xl bg-slate-100 dark:bg-slate-800 p-4'>
-                  {isUrl(link.icon) ? (
-                    <Image
-                      src={link.icon}
-                      alt={`${link.title} icon`}
-                      className='max-w-[200px] max-h-[200px] object-contain rounded-md'
-                      width={200}
-                      height={200}
-                      onError={e => {
-                        e.currentTarget.style.display = 'none';
-                        // Show fallback text if image fails
-                        const fallback = document.createElement('span');
-                        fallback.className = 'text-4xl';
-                        const iconValue = link.icon;
-                        if (iconValue) {
-                          fallback.textContent = iconValue;
-                          e.currentTarget.parentElement?.appendChild(fallback);
-                        }
-                      }}
-                    />
-                  ) : (
-                    <span className='text-4xl'>{link.icon}</span>
-                  )}
+                <div className='rounded-xl bg-slate-100 dark:bg-slate-800 p-4 flex items-center justify-center'>
+                  <IconFallback
+                    icon={link.icon}
+                    title={link.title}
+                    size='lg'
+                  />
                 </div>
               </div>
             )}

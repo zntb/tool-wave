@@ -68,8 +68,8 @@ The current mobile menu only shows search. Add a slide-out drawer with links to 
 ### 3. Better Loading Skeletons ✅
 Rewrote skeletons to match exact shapes: `NavSkeleton` mirrors `CategoryNav` pill layout, `GridCardSkeleton` matches grid `LinkCard` with icon/title/description/URL/buttons, `ListCardSkeleton` matches horizontal list view. Staggered animation delays preserved.
 
-### 4. Image Fallback Component
-When a resource icon (URL) fails to load, show a styled fallback (first letter of the title or a default icon) instead of a broken image. A shared `<IconFallback>` component would handle this.
+### 4. Image Fallback Component ✅
+Created `<IconFallback>` component with 3 size variants (sm/md/lg). URL icons fall back to the first letter of the title on error. Emoji/text icons render directly. Missing icons show a default search icon. Replaced inline `onError` DOM manipulation in `link-card.tsx` and hardcoded icon rendering in `autocomplete.tsx`.
 
 ### 5. Smooth Page Transitions
 Add route transition animations (fade/slide) when navigating between pages. The `stagger-children` animation already exists — extend this concept to page-level transitions.
