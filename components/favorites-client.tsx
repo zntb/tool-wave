@@ -10,6 +10,7 @@ import { getAllCategoriesWithLinksAction } from '@/app/actions';
 import type { Link as LinkType, CategoryWithLinks, ViewMode } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { BackgroundPattern } from '@/components/background-pattern';
+import { Footer } from '@/components/footer';
 import { getStoredFavorites } from '@/lib/favorites-storage';
 
 export function FavoritesClient() {
@@ -214,21 +215,7 @@ export function FavoritesClient() {
       </main>
 
       {/* Footer */}
-      <footer
-        className='border-t border-slate-200 dark:border-slate-800 mt-16 animate-fade-in'
-        style={{ animationDelay: '300ms' }}
-      >
-        <div className='container mx-auto px-4 py-8 max-w-7xl'>
-          <div className='flex flex-col md:flex-row items-center justify-between gap-4'>
-            <p className='text-sm text-slate-500 dark:text-slate-400'>
-              © {new Date().getFullYear()} Tool Wave
-            </p>
-            <p className='text-sm text-slate-400 dark:text-slate-500'>
-              Curated with ❤️ for the developer community
-            </p>
-          </div>
-        </div>
-      </footer>
+      <Footer className='animate-fade-in' style={{ animationDelay: '300ms' }} />
     </div>
   );
 }
