@@ -2,13 +2,14 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Search, X, LogOut } from 'lucide-react';
+import { LogOut, Menu } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { FavoritesButton } from '@/components/favorites-button';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { Autocomplete } from '@/components/autocomplete';
+import { MobileNavDrawer } from '@/components/mobile-nav-drawer';
 
 interface HeaderProps {
   className?: string;
@@ -164,13 +165,9 @@ export function Header({ className }: HeaderProps) {
                 size='icon'
                 className='md:hidden relative'
                 onClick={toggleMobileMenu}
-                aria-label='Toggle search'
+                aria-label='Open menu'
               >
-                {isMobileMenuOpen ? (
-                  <X className='w-5 h-5' />
-                ) : (
-                  <Search className='w-5 h-5' />
-                )}
+                <Menu className='w-5 h-5' />
               </Button>
 
               {/* Mobile Theme Toggle */}
@@ -185,19 +182,17 @@ export function Header({ className }: HeaderProps) {
             </div>
           </div>
 
-          {/* Mobile Search Panel - Glass Effect */}
-          {isMobileMenuOpen && (
-            <div className='md:hidden mt-3 p-3 animate-fade-in'>
-              <div className='glass-strong rounded-xl p-1.5'>
-                <Autocomplete
-                  placeholder='Search all resources...'
-                  onSearch={handleSearch}
-                />
-              </div>
-            </div>
-          )}
         </div>
       </header>
+
+      {/* Mobile Navigation Drawer */}
+      <MobileNavDrawer
+        isOpen={isMobileMenuOpen}
+        onClose={() => setIsMobileMenuOpen(false)}
+        isAdmin={isAdmin}
+        onLogout={handleLogout}
+        searchParams={searchParams}
+      />
     </>
   );
 }
