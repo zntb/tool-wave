@@ -12,6 +12,7 @@ import { useCsrfHeaders } from '@/lib/hooks/use-csrf-token';
 import { Autocomplete } from '@/components/autocomplete';
 import { MobileNavDrawer } from '@/components/mobile-nav-drawer';
 import { useKeyboardNavigation } from '@/lib/hooks/use-keyboard-navigation';
+import { fetchWithRetry } from '@/lib/fetch-with-retry';
 
 interface HeaderProps {
   className?: string;
@@ -40,7 +41,7 @@ export function Header({ className }: HeaderProps) {
   useEffect(() => {
     const checkAdmin = async () => {
       try {
-        const response = await fetch('/api/admin/check', {
+        const response = await fetchWithRetry('/api/admin/check', {
           method: 'GET',
           credentials: 'include',
         });
@@ -57,7 +58,7 @@ export function Header({ className }: HeaderProps) {
   };
 
   const handleLogout = async () => {
-    await fetch('/api/admin/logout', {
+    await fetchWithRetry('/api/admin/logout', {
       method: 'POST',
       credentials: 'include',
       headers: getHeaders(),

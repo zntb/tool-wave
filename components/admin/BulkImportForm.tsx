@@ -5,6 +5,7 @@ import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { ImportResource, ImportResult } from '@/lib/types';
+import { fetchWithRetry } from '@/lib/fetch-with-retry';
 
 export function BulkImportForm() {
   const [jsonInput, setJsonInput] = useState('');
@@ -27,7 +28,7 @@ export function BulkImportForm() {
         throw new Error('Input must be a JSON array');
       }
 
-      const response = await fetch('/api/bulk-import', {
+      const response = await fetchWithRetry('/api/bulk-import', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ resources }),
@@ -100,7 +101,7 @@ export function BulkImportForm() {
         return resource;
       });
 
-      const response = await fetch('/api/bulk-import', {
+      const response = await fetchWithRetry('/api/bulk-import', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ resources }),

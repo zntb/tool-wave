@@ -37,8 +37,8 @@ Periodically check if linked URLs are still live (200 OK). Show a badge or toolt
 ### 1. Error Boundaries per Route
 Wrap each route in a React error boundary so a crash in one page doesn't blank the entire app. Show a friendly "Something went wrong" fallback with a retry button.
 
-### 2. API Retry with Exponential Backoff
-Client-side fetch calls (autocomplete, admin check, submissions) should retry on network errors with exponential backoff rather than failing silently.
+### 2. API Retry with Exponential Backoff ✅
+Created `lib/fetch-with-retry.ts` — wraps `fetch()` with configurable exponential backoff (default: 3 retries, 300ms base delay, 5s max). Only retries on network errors (TypeError), not on HTTP errors or aborted requests. Includes jitter to prevent thundering herd. Applied to 8 fetch calls across autocomplete, header (admin check/logout), analytics dashboard, submissions review, and bulk import form.
 
 ### 3. Graceful Offline Support
 Add a service worker or `navigator.onLine` check to show a banner when the user is offline. Cache the homepage for basic read access.

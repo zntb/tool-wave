@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 import { IconFallback } from '@/components/icon-fallback';
 import { useSearchHistory } from '@/lib/hooks/use-search-history';
+import { fetchWithRetry } from '@/lib/fetch-with-retry';
 import type { Link } from '@/lib/types';
 
 interface AutocompleteProps {
@@ -55,7 +56,7 @@ export function Autocomplete({
               query.trim(),
             )}&category=${encodeURIComponent(categorySlug)}`
           : `/api/suggestions?q=${encodeURIComponent(query.trim())}`;
-        const response = await fetch(url, { signal: abortController.signal });
+        const response = await fetchWithRetry(url, { signal: abortController.signal });
 
         if (response.ok) {
           const data = await response.json();

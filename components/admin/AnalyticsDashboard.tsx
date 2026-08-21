@@ -9,12 +9,13 @@ import {
   TrendData,
   TimeRange,
 } from '@/lib/types';
+import { fetchWithRetry } from '@/lib/fetch-with-retry';
 
 async function fetchAnalytics(type: string, timeRange?: TimeRange) {
   const params = new URLSearchParams({ type });
   if (timeRange) params.set('timeRange', timeRange);
 
-  const response = await fetch(`/api/analytics?${params.toString()}`);
+  const response = await fetchWithRetry(`/api/analytics?${params.toString()}`);
   if (!response.ok) {
     throw new Error('Failed to fetch analytics');
   }

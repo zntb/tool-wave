@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ResourceSubmission } from '@/lib/types';
+import { fetchWithRetry } from '@/lib/fetch-with-retry';
 
 export function SubmissionsReview() {
   const [submissions, setSubmissions] = useState<ResourceSubmission[]>([]);
@@ -14,7 +15,7 @@ export function SubmissionsReview() {
   useEffect(() => {
     const fetchSubmissions = async () => {
       try {
-        const response = await fetch('/api/submissions?status=PENDING');
+        const response = await fetchWithRetry('/api/submissions?status=PENDING');
         const data = await response.json();
         if (data.success) {
           setSubmissions(data.data);
@@ -33,7 +34,7 @@ export function SubmissionsReview() {
     status: 'APPROVED' | 'REJECTED',
   ) => {
     try {
-      const response = await fetch('/api/submissions', {
+      const response = await fetchWithRetry('/api/submissions', {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id, status }),
