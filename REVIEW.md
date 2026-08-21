@@ -110,26 +110,9 @@ This document lists duplicate code patterns across the codebase that could be re
 
 ## 14. Sort Order → Prisma `orderBy` Mapping
 
-**Duplicate locations in `lib/data.ts`:**
-- `getCategoryWithLinks` (lines 70-77)
-- `getAllLinksPaginated` (lines 143-150)
-- `getLinksByCategory` (lines 167-174)
+**Status:** ✅ RESOLVED
 
-**Identical mapping:**
-```ts
-let orderBy: Prisma.LinkOrderByWithRelationInput;
-if (sortBy === 'popular') {
-  orderBy = { clicks: 'desc' };
-} else if (sortBy === 'az') {
-  orderBy = { title: 'asc' };
-} else if (sortBy === 'za') {
-  orderBy = { title: 'desc' };
-} else {
-  orderBy = { createdAt: 'desc' };
-}
-```
-
-**Recommendation:** Create a `getSortOrder(sortBy: SortOrder): Prisma.LinkOrderByWithRelationInput` helper.
+**Resolution:** Created `getSortOrder(sortBy?: SortOrder): Prisma.LinkOrderByWithRelationInput` helper in `lib/data.ts` (line 34). Updated `getCategoryWithLinks`, `getAllLinksPaginated`, and `getLinksByCategory` to use the shared helper.
 
 ---
 
@@ -188,7 +171,7 @@ onSearch={query => {
 | 11 | `CategoriesNav` server component | 4 | Medium | ✅ RESOLVED |
 | 12 | `LoadingState` / `ViewToggleWrapper` | 3 each | Low | ✅ RESOLVED |
 | 13 | `nullToUndefined` mapping | 15+ | **High** | ✅ RESOLVED |
-| 14 | Sort order mapping | 3 | Medium |
+| 14 | Sort order mapping | 3 | Medium | ✅ RESOLVED |
 | 15 | `mounted` hydration pattern | 2 | Low |
 | 16 | Search param handling | 2 | Low |
 
