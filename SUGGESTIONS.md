@@ -43,8 +43,8 @@ Client-side fetch calls (autocomplete, admin check, submissions) should retry on
 ### 3. Graceful Offline Support
 Add a service worker or `navigator.onLine` check to show a banner when the user is offline. Cache the homepage for basic read access.
 
-### 4. Structured Logging
-Replace `console.warn` / `console.error` calls in server actions with a lightweight logger (e.g., `pino` or `tinylog`) that includes request context and severity levels.
+### 4. Structured Logging ✅
+Created `lib/logger.ts` — a zero-dependency structured logger with `debug`/`info`/`warn`/`error` levels, ISO timestamps, and context tags. Replaced all `console.warn`/`console.error`/`console.log` calls across `app/actions.ts` (6 occurrences), `lib/resources-md.ts` (14 occurrences), `lib/hooks/use-copy-to-clipboard.ts` (1), and `lib/hooks/use-favorites.ts` (1). Log format: `[timestamp] [LEVEL] [context] message`.
 
 ### 5. Environment Variable Validation ✅
 Created `lib/env.ts` with Zod schema validating `DATABASE_URL` (MongoDB URL format), `ADMIN_EMAILS` (comma-separated emails), `ADMIN_PASSWORD` (min 8 chars), and `ADMIN_SESSION_SECRET` (min 16 chars). Called in `lib/db.ts` on first import — fails fast with a clear error listing all issues. Replaced the old manual URL check.

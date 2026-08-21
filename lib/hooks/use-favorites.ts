@@ -3,6 +3,7 @@
 import { useSyncExternalStore, useCallback, useEffect, useMemo } from 'react';
 import type { Link } from '@/lib/types';
 import { FAVORITES_STORAGE_KEY, type StoredFavorite } from '@/lib/favorites-storage';
+import { logger } from '@/lib/logger';
 
 // Module-level store (shared across all hook instances)
 let favorites: StoredFavorite[] = [];
@@ -21,8 +22,8 @@ function setFavorites(newFavorites: StoredFavorite[]): void {
   if (typeof window !== 'undefined') {
     try {
       localStorage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify(newFavorites));
-    } catch (error) {
-      console.error('Failed to save favorites:', error);
+    } catch {
+      logger.error('Failed to save favorites', 'use-favorites');
     }
   }
   // Notify all subscribers

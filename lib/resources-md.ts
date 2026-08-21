@@ -1,6 +1,7 @@
 import { readFileSync, writeFileSync, existsSync } from 'fs';
 import { dirname, join } from 'path';
 import { slugify } from './utils';
+import { logger } from './logger';
 
 function resolveResourcesFilePath(): string {
   let currentDir = process.cwd();
@@ -44,8 +45,7 @@ function isCategorySectionHeading(lines: string[], index: number): boolean {
 }
 
 function logVerification(message: string): void {
-  const timestamp = new Date().toISOString();
-  console.log(`[${timestamp}] VERIFIED: ${message}`);
+  logger.info(`VERIFIED: ${message}`, 'resources-md');
 }
 
 /**
@@ -270,10 +270,7 @@ export function addLinkToResourcesMD(
       `Added link "${link.title}" to category "${categorySlug}" in resources.md`,
     );
 
-    const timestamp = new Date().toISOString();
-    console.log(
-      `[${timestamp}] Added link "${link.title}" to category "${categorySlug}" in resources.md`,
-    );
+    logger.info(`Added link "${link.title}" to category "${categorySlug}" in resources.md`, 'resources-md');
 
     return {
       success: true,
@@ -282,7 +279,7 @@ export function addLinkToResourcesMD(
   } catch (error) {
     const errorMessage =
       error instanceof Error ? error.message : 'Unknown error';
-    console.error(`Failed to add link to resources.md: ${errorMessage}`);
+    logger.error(`Failed to add link to resources.md: ${errorMessage}`, 'resources-md');
     return { success: false, error: errorMessage };
   }
 }
@@ -380,10 +377,7 @@ export function addCategoryToResourcesMD(category: {
     }
     logVerification(`Added category "${category.name}" to resources.md`);
 
-    const timestamp = new Date().toISOString();
-    console.log(
-      `[${timestamp}] Added category "${category.name}" to resources.md`,
-    );
+    logger.info(`Added category "${category.name}" to resources.md`, 'resources-md');
 
     return {
       success: true,
@@ -392,7 +386,7 @@ export function addCategoryToResourcesMD(category: {
   } catch (error) {
     const errorMessage =
       error instanceof Error ? error.message : 'Unknown error';
-    console.error(`Failed to add category to resources.md: ${errorMessage}`);
+    logger.error(`Failed to add category to resources.md: ${errorMessage}`, 'resources-md');
     return { success: false, error: errorMessage };
   }
 }
@@ -453,10 +447,7 @@ export function updateLinkInResourcesMD(
 
     writeFileSync(RESOURCES_FILE, lines.join('\n'), 'utf-8');
 
-    const timestamp = new Date().toISOString();
-    console.log(
-      `[${timestamp}] Updated link "${oldTitle}" to "${newLink.title}" in category "${categorySlug}" in resources.md`,
-    );
+    logger.info(`Updated link "${oldTitle}" to "${newLink.title}" in category "${categorySlug}" in resources.md`, 'resources-md');
 
     return {
       success: true,
@@ -465,7 +456,7 @@ export function updateLinkInResourcesMD(
   } catch (error) {
     const errorMessage =
       error instanceof Error ? error.message : 'Unknown error';
-    console.error(`Failed to update link in resources.md: ${errorMessage}`);
+    logger.error(`Failed to update link in resources.md: ${errorMessage}`, 'resources-md');
     return { success: false, error: errorMessage };
   }
 }
@@ -525,10 +516,7 @@ export function deleteLinkFromResourcesMD(
 
     writeFileSync(RESOURCES_FILE, lines.join('\n'), 'utf-8');
 
-    const timestamp = new Date().toISOString();
-    console.log(
-      `[${timestamp}] Deleted link "${title}" from category "${categorySlug}" in resources.md`,
-    );
+    logger.info(`Deleted link "${title}" from category "${categorySlug}" in resources.md`, 'resources-md');
 
     return {
       success: true,
@@ -537,7 +525,7 @@ export function deleteLinkFromResourcesMD(
   } catch (error) {
     const errorMessage =
       error instanceof Error ? error.message : 'Unknown error';
-    console.error(`Failed to delete link from resources.md: ${errorMessage}`);
+    logger.error(`Failed to delete link from resources.md: ${errorMessage}`, 'resources-md');
     return { success: false, error: errorMessage };
   }
 }
@@ -592,10 +580,7 @@ export function updateCategoryInResourcesMD(
 
     writeFileSync(RESOURCES_FILE, lines.join('\n'), 'utf-8');
 
-    const timestamp = new Date().toISOString();
-    console.log(
-      `[${timestamp}] Updated category "${section.name}" to "${newCategory.name}" in resources.md`,
-    );
+    logger.info(`Updated category "${section.name}" to "${newCategory.name}" in resources.md`, 'resources-md');
 
     return {
       success: true,
@@ -604,7 +589,7 @@ export function updateCategoryInResourcesMD(
   } catch (error) {
     const errorMessage =
       error instanceof Error ? error.message : 'Unknown error';
-    console.error(`Failed to update category in resources.md: ${errorMessage}`);
+    logger.error(`Failed to update category in resources.md: ${errorMessage}`, 'resources-md');
     return { success: false, error: errorMessage };
   }
 }
@@ -652,10 +637,7 @@ export function deleteCategoryFromResourcesMD(categorySlug: string): {
 
     writeFileSync(RESOURCES_FILE, lines.join('\n'), 'utf-8');
 
-    const timestamp = new Date().toISOString();
-    console.log(
-      `[${timestamp}] Deleted category "${categoryName}" from resources.md`,
-    );
+    logger.info(`Deleted category "${categoryName}" from resources.md`, 'resources-md');
 
     return {
       success: true,
@@ -664,9 +646,7 @@ export function deleteCategoryFromResourcesMD(categorySlug: string): {
   } catch (error) {
     const errorMessage =
       error instanceof Error ? error.message : 'Unknown error';
-    console.error(
-      `Failed to delete category from resources.md: ${errorMessage}`,
-    );
+    logger.error(`Failed to delete category from resources.md: ${errorMessage}`, 'resources-md');
     return { success: false, error: errorMessage };
   }
 }

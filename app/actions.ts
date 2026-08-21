@@ -34,6 +34,7 @@ import { revalidatePath } from 'next/cache';
 import { getCurrentAdminEmail } from '@/lib/admin-auth';
 import { sanitizeString, sanitizeOptional } from '@/lib/sanitize';
 import { checkSSRF } from '@/lib/ssrf-prevention';
+import { logger } from '@/lib/logger';
 import {
   addLinkToResourcesMD,
   addCategoryToResourcesMD,
@@ -114,7 +115,7 @@ export async function createCategory(
     });
 
     if (!mdResult.success) {
-      console.warn(`Failed to update resources.md: ${mdResult.error}`);
+      logger.warn(`Failed to update resources.md: ${mdResult.error}`, 'actions');
     }
 
     revalidatePath('/');
@@ -156,7 +157,7 @@ export async function updateCategoryAction(
       });
 
       if (!mdResult.success) {
-        console.warn(`Failed to update resources.md: ${mdResult.error}`);
+        logger.warn(`Failed to update resources.md: ${mdResult.error}`, 'actions');
       }
     }
 
@@ -191,7 +192,7 @@ export async function deleteCategoryAction(
     if (categorySlug) {
       const mdResult = deleteCategoryFromResourcesMD(categorySlug);
       if (!mdResult.success) {
-        console.warn(`Failed to update resources.md: ${mdResult.error}`);
+        logger.warn(`Failed to update resources.md: ${mdResult.error}`, 'actions');
       }
     }
 
@@ -244,7 +245,7 @@ export async function createLink(
       );
 
       if (!mdResult.success) {
-        console.warn(`Failed to update resources.md: ${mdResult.error}`);
+        logger.warn(`Failed to update resources.md: ${mdResult.error}`, 'actions');
       }
     }
 
@@ -307,7 +308,7 @@ export async function updateLinkAction(
       );
 
       if (!mdResult.success) {
-        console.warn(`Failed to update resources.md: ${mdResult.error}`);
+        logger.warn(`Failed to update resources.md: ${mdResult.error}`, 'actions');
       }
     }
 
@@ -352,7 +353,7 @@ export async function deleteLinkAction(
         linkUrl,
       );
       if (!mdResult.success) {
-        console.warn(`Failed to update resources.md: ${mdResult.error}`);
+        logger.warn(`Failed to update resources.md: ${mdResult.error}`, 'actions');
       }
     }
 
