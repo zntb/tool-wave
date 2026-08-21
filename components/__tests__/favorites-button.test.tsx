@@ -23,6 +23,8 @@ describe('FavoritesButton', () => {
       toggleFavorite: jest.fn(),
       removeFavorite: jest.fn(),
       clearAllFavorites: jest.fn(),
+      exportFavorites: jest.fn(),
+      importFavorites: jest.fn().mockReturnValue({ success: true, count: 0 }),
     });
 
     render(<FavoritesButton />);
@@ -41,6 +43,8 @@ describe('FavoritesButton', () => {
       toggleFavorite: jest.fn(),
       removeFavorite: jest.fn(),
       clearAllFavorites: jest.fn(),
+      exportFavorites: jest.fn(),
+      importFavorites: jest.fn().mockReturnValue({ success: true, count: 0 }),
     });
 
     render(<FavoritesButton />);
@@ -56,6 +60,8 @@ describe('FavoritesButton', () => {
       toggleFavorite: jest.fn(),
       removeFavorite: jest.fn(),
       clearAllFavorites: jest.fn(),
+      exportFavorites: jest.fn(),
+      importFavorites: jest.fn().mockReturnValue({ success: true, count: 0 }),
     });
 
     render(<FavoritesButton />);
@@ -71,6 +77,8 @@ describe('FavoritesButton', () => {
       toggleFavorite: jest.fn(),
       removeFavorite: jest.fn(),
       clearAllFavorites: jest.fn(),
+      exportFavorites: jest.fn(),
+      importFavorites: jest.fn().mockReturnValue({ success: true, count: 0 }),
     });
 
     render(<FavoritesButton />);
@@ -87,6 +95,8 @@ describe('FavoritesButton', () => {
       toggleFavorite: jest.fn(),
       removeFavorite: jest.fn(),
       clearAllFavorites: jest.fn(),
+      exportFavorites: jest.fn(),
+      importFavorites: jest.fn().mockReturnValue({ success: true, count: 0 }),
     });
 
     render(<FavoritesButton />);

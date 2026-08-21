@@ -44,6 +44,8 @@ describe('LinkCard', () => {
       toggleFavorite: jest.fn(),
       removeFavorite: jest.fn(),
       clearAllFavorites: jest.fn(),
+      exportFavorites: jest.fn(),
+      importFavorites: jest.fn().mockReturnValue({ success: true, count: 0 }),
     });
 
     render(<LinkCard link={mockLink} />);
@@ -64,6 +66,8 @@ describe('LinkCard', () => {
       toggleFavorite: jest.fn(),
       removeFavorite: jest.fn(),
       clearAllFavorites: jest.fn(),
+      exportFavorites: jest.fn(),
+      importFavorites: jest.fn().mockReturnValue({ success: true, count: 0 }),
     });
 
     render(<LinkCard link={mockLink} />);
@@ -80,6 +84,8 @@ describe('LinkCard', () => {
       toggleFavorite,
       removeFavorite: jest.fn(),
       clearAllFavorites: jest.fn(),
+      exportFavorites: jest.fn(),
+      importFavorites: jest.fn().mockReturnValue({ success: true, count: 0 }),
     });
 
     render(<LinkCard link={mockLink} />);
@@ -96,6 +102,8 @@ describe('LinkCard', () => {
       toggleFavorite: jest.fn(),
       removeFavorite: jest.fn(),
       clearAllFavorites: jest.fn(),
+      exportFavorites: jest.fn(),
+      importFavorites: jest.fn().mockReturnValue({ success: true, count: 0 }),
     });
 
     render(<LinkCard link={mockLink} />);
@@ -112,6 +120,8 @@ describe('LinkCard', () => {
       toggleFavorite: jest.fn(),
       removeFavorite: jest.fn(),
       clearAllFavorites: jest.fn(),
+      exportFavorites: jest.fn(),
+      importFavorites: jest.fn().mockReturnValue({ success: true, count: 0 }),
     });
 
     render(<LinkCard link={mockLink} />);
@@ -135,6 +145,8 @@ describe('LinkCard', () => {
       toggleFavorite: jest.fn(),
       removeFavorite: jest.fn(),
       clearAllFavorites: jest.fn(),
+      exportFavorites: jest.fn(),
+      importFavorites: jest.fn().mockReturnValue({ success: true, count: 0 }),
     });
 
     render(<LinkCard link={mockLink} />);
@@ -157,6 +169,8 @@ describe('LinkCard', () => {
       toggleFavorite: jest.fn(),
       removeFavorite: jest.fn(),
       clearAllFavorites: jest.fn(),
+      exportFavorites: jest.fn(),
+      importFavorites: jest.fn().mockReturnValue({ success: true, count: 0 }),
     });
 
     // Mock trackLinkClick
@@ -195,6 +209,8 @@ describe('LinkCard', () => {
       toggleFavorite: jest.fn(),
       removeFavorite: jest.fn(),
       clearAllFavorites: jest.fn(),
+      exportFavorites: jest.fn(),
+      importFavorites: jest.fn().mockReturnValue({ success: true, count: 0 }),
     });
 
     render(<LinkCard link={linkWithEmoji} />);

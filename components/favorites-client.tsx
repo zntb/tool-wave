@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Heart, Trash2, ArrowRight, LayoutGrid, List } from 'lucide-react';
+import { Heart, Trash2, ArrowRight, LayoutGrid, List, Download, Upload } from 'lucide-react';
 import Link from 'next/link';
 import { LinkCard } from '@/components/link-card';
 import { Button } from '@/components/ui/button';
@@ -19,7 +19,8 @@ export function FavoritesClient() {
   const [favoriteLinks, setFavoriteLinks] = useState<LinkType[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
-  const { clearAllFavorites } = useFavorites();
+  const { clearAllFavorites, exportFavorites, importFavorites } = useFavorites();
+  const [importStatus, setImportStatus] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
 
   useEffect(() => {
     async function loadFavorites() {
@@ -159,6 +160,55 @@ export function FavoritesClient() {
                     <span className='hidden sm:inline text-sm'>List</span>
                   </Button>
                 </div>
+                <Button
+                  variant='outline'
+                  size='sm'
+                  onClick={exportFavorites}
+                  title='Export favorites as JSON'
+                >
+                  <Download className='w-4 h-4 mr-2' />
+                  Export
+                </Button>
+                <label className='inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium border border-input bg-background hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-slate-800 dark:hover:text-slate-100 h-10 px-4 py-2 cursor-pointer'>
+                  <Upload className='w-4 h-4 mr-2' />
+                  Import
+                  <input
+                    type='file'
+                    accept='.json'
+                    className='sr-only'
+                    onChange={async (e) => {
+                      const file = e.target.files?.[0];
+                      if (!file) return;
+                      try {
+                        const text = await file.text();
+                        const result = importFavorites(text);
+                        if (result.success) {
+                          setImportStatus({ type: 'success', message: `Imported ${result.count} new favorite${result.count !== 1 ? 's' : ''}` });
+                          // Reload to fetch the new links
+                          window.location.reload();
+                        } else {
+                          setImportStatus({ type: 'error', message: result.error || 'Import failed' });
+                        }
+                      } catch {
+                        setImportStatus({ type: 'error', message: 'Failed to read file' });
+                      }
+                      // Reset file input
+                      e.target.value = '';
+                    }}
+                  />
+                </label>
+                {importStatus && (
+                  <span
+                    className={cn(
+                      'text-xs px-2 py-1 rounded',
+                      importStatus.type === 'success'
+                        ? 'text-green-600 bg-green-50 dark:bg-green-900/20'
+                        : 'text-red-600 bg-red-50 dark:bg-red-900/20',
+                    )}
+                  >
+                    {importStatus.message}
+                  </span>
+                )}
                 <Button
                   variant='outline'
                   size='sm'

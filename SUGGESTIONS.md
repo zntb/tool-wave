@@ -133,8 +133,8 @@ Added `aria-live="polite"` to LinkGrid (announces view changes), search results 
 ### 9. Onboarding Tooltip
 On first visit, show a brief tooltip or walkthrough highlighting key features: search, favorites, view toggle, and submit a resource.
 
-### 10. Favorites Export/Import
-Allow users to export their favorites as JSON and import them on another device. This bridges the gap since favorites are stored in localStorage only.
+### 10. Favorites Export/Import ✅
+Added `exportFavorites()` and `importFavorites()` to `useFavorites` hook. Export downloads a versioned JSON file (`tool-wave-favorites-YYYY-MM-DD.json`). Import validates the file format, deduplicates by ID, and merges with existing favorites. Added Export/Import buttons to the favorites page header with status feedback.
 
 ---
 

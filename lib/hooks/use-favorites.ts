@@ -106,6 +106,79 @@ export function useFavorites() {
     setFavorites([]);
   }, []);
 
+  const exportFavorites = useCallback(() => {
+    const data = {
+      version: 1,
+      exportedAt: new Date().toISOString(),
+      favorites: storedFavorites,
+    };
+    const blob = new Blob([JSON.stringify(data, null, 2)], {
+      type: 'application/json',
+    });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `tool-wave-favorites-${new Date().toISOString().slice(0, 10)}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }, [storedFavorites]);
+
+  const importFavorites = useCallback(
+    (jsonString: string): { success: boolean; count?: number; error?: string } => {
+      try {
+        const data = JSON.parse(jsonString);
+
+        // Validate format
+        if (!data || typeof data !== 'object') {
+          return { success: false, error: 'Invalid file format' };
+        }
+        if (!Array.isArray(data.favorites)) {
+          return { success: false, error: 'Invalid favorites data' };
+        }
+
+        // Validate each favorite
+        const validFavorites: StoredFavorite[] = [];
+        for (const item of data.favorites) {
+          if (
+            item &&
+            typeof item === 'object' &&
+            typeof item.id === 'string' &&
+            item.id.length > 0
+          ) {
+            validFavorites.push({
+              id: item.id,
+              addedAt: typeof item.addedAt === 'number' ? item.addedAt : Date.now(),
+            });
+          }
+        }
+
+        if (validFavorites.length === 0) {
+          return { success: false, error: 'No valid favorites found in file' };
+        }
+
+        // Merge: keep existing favorites, add new ones (deduplicate by id)
+        const existingIds = new Set(storedFavorites.map(f => f.id));
+        const newFavorites = [...storedFavorites];
+        let importCount = 0;
+
+        for (const fav of validFavorites) {
+          if (!existingIds.has(fav.id)) {
+            newFavorites.push(fav);
+            importCount++;
+          }
+        }
+
+        setFavorites(newFavorites);
+        return { success: true, count: importCount };
+      } catch {
+        return { success: false, error: 'Failed to parse file' };
+      }
+    },
+    [storedFavorites],
+  );
+
   return {
     favoriteIds,
     favoritesCount,
@@ -113,6 +186,8 @@ export function useFavorites() {
     toggleFavorite,
     removeFavorite,
     clearAllFavorites,
+    exportFavorites,
+    importFavorites,
   };
 }
 
