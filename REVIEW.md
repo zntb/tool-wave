@@ -83,24 +83,8 @@ Replaced all `console.error` calls with `logger.error()` for consistency with th
 
 ---
 
-## 16. Admin Tab Navigation Pattern
-
-**Location:**
-- `components/admin/AdminPageContent.tsx` (lines 29-55)
-
-**Pattern:** Manual tab buttons with inline `className` ternaries:
-```tsx
-<button
-  onClick={() => setActiveTab('manage')}
-  className={`px-4 py-2 rounded ${
-    activeTab === 'manage' ? 'bg-blue-600 text-white' : 'bg-gray-200'
-  }`}
->
-  Manage
-</button>
-```
-
-**Recommendation:** Use a `<Tabs>` component from the UI library or create a simple `TabBar` component to eliminate the repeated button styling pattern.
+## 16. Admin Tab Navigation Pattern ✅
+Created `components/tab-bar.tsx` — a reusable `<TabBar>` component with `tabs`, `activeTab`, and `onTabChange` props. Includes `aria-selected` and `role='tab'` for accessibility. Refactored `components/admin/AdminPageContent.tsx` to use `<TabBar>` instead of 4 inline button elements with duplicated styling.
 
 ---
 
@@ -121,4 +105,4 @@ Replaced all `console.error` calls with `logger.error()` for consistency with th
 | 11 | Search navigation ✅ | 2× | DRY hook |
 | 12 | Admin fetch pattern ✅ | 3× | DRY utility |
 | 15 | console.error → logger ✅ | 3× | Structured logging consistency |
-| 16 | Admin tab navigation | 1× | Use UI component |
+| 16 | Admin tab navigation ✅ | 1× | Use UI component |

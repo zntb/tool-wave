@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { Category, Link } from '@/lib/types';
+import { TabBar } from '@/components/tab-bar';
 import { AdminSearchInput } from '@/components/admin/AdminSearchInput';
 import {
   AddCategoryForm,
@@ -37,44 +38,16 @@ export function AdminPageContent({ categories, links }: AdminPageContentProps) {
       link.description?.toLowerCase().includes(trimmedSearchTerm.toLowerCase()),
   );
 
+  const tabs = [
+    { id: 'manage', label: 'Manage' },
+    { id: 'import', label: 'Bulk Import' },
+    { id: 'submissions', label: 'Submissions' },
+    { id: 'analytics', label: 'Analytics' },
+  ];
+
   return (
     <>
-      <div className='mb-6 flex flex-wrap gap-2 border-b pb-4'>
-        <button
-          onClick={() => setActiveTab('manage')}
-          className={`px-4 py-2 rounded ${
-            activeTab === 'manage' ? 'bg-blue-600 text-white' : 'bg-gray-200'
-          }`}
-        >
-          Manage
-        </button>
-        <button
-          onClick={() => setActiveTab('import')}
-          className={`px-4 py-2 rounded ${
-            activeTab === 'import' ? 'bg-blue-600 text-white' : 'bg-gray-200'
-          }`}
-        >
-          Bulk Import
-        </button>
-        <button
-          onClick={() => setActiveTab('submissions')}
-          className={`px-4 py-2 rounded ${
-            activeTab === 'submissions'
-              ? 'bg-blue-600 text-white'
-              : 'bg-gray-200'
-          }`}
-        >
-          Submissions
-        </button>
-        <button
-          onClick={() => setActiveTab('analytics')}
-          className={`px-4 py-2 rounded ${
-            activeTab === 'analytics' ? 'bg-blue-600 text-white' : 'bg-gray-200'
-          }`}
-        >
-          Analytics
-        </button>
-      </div>
+      <TabBar tabs={tabs} activeTab={activeTab} onTabChange={(id) => setActiveTab(id as typeof activeTab)} />
 
       {activeTab === 'manage' && (
         <>
