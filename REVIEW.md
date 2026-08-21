@@ -73,14 +73,8 @@ Created `fetchAdminApi<T>(url, options?)` in `lib/fetch-with-retry.ts` — fetch
 
 ---
 
-## 14. Empty State with Heart Icon in Favorites
-
-**Single location but notable:**
-- `components/favorites-client.tsx` (lines 188-207)
-
-**Pattern:** Shows a heart icon, "No favorites yet" message, description, and a "Browse resources" CTA button. This is similar to `EmptyState` component but with different content and styling.
-
-**Recommendation:** Consider extending `EmptyState` to accept an optional `icon`, `actionLabel`, and `actionHref` props to unify the two empty state patterns.
+## 14. Empty State with Heart Icon in Favorites ✅
+Extended `EmptyState` component with optional `icon` (ReactNode), `actionLabel` (string), and `actionHref` (string) props. Updated `components/favorites-client.tsx` to use the unified `<EmptyState>` component instead of its own inline empty state, eliminating the duplicate pattern.
 
 ---
 

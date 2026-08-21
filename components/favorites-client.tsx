@@ -13,6 +13,36 @@ import { LinkGrid } from '@/components/link-grid';
 import { PageLayout } from '@/components/page-layout';
 import { getStoredFavorites } from '@/lib/favorites-storage';
 
+/**
+ * Client-side empty state with icon and action button.
+ * Used instead of server-rendered EmptyState in client components.
+ */
+function FavoritesEmptyState() {
+  return (
+    <div className='flex flex-col items-center justify-center py-16 px-4 animate-fade-in'>
+      <div className='relative mb-6'>
+        <div className='w-20 h-20 rounded-2xl bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-700 flex items-center justify-center'>
+          <Heart className='w-8 h-8 text-slate-400' />
+        </div>
+      </div>
+      <h3 className='text-lg font-semibold text-slate-700 dark:text-slate-300 mb-1'>
+        No favorites yet
+      </h3>
+      <p className='text-sm text-slate-500 dark:text-slate-400 text-center max-w-sm'>
+        Start exploring and save your favorite design resources by
+        clicking the heart icon on any resource card.
+      </p>
+      <Link
+        href='/'
+        className='mt-6 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-slate-800 dark:hover:text-slate-100 h-10 px-4 py-2'
+      >
+        <ArrowRight className='w-4 h-4 mr-2' />
+        Browse resources
+      </Link>
+    </div>
+  );
+}
+
 export function FavoritesClient() {
   const [, setFavoriteIds] = useState<Set<string>>(new Set());
   const [favoriteLinks, setFavoriteLinks] = useState<LinkType[]>([]);
@@ -218,25 +248,7 @@ export function FavoritesClient() {
 
         {/* Content */}
         {favoriteLinks.length === 0 ? (
-          <div className='text-center py-16 animate-fade-in'>
-            <div className='inline-flex items-center justify-center w-16 h-16 rounded-full bg-slate-100 dark:bg-slate-800 mb-4'>
-              <Heart className='w-8 h-8 text-slate-400' />
-            </div>
-            <h2 className='text-xl font-semibold text-slate-900 dark:text-slate-100 mb-2'>
-              No favorites yet
-            </h2>
-            <p className='text-slate-500 dark:text-slate-400 max-w-md mx-auto mb-6'>
-              Start exploring and save your favorite design resources by
-              clicking the heart icon on any resource card.
-            </p>
-            <Link
-              href='/'
-              className='inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-slate-800 dark:hover:text-slate-100 h-10 px-4 py-2'
-            >
-              <ArrowRight className='w-4 h-4 mr-2' />
-              Browse resources
-            </Link>
-          </div>
+          <FavoritesEmptyState />
         ) : (
           <LinkGrid view={viewMode}>
             {favoriteLinks.map((link, index) => (

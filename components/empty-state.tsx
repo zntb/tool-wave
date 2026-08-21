@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Search, ExternalLink } from 'lucide-react';
+import { Search, ExternalLink, ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { getPopularResources } from '@/lib/analytics';
 import type { PopularResource } from '@/lib/types';
@@ -9,6 +9,12 @@ interface EmptyStateProps {
   description?: string;
   query?: string;
   className?: string;
+  /** Custom icon element (overrides default Search icon) */
+  icon?: React.ReactNode;
+  /** CTA button label (hides button if not provided) */
+  actionLabel?: string;
+  /** CTA button href */
+  actionHref?: string;
 }
 
 async function PopularSuggestions() {
@@ -64,7 +70,12 @@ export async function EmptyState({
   description,
   query,
   className,
+  icon,
+  actionLabel,
+  actionHref,
 }: EmptyStateProps) {
+  const showAction = actionLabel && actionHref;
+
   return (
     <div
       className={cn(
@@ -75,11 +86,13 @@ export async function EmptyState({
       {/* Illustration */}
       <div className='relative mb-6'>
         <div className='w-20 h-20 rounded-2xl bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-700 flex items-center justify-center'>
-          <Search className='w-8 h-8 text-slate-300 dark:text-slate-500' />
+          {icon || <Search className='w-8 h-8 text-slate-300 dark:text-slate-500' />}
         </div>
-        <div className='absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-gradient-to-br from-cyan-400 to-blue-500 flex items-center justify-center'>
-          <span className='text-white text-xs font-bold'>?</span>
-        </div>
+        {!icon && (
+          <div className='absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-gradient-to-br from-cyan-400 to-blue-500 flex items-center justify-center'>
+            <span className='text-white text-xs font-bold'>?</span>
+          </div>
+        )}
       </div>
 
       {/* Message */}
@@ -97,8 +110,19 @@ export async function EmptyState({
         </p>
       )}
 
-      {/* Popular resource suggestions */}
-      <PopularSuggestions />
+      {/* CTA button */}
+      {showAction && (
+        <Link
+          href={actionHref!}
+          className='mt-6 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-slate-800 dark:hover:text-slate-100 h-10 px-4 py-2'
+        >
+          <ArrowRight className='w-4 h-4 mr-2' />
+          {actionLabel}
+        </Link>
+      )}
+
+      {/* Popular resource suggestions (only when no custom action) */}
+      {!showAction && <PopularSuggestions />}
     </div>
   );
 }
