@@ -6,9 +6,28 @@ import {
   deleteResourceSubmission,
 } from '@/lib/analytics';
 import { getCurrentAdminEmail } from '@/lib/admin-auth';
+import { checkRateLimit } from '@/lib/rate-limit';
 
 // Create a new resource submission (public endpoint)
 export async function POST(request: NextRequest) {
+  const rateLimit = checkRateLimit(request, {
+    keyPrefix: 'submission',
+    maxRequests: 5,
+    windowMs: 60 * 1000, // 5 requests per minute
+  });
+
+  if (!rateLimit.allowed) {
+    return NextResponse.json(
+      { error: 'Too many requests. Please try again later.' },
+      {
+        status: 429,
+        headers: {
+          'X-RateLimit-Remaining': '0',
+          'Retry-After': String(Math.ceil(rateLimit.retryAfterMs / 1000)),
+        },
+      },
+    );
+  }
   try {
     const data = await request.json();
 
