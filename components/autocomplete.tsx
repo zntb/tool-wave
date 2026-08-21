@@ -1,6 +1,7 @@
 ﻿'use client';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { useClickOutside } from '@/lib/hooks/use-click-outside';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Search, Loader2 } from 'lucide-react';
 import Image from 'next/image';
@@ -78,19 +79,9 @@ export function Autocomplete({
   }, [query, categorySlug]);
 
   // Close suggestions when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        containerRef.current &&
-        !containerRef.current.contains(event.target as Node)
-      ) {
-        setIsOpen(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+  useClickOutside(containerRef, useCallback(() => {
+    setIsOpen(false);
+  }, []));
 
   const handleSubmit = useCallback(
     (e: React.FormEvent) => {

@@ -38,24 +38,9 @@ This document lists duplicate code patterns across the codebase that could be re
 
 ## 5. Click-Outside Handler Pattern
 
-**Duplicate locations:**
-- `components/autocomplete.tsx` (lines 91-101)
-- `components/share-buttons.tsx` (lines 112-123)
+**Status:** ✅ RESOLVED
 
-**Similar pattern:**
-```ts
-useEffect(() => {
-  const handleClickOutside = (event: MouseEvent) => {
-    if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
-      setIsOpen(false);
-    }
-  };
-  document.addEventListener('mousedown', handleClickOutside);
-  return () => document.removeEventListener('mousedown', handleClickOutside);
-}, []);
-```
-
-**Recommendation:** Create a `useClickOutside(ref, callback)` hook in `lib/hooks/`.
+**Resolution:** Created `lib/hooks/use-click-outside.ts` with a reusable `useClickOutside(refs, handler, enabled?)` hook. Updated `components/autocomplete.tsx` (single ref, always active) and `components/share-buttons.tsx` (two refs, conditionally active) to use the shared hook.
 
 ---
 
@@ -301,7 +286,7 @@ onSearch={query => {
 | 2 | `ViewMode` type | 7 | Medium | ✅ RESOLVED |
 | 3 | `SortOrder` type | 4 | Medium | ✅ RESOLVED |
 | 4 | `StoredFavorite` / storage key | 2 | High | ✅ RESOLVED |
-| 5 | Click-outside hook | 2 | Medium |
+| 5 | Click-outside hook | 2 | Medium | ✅ RESOLVED |
 | 6 | Copy-to-clipboard hook | 2 | Medium |
 | 7 | Background pattern | 5 | Medium |
 | 8 | Footer component | 4 | **High** |

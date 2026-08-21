@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useCallback } from 'react';
+import { useClickOutside } from '@/lib/hooks/use-click-outside';
 import { createPortal } from 'react-dom';
 import { Share2, Mail, Link2, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -108,21 +109,13 @@ export function ShareButtons({
   const menuRef = useRef<HTMLDivElement>(null);
 
   // Close menu when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (containerRef.current && !containerRef.current.contains(event.target as Node) && menuRef.current && !menuRef.current.contains(event.target as Node)) {
-        setShowShareMenu(false);
-      }
-    };
-
-    if (showShareMenu) {
-      document.addEventListener('mousedown', handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [showShareMenu]);
+  useClickOutside(
+    [containerRef, menuRef],
+    useCallback(() => {
+      setShowShareMenu(false);
+    }, []),
+    showShareMenu,
+  );
 
   const handleShare = async (e: React.MouseEvent) => {
     e.stopPropagation();
