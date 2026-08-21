@@ -12,6 +12,9 @@ import { POST, GET, PATCH, DELETE } from '../route';
 // Mock the dependencies
 jest.mock('@/lib/analytics');
 jest.mock('@/lib/admin-auth');
+jest.mock('@/lib/csrf', () => ({
+  requireCsrfToken: jest.fn().mockResolvedValue(true),
+}));
 
 const mockCreateResourceSubmission =
   createResourceSubmission as jest.MockedFunction<

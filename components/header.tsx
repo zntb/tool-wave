@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { FavoritesButton } from '@/components/favorites-button';
 import { ThemeToggle } from '@/components/theme-toggle';
+import { useCsrfHeaders } from '@/lib/hooks/use-csrf-token';
 import { Autocomplete } from '@/components/autocomplete';
 import { MobileNavDrawer } from '@/components/mobile-nav-drawer';
 
@@ -21,6 +22,7 @@ export function Header({ className }: HeaderProps) {
   const [isAdmin, setIsAdmin] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { getHeaders } = useCsrfHeaders();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -54,6 +56,7 @@ export function Header({ className }: HeaderProps) {
     await fetch('/api/admin/logout', {
       method: 'POST',
       credentials: 'include',
+      headers: getHeaders(),
     });
     setIsAdmin(false);
     router.push('/');

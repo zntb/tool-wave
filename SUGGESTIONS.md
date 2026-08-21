@@ -81,8 +81,8 @@ Audited all icon-only buttons and added missing `title` attributes: Mobile Menu 
 
 ## 🔒 Safety & Security
 
-### 1. CSRF Protection
-Admin actions (create, update, delete) are protected by session cookies but lack explicit CSRF tokens. Add a CSRF token header to server actions or use `SameSite=Strict` cookies.
+### 1. CSRF Protection ✅
+Two-layer defense: (1) Changed admin session cookie from `SameSite=lax` to `SameSite=strict`, preventing cross-origin requests from sending the cookie. (2) Added HMAC-based CSRF token validation to admin API routes (`PATCH /api/submissions`, `DELETE /api/submissions`, `POST /api/admin/logout`). Token generated on login, validated via `x-csrf-token` header.
 
 ### 2. Rate Limiting on API Routes
 The submission endpoint (`/api/submissions`) and autocomplete (`/api/suggestions`) have no rate limiting. Add per-IP rate limits (e.g., 10 req/min for submissions, 30 req/min for suggestions).

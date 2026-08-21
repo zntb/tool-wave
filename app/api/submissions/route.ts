@@ -7,6 +7,7 @@ import {
 } from '@/lib/analytics';
 import { getCurrentAdminEmail } from '@/lib/admin-auth';
 import { checkRateLimit } from '@/lib/rate-limit';
+import { requireCsrfToken } from '@/lib/csrf';
 
 // Create a new resource submission (public endpoint)
 export async function POST(request: NextRequest) {
@@ -106,6 +107,9 @@ export async function PATCH(request: NextRequest) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
+  const csrfResult = await requireCsrfToken(request);
+  if (csrfResult !== true) return csrfResult;
+
   try {
     const data = await request.json();
 
@@ -151,6 +155,9 @@ export async function DELETE(request: NextRequest) {
   if (!adminEmail) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
+
+  const csrfResult = await requireCsrfToken(request);
+  if (csrfResult !== true) return csrfResult;
 
   const { searchParams } = new URL(request.url);
   const id = searchParams.get('id');

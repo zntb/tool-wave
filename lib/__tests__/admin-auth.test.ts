@@ -110,7 +110,7 @@ describe('admin-auth', () => {
         '',
         expect.objectContaining({
           httpOnly: true,
-          sameSite: 'lax',
+          sameSite: 'strict',
           path: '/',
           maxAge: 0,
         }),

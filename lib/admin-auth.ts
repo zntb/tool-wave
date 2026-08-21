@@ -46,7 +46,20 @@ export async function createAdminSession(email: string): Promise<void> {
 
   cookieStore.set(ADMIN_SESSION_COOKIE, `${normalizedEmail}:${signature}`, {
     httpOnly: true,
-    sameSite: 'lax',
+    sameSite: 'strict',
+    secure: isProduction,
+    path: '/',
+    maxAge: SESSION_MAX_AGE_SECONDS,
+  });
+
+  // Generate CSRF token for API requests
+  const hmac = createHmac('sha256', getSessionSecret());
+  hmac.update(`${normalizedEmail}:${signature}`);
+  const csrfToken = hmac.digest('hex');
+
+  cookieStore.set('csrf_token', csrfToken, {
+    httpOnly: false,
+    sameSite: 'strict',
     secure: isProduction,
     path: '/',
     maxAge: SESSION_MAX_AGE_SECONDS,
@@ -63,7 +76,7 @@ export async function clearAdminSession(): Promise<void> {
   // but with an empty value and past expiration date
   cookieStore.set(ADMIN_SESSION_COOKIE, '', {
     httpOnly: true,
-    sameSite: 'lax',
+    sameSite: 'strict',
     secure: isProduction,
     path: '/',
     maxAge: 0,
