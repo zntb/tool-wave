@@ -8,6 +8,7 @@ import {
   ImportResult,
 } from './types';
 import { prisma } from './db';
+import { sanitizeString, sanitizeOptional } from './sanitize';
 
 // Analytics functions
 export async function getPopularResources(
@@ -227,11 +228,17 @@ export async function bulkImportResources(
 
   for (const resource of resources) {
     try {
+      // Sanitize user input
+      const title = sanitizeString(resource.title);
+      const description = sanitizeOptional(resource.description);
+      const icon = sanitizeOptional(resource.icon);
+      const categoryName = sanitizeString(resource.category);
+
       // Find or create category
       let category = await prisma.category.findFirst({
         where: {
           name: {
-            equals: resource.category,
+            equals: categoryName,
             mode: 'insensitive',
           },
         },
@@ -243,8 +250,8 @@ export async function bulkImportResources(
 
         category = await prisma.category.create({
           data: {
-            name: resource.category,
-            slug: resource.category.toLowerCase().replace(/\s+/g, '-'),
+            name: categoryName,
+            slug: categoryName.toLowerCase().replace(/\s+/g, '-'),
             order: newOrder,
           },
         });
@@ -253,10 +260,10 @@ export async function bulkImportResources(
       // Create link
       await prisma.link.create({
         data: {
-          title: resource.title,
+          title,
           url: resource.url,
-          description: resource.description,
-          icon: resource.icon,
+          description,
+          icon,
           categoryId: category.id,
         },
       });

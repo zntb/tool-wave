@@ -32,6 +32,7 @@ import {
 } from '@/lib/data';
 import { revalidatePath } from 'next/cache';
 import { getCurrentAdminEmail } from '@/lib/admin-auth';
+import { sanitizeString, sanitizeOptional } from '@/lib/sanitize';
 import {
   addLinkToResourcesMD,
   addCategoryToResourcesMD,
@@ -96,10 +97,10 @@ export async function createCategory(
   try {
     await ensureAdmin();
     const data = {
-      name: formData.get('name') as string,
-      description: formData.get('description') || undefined,
-      icon: formData.get('icon') || undefined,
-      color: formData.get('color') || undefined,
+      name: sanitizeString(formData.get('name') as string),
+      description: sanitizeOptional(formData.get('description') as string),
+      icon: sanitizeOptional(formData.get('icon') as string),
+      color: sanitizeOptional(formData.get('color') as string),
     };
 
     const validated = categorySchema.parse(data);
@@ -132,10 +133,10 @@ export async function updateCategoryAction(
     await ensureAdmin();
     const data = {
       id: formData.get('id') as string,
-      name: formData.get('name') || undefined,
-      description: formData.get('description') || undefined,
-      icon: formData.get('icon') || undefined,
-      color: formData.get('color') || undefined,
+      name: formData.get('name') ? sanitizeString(formData.get('name') as string) : undefined,
+      description: sanitizeOptional(formData.get('description') as string),
+      icon: sanitizeOptional(formData.get('icon') as string),
+      color: sanitizeOptional(formData.get('color') as string),
     };
 
     const validated = updateCategorySchema.parse(data);
@@ -210,10 +211,10 @@ export async function createLink(
   try {
     await ensureAdmin();
     const data = {
-      title: formData.get('title') as string,
+      title: sanitizeString(formData.get('title') as string),
       url: formData.get('url') as string,
-      description: formData.get('description') || undefined,
-      icon: formData.get('icon') || undefined,
+      description: sanitizeOptional(formData.get('description') as string),
+      icon: sanitizeOptional(formData.get('icon') as string),
       categoryId: formData.get('categoryId') as string,
     };
 
@@ -257,10 +258,10 @@ export async function updateLinkAction(
     await ensureAdmin();
     const data = {
       id: formData.get('id') as string,
-      title: formData.get('title') || undefined,
+      title: formData.get('title') ? sanitizeString(formData.get('title') as string) : undefined,
       url: formData.get('url') || undefined,
-      description: formData.get('description') || undefined,
-      icon: formData.get('icon') || undefined,
+      description: sanitizeOptional(formData.get('description') as string),
+      icon: sanitizeOptional(formData.get('icon') as string),
       categoryId: formData.get('categoryId') as string,
     };
 

@@ -87,8 +87,8 @@ Two-layer defense: (1) Changed admin session cookie from `SameSite=lax` to `Same
 ### 2. Rate Limiting on API Routes
 The submission endpoint (`/api/submissions`) and autocomplete (`/api/suggestions`) have no rate limiting. Add per-IP rate limits (e.g., 10 req/min for submissions, 30 req/min for suggestions).
 
-### 3. Input Sanitization
-The submission form accepts user-generated content (title, description). Sanitize HTML entities and strip any `<script>` tags to prevent stored XSS, even though React escapes output by default.
+### 3. Input Sanitization ✅
+Created `lib/sanitize.ts` with `sanitizeString()` and `sanitizeOptional()` helpers that strip `<script>` tags, event handlers (`onclick`, `onerror`, etc.), and `javascript:` URIs. Applied to all user input fields in `POST /api/submissions`, `app/actions.ts` (create/update category and link), and `lib/analytics.ts` (bulk import).
 
 ### 4. Content Security Policy
 Add a CSP header via `next.config.ts` or middleware to restrict script sources, prevent inline scripts, and block loading resources from untrusted origins.

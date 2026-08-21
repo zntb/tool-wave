@@ -8,6 +8,7 @@ import {
 import { getCurrentAdminEmail } from '@/lib/admin-auth';
 import { checkRateLimit } from '@/lib/rate-limit';
 import { requireCsrfToken } from '@/lib/csrf';
+import { sanitizeString, sanitizeOptional } from '@/lib/sanitize';
 
 // Create a new resource submission (public endpoint)
 export async function POST(request: NextRequest) {
@@ -41,13 +42,13 @@ export async function POST(request: NextRequest) {
     }
 
     const submission = await createResourceSubmission({
-      title: data.title,
+      title: sanitizeString(data.title),
       url: data.url,
-      description: data.description,
-      icon: data.icon,
-      category: data.category,
-      submitter: data.submitter,
-      email: data.email,
+      description: sanitizeOptional(data.description),
+      icon: sanitizeOptional(data.icon),
+      category: sanitizeOptional(data.category),
+      submitter: sanitizeOptional(data.submitter),
+      email: sanitizeOptional(data.email),
     });
 
     return NextResponse.json(
