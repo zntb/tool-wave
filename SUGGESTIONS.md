@@ -52,8 +52,8 @@ Created `lib/env.ts` with Zod schema validating `DATABASE_URL` (MongoDB URL form
 ### 6. Request Size Limits
 The bulk import endpoint accepts JSON without a size limit. Add a max body size (e.g., 1 MB) to prevent abuse.
 
-### 7. Database Connection Health Check
-Add a `/api/health` endpoint that verifies the database connection is alive. Useful for uptime monitoring.
+### 7. Database Connection Health Check ✅
+Added `GET /api/health` endpoint that runs a lightweight Prisma query (`findFirst` on Link table) to verify database connectivity. Returns `200 { status: 'healthy', database: 'connected' }` on success, `503 { status: 'unhealthy', database: 'disconnected', error }` on failure. Useful for uptime monitoring and deployment health checks.
 
 ---
 
