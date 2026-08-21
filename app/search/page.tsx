@@ -2,7 +2,7 @@ import { Suspense } from 'react';
 import type { Metadata } from 'next';
 import { searchLinksAction, getCategoriesAction } from '../actions';
 import { LinkCard } from '@/components/link-card';
-import { NavSkeleton, LoadingState } from '@/components/skeletons';
+import { LoadingState } from '@/components/skeletons';
 import { CategoriesNav } from '@/components/category-nav-server';
 import { ViewToggleWrapper } from '@/components/view-toggle';
 import type { Link as LinkType, ViewMode } from '@/lib/types';
@@ -161,9 +161,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
 
       {/* Category Navigation */}
       <div className='mb-8'>
-        <Suspense fallback={<NavSkeleton />}>
-          <CategoriesNav />
-        </Suspense>
+        <CategoriesNav />
       </div>
 
       {/* View Toggle */}

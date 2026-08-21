@@ -11,7 +11,7 @@ import { ViewToggle } from '@/components/view-toggle';
 import { SortDropdown } from '@/components/sort-dropdown';
 import { LinkCard } from '@/components/link-card';
 import { SearchInput } from '@/components/search-input';
-import { NavSkeleton, LoadingState } from '@/components/skeletons';
+import { LoadingState } from '@/components/skeletons';
 
 import { BreadcrumbJsonLd } from '@/components/json-ld';
 import { Breadcrumbs } from '@/components/breadcrumbs';
@@ -189,9 +189,7 @@ export default async function CategoryPage({
 
         {/* Category Navigation */}
         <div className='mb-12'>
-          <Suspense fallback={<NavSkeleton />}>
-            <CategoriesNav />
-          </Suspense>
+          <CategoriesNav />
         </div>
 
         {/* Category Content */}

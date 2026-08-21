@@ -14,24 +14,8 @@ Created `components/page-layout.tsx` — a reusable `<PageLayout>` component tha
 
 ---
 
-## 3. CategoriesNav Suspense Wrapper
-
-**Duplicate locations (4 occurrences):**
-- `app/page.tsx` (lines 187-191)
-- `app/[slug]/page.tsx` (lines 192-196)
-- `app/[slug]/search/page.tsx` (lines 170-174)
-- `app/search/page.tsx` (lines 156-160)
-
-**Identical pattern:**
-```tsx
-<div className='mb-8 animate-fade-in'>
-  <Suspense fallback={<NavSkeleton />}>
-    <CategoriesNav />
-  </Suspense>
-</div>
-```
-
-**Recommendation:** The `CategoriesNav` server component in `components/category-nav-server.tsx` already wraps `CategoryNav`. Consider moving the Suspense boundary into `CategoriesNav` itself, or create a `<CategoriesNavSection>` wrapper.
+## 3. CategoriesNav Suspense Wrapper ✅
+Moved the `<Suspense fallback={<NavSkeleton />}>` boundary into `CategoriesNav` in `components/category-nav-server.tsx`. The component now self-contains its loading state. All 4 pages now just use `<CategoriesNav />` without wrapping it. Removed unused `NavSkeleton` imports from all 4 pages.
 
 ---
 
@@ -291,7 +275,7 @@ try {
 |---|-------|-------------|--------|
 | 1 | Search params parsing ✅ | 4× | Boilerplate reduction |
 | 2 | Page layout wrapper ✅ | 5× | Consistent layout, easy global changes |
-| 3 | CategoriesNav Suspense | 4× | Boilerplate reduction |
+| 3 | CategoriesNav Suspense ✅ | 4× | Boilerplate reduction |
 | 4 | View + Sort controls | 2× | Component cohesion |
 | 5 | Pagination URL builder | 3× | DRY utility |
 | 6 | Server action error handling | 8× | Consistent error responses |

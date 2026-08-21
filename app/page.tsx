@@ -9,7 +9,7 @@ import { CategoriesNav } from '@/components/category-nav-server';
 import { ViewToggleWrapper } from '@/components/view-toggle';
 import { SortDropdown } from '@/components/sort-dropdown';
 import { LinkCard } from '@/components/link-card';
-import { LinkGridSkeleton, NavSkeleton } from '@/components/skeletons';
+import { LinkGridSkeleton } from '@/components/skeletons';
 import { LinkGrid } from '@/components/link-grid';
 import { PageLayout } from '@/components/page-layout';
 import type { ViewMode, SortOrder } from '@/lib/types';
@@ -181,11 +181,9 @@ export default async function HomePage({ searchParams }: HomePageProps) {
         <StatsDisplay />
       </header>
 
-      {/* Category Navigation with Suspense */}
+      {/* Category Navigation */}
       <div className='mb-8 animate-fade-in'>
-        <Suspense fallback={<NavSkeleton />}>
-          <CategoriesNav />
-        </Suspense>
+        <CategoriesNav />
       </div>
 
       {/* View Toggle and Sort */}
