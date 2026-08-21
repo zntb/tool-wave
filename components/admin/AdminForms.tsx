@@ -19,6 +19,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
+import { FormToastHandler } from '@/components/admin/FormToastHandler';
 
 interface CategoriesProps {
   categories: Category[];
@@ -55,6 +56,7 @@ function FormButton({
   );
 }
 
+
 // Category Update Modal Component
 function CategoryUpdateModal({
   category,
@@ -63,21 +65,7 @@ function CategoryUpdateModal({
   category: Category;
   onUpdate: () => void;
 }) {
-  const [isPending, startTransition] = useTransition();
   const [open, setOpen] = useState(false);
-
-  const handleUpdate = async (formData: FormData) => {
-    startTransition(async () => {
-      const result = await updateCategoryAction(formData);
-      if (result.success) {
-        toast.success('Category updated successfully');
-        setOpen(false);
-        onUpdate();
-      } else {
-        toast.error(result.error || 'Failed to update category');
-      }
-    });
-  };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -90,48 +78,56 @@ function CategoryUpdateModal({
         <DialogHeader>
           <DialogTitle>Update Category</DialogTitle>
         </DialogHeader>
-        <form action={handleUpdate} className='grid gap-4'>
-          <input type='hidden' name='id' value={category.id} />
-          <div>
-            <label className='block text-sm font-medium mb-1'>Name</label>
-            <input
-              name='name'
-              defaultValue={category.name}
-              required
-              className='w-full rounded border px-3 py-2'
-            />
-          </div>
-          <div>
-            <label className='block text-sm font-medium mb-1'>
-              Description
-            </label>
-            <input
-              name='description'
-              defaultValue={category.description ?? ''}
-              className='w-full rounded border px-3 py-2'
-            />
-          </div>
-          <div>
-            <label className='block text-sm font-medium mb-1'>Icon</label>
-            <input
-              name='icon'
-              defaultValue={category.icon ?? ''}
-              placeholder='Emoji or image URL (e.g., https://example.com/icon.png)'
-              className='w-full rounded border px-3 py-2'
-            />
-          </div>
-          <div>
-            <label className='block text-sm font-medium mb-1'>Color</label>
-            <input
-              name='color'
-              defaultValue={category.color ?? ''}
-              className='w-full rounded border px-3 py-2'
-            />
-          </div>
-          <Button type='submit' disabled={isPending}>
-            {isPending ? 'Processing...' : 'Update Category'}
-          </Button>
-        </form>
+        <FormToastHandler
+          action={updateCategoryAction}
+          successMessage='Category updated successfully'
+          onSuccess={() => { setOpen(false); onUpdate(); }}
+        >
+          {({ isPending }) => (
+            <div className='grid gap-4'>
+              <input type='hidden' name='id' value={category.id} />
+              <div>
+                <label className='block text-sm font-medium mb-1'>Name</label>
+                <input
+                  name='name'
+                  defaultValue={category.name}
+                  required
+                  className='w-full rounded border px-3 py-2'
+                />
+              </div>
+              <div>
+                <label className='block text-sm font-medium mb-1'>
+                  Description
+                </label>
+                <input
+                  name='description'
+                  defaultValue={category.description ?? ''}
+                  className='w-full rounded border px-3 py-2'
+                />
+              </div>
+              <div>
+                <label className='block text-sm font-medium mb-1'>Icon</label>
+                <input
+                  name='icon'
+                  defaultValue={category.icon ?? ''}
+                  placeholder='Emoji or image URL (e.g., https://example.com/icon.png)'
+                  className='w-full rounded border px-3 py-2'
+                />
+              </div>
+              <div>
+                <label className='block text-sm font-medium mb-1'>Color</label>
+                <input
+                  name='color'
+                  defaultValue={category.color ?? ''}
+                  className='w-full rounded border px-3 py-2'
+                />
+              </div>
+              <Button type='submit' disabled={isPending}>
+                {isPending ? 'Processing...' : 'Update Category'}
+              </Button>
+            </div>
+          )}
+        </FormToastHandler>
       </DialogContent>
     </Dialog>
   );
@@ -148,7 +144,7 @@ function CategoryDeleteModal({
   const [isPending, startTransition] = useTransition();
   const [open, setOpen] = useState(false);
 
-  const handleDelete = async () => {
+  const handleDelete = () => {
     startTransition(async () => {
       const formData = new FormData();
       formData.append('id', category.id);
@@ -255,21 +251,7 @@ function LinkUpdateModal({
   categories: Category[];
   onUpdate: () => void;
 }) {
-  const [isPending, startTransition] = useTransition();
   const [open, setOpen] = useState(false);
-
-  const handleUpdate = async (formData: FormData) => {
-    startTransition(async () => {
-      const result = await updateLinkAction(formData);
-      if (result.success) {
-        toast.success('Link updated successfully');
-        setOpen(false);
-        onUpdate();
-      } else {
-        toast.error(result.error || 'Failed to update link');
-      }
-    });
-  };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -282,65 +264,73 @@ function LinkUpdateModal({
         <DialogHeader>
           <DialogTitle>Update Link</DialogTitle>
         </DialogHeader>
-        <form action={handleUpdate} className='grid gap-4'>
-          <input type='hidden' name='id' value={link.id} />
-          <div>
-            <label className='block text-sm font-medium mb-1'>Title</label>
-            <input
-              name='title'
-              defaultValue={link.title}
-              required
-              className='w-full rounded border px-3 py-2'
-            />
-          </div>
-          <div>
-            <label className='block text-sm font-medium mb-1'>URL</label>
-            <input
-              name='url'
-              defaultValue={link.url}
-              required
-              className='w-full rounded border px-3 py-2'
-            />
-          </div>
-          <div>
-            <label className='block text-sm font-medium mb-1'>
-              Description
-            </label>
-            <input
-              name='description'
-              defaultValue={link.description ?? ''}
-              className='w-full rounded border px-3 py-2'
-            />
-          </div>
-          <div>
-            <label className='block text-sm font-medium mb-1'>Icon</label>
-            <input
-              name='icon'
-              defaultValue={link.icon ?? ''}
-              placeholder='Emoji or image URL (e.g., https://example.com/icon.png)'
-              className='w-full rounded border px-3 py-2'
-            />
-          </div>
-          <div>
-            <label className='block text-sm font-medium mb-1'>Category</label>
-            <select
-              name='categoryId'
-              defaultValue={link.categoryId}
-              required
-              className='w-full rounded border px-3 py-2'
-            >
-              <option value=''>Select a category</option>
-              {categories.map(category => (
-                <option key={category.id} value={category.id}>
-                  {category.name}
-                </option>
-              ))}
-            </select>
-          </div>
-          <Button type='submit' disabled={isPending}>
-            {isPending ? 'Processing...' : 'Update Link'}
-          </Button>
-        </form>
+        <FormToastHandler
+          action={updateLinkAction}
+          successMessage='Link updated successfully'
+          onSuccess={() => { setOpen(false); onUpdate(); }}
+        >
+          {({ isPending }) => (
+            <div className='grid gap-4'>
+              <input type='hidden' name='id' value={link.id} />
+              <div>
+                <label className='block text-sm font-medium mb-1'>Title</label>
+                <input
+                  name='title'
+                  defaultValue={link.title}
+                  required
+                  className='w-full rounded border px-3 py-2'
+                />
+              </div>
+              <div>
+                <label className='block text-sm font-medium mb-1'>URL</label>
+                <input
+                  name='url'
+                  defaultValue={link.url}
+                  required
+                  className='w-full rounded border px-3 py-2'
+                />
+              </div>
+              <div>
+                <label className='block text-sm font-medium mb-1'>
+                  Description
+                </label>
+                <input
+                  name='description'
+                  defaultValue={link.description ?? ''}
+                  className='w-full rounded border px-3 py-2'
+                />
+              </div>
+              <div>
+                <label className='block text-sm font-medium mb-1'>Icon</label>
+                <input
+                  name='icon'
+                  defaultValue={link.icon ?? ''}
+                  placeholder='Emoji or image URL (e.g., https://example.com/icon.png)'
+                  className='w-full rounded border px-3 py-2'
+                />
+              </div>
+              <div>
+                <label className='block text-sm font-medium mb-1'>Category</label>
+                <select
+                  name='categoryId'
+                  defaultValue={link.categoryId}
+                  required
+                  className='w-full rounded border px-3 py-2'
+                >
+                  <option value=''>Select a category</option>
+                  {categories.map(category => (
+                    <option key={category.id} value={category.id}>
+                      {category.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <Button type='submit' disabled={isPending}>
+                {isPending ? 'Processing...' : 'Update Link'}
+              </Button>
+            </div>
+          )}
+        </FormToastHandler>
       </DialogContent>
     </Dialog>
   );
@@ -357,7 +347,7 @@ function LinkDeleteModal({
   const [isPending, startTransition] = useTransition();
   const [open, setOpen] = useState(false);
 
-  const handleDelete = async () => {
+  const handleDelete = () => {
     startTransition(async () => {
       const formData = new FormData();
       formData.append('id', link.id);
@@ -454,108 +444,92 @@ export function Links({ categories, links }: LinksProps) {
 }
 
 export function AddCategoryForm() {
-  const [isPending, startTransition] = useTransition();
-
-  const handleSubmit = async (formData: FormData) => {
-    startTransition(async () => {
-      const result = await createCategory(formData);
-      if (result.success) {
-        toast.success('Category created successfully');
-      } else {
-        toast.error(result.error || 'Failed to create category');
-      }
-    });
-  };
-
   return (
-    <form
-      action={handleSubmit}
+    <FormToastHandler
+      action={createCategory}
+      successMessage='Category created successfully'
       className='grid gap-2 rounded border p-4 md:grid-cols-2'
     >
-      <input
-        name='name'
-        placeholder='Name'
-        required
-        className='rounded border px-3 py-2'
-      />
-      <input
-        name='description'
-        placeholder='Description'
-        className='rounded border px-3 py-2'
-      />
-      <input
-        name='icon'
-        placeholder='Emoji or image URL (e.g., https://example.com/icon.png)'
-        className='rounded border px-3 py-2'
-      />
-      <input
-        name='color'
-        placeholder='Color'
-        className='rounded border px-3 py-2'
-      />
-      <FormButton isPending={isPending} className='md:col-span-2'>
-        Create Category
-      </FormButton>
-    </form>
+      {({ isPending }) => (
+        <>
+          <input
+            name='name'
+            placeholder='Name'
+            required
+            className='rounded border px-3 py-2'
+          />
+          <input
+            name='description'
+            placeholder='Description'
+            className='rounded border px-3 py-2'
+          />
+          <input
+            name='icon'
+            placeholder='Emoji or image URL (e.g., https://example.com/icon.png)'
+            className='rounded border px-3 py-2'
+          />
+          <input
+            name='color'
+            placeholder='Color'
+            className='rounded border px-3 py-2'
+          />
+          <FormButton isPending={isPending} className='md:col-span-2'>
+            Create Category
+          </FormButton>
+        </>
+      )}
+    </FormToastHandler>
   );
 }
 
 export function AddLinkForm({ categories }: AddLinkFormProps) {
-  const [isPending, startTransition] = useTransition();
-
-  const handleSubmit = async (formData: FormData) => {
-    startTransition(async () => {
-      const result = await createLink(formData);
-      if (result.success) {
-        toast.success('Link created successfully');
-      } else {
-        toast.error(result.error || 'Failed to create link');
-      }
-    });
-  };
-
   return (
-    <form
-      action={handleSubmit}
+    <FormToastHandler
+      action={createLink}
+      successMessage='Link created successfully'
       className='grid gap-2 rounded border p-4 md:grid-cols-2'
     >
-      <input
-        name='title'
-        placeholder='Title'
-        required
-        className='rounded border px-3 py-2'
-      />
-      <input
-        name='url'
-        placeholder='URL'
-        required
-        className='rounded border px-3 py-2'
-      />
-      <input
-        name='description'
-        placeholder='Description'
-        className='rounded border px-3 py-2'
-      />
-      <input
-        name='icon'
-        placeholder='Emoji or image URL (e.g., https://example.com/icon.png)'
-        className='rounded border px-3 py-2'
-      />
-      <select
-        name='categoryId'
-        required
-        className='rounded border px-3 py-2 md:col-span-2'
-      >
-        <option value=''>Select a category</option>
-        {categories.map(category => (
-          <option key={category.id} value={category.id}>
-            {category.name}
-          </option>
-        ))}
-      </select>
-      <FormButton isPending={isPending} className='md:col-span-2'>
-        Create Link
-      </FormButton>
-    </form>
+      {({ isPending }) => (
+        <>
+          <input
+            name='title'
+            placeholder='Title'
+            required
+            className='rounded border px-3 py-2'
+          />
+          <input
+            name='url'
+            placeholder='URL'
+            required
+            className='rounded border px-3 py-2'
+          />
+          <input
+            name='description'
+            placeholder='Description'
+            className='rounded border px-3 py-2'
+          />
+          <input
+            name='icon'
+            placeholder='Emoji or image URL (e.g., https://example.com/icon.png)'
+            className='rounded border px-3 py-2'
+          />
+          <select
+            name='categoryId'
+            required
+            className='rounded border px-3 py-2 md:col-span-2'
+          >
+            <option value=''>Select a category</option>
+            {categories.map(category => (
+              <option key={category.id} value={category.id}>
+                {category.name}
+              </option>
+            ))}
+          </select>
+          <FormButton isPending={isPending} className='md:col-span-2'>
+            Create Link
+          </FormButton>
+        </>
+      )}
+    </FormToastHandler>
   );
 }

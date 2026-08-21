@@ -5,7 +5,7 @@ import { toast } from 'sonner';
 
 interface FormToastHandlerProps {
   action: (formData: FormData) => Promise<{ success: boolean; error?: string }>;
-  children: React.ReactNode;
+  children: React.ReactNode | ((props: { isPending: boolean }) => React.ReactNode);
   onSuccess?: () => void;
   successMessage?: string;
   className?: string;
@@ -38,7 +38,7 @@ export function FormToastHandler({
 
   return (
     <form action={handleSubmit} className={formClassName}>
-      {children}
+      {typeof children === 'function' ? children({ isPending }) : children}
     </form>
   );
 }

@@ -44,29 +44,8 @@ Created `requireAuthenticatedAdmin(request)` in `lib/admin-auth.ts` combining ad
 
 ---
 
-## 9. Admin Form Submission Pattern
-
-**Duplicate locations (6 occurrences):**
-- `components/admin/AdminForms.tsx` — `CategoryUpdateModal`, `CategoryDeleteModal`, `LinkUpdateModal`, `LinkDeleteModal`, `AddCategoryForm`, `AddLinkForm`
-
-**Identical pattern:**
-```ts
-const [isPending, startTransition] = useTransition();
-
-const handleSubmit = async (formData: FormData) => {
-  startTransition(async () => {
-    const result = await action(formData);
-    if (result.success) {
-      toast.success('...created/updated/deleted successfully');
-      // optionally setOpen(false) or window.location.reload()
-    } else {
-      toast.error(result.error || 'Failed to ...');
-    }
-  });
-};
-```
-
-**Recommendation:** The `FormToastHandler` component already exists in `components/admin/FormToastHandler.tsx` but is not used. Refactor `AdminForms.tsx` to use `FormToastHandler` instead of duplicating the pattern.
+## 9. Admin Form Submission Pattern ✅
+Extended `FormToastHandler` with render props (`{ isPending })` to expose loading state to children. Refactored 4 form-based components (`CategoryUpdateModal`, `LinkUpdateModal`, `AddCategoryForm`, `AddLinkForm`) to use `FormToastHandler`. The 2 delete modals (`CategoryDeleteModal`, `LinkDeleteModal`) were simplified (removed unnecessary `async` from `handleDelete`) but kept manual since they use button clicks, not form submissions.
 
 ---
 
@@ -208,7 +187,7 @@ try {
 | 6 | Server action error handling ✅ | 8× | Consistent error responses |
 | 7 | Admin auth check ✅ | 6× | Security + DRY |
 | 8 | CSRF check ✅ | 2× | Security + DRY |
-| 9 | Admin form submission | 6× | Use existing FormToastHandler |
+| 9 | Admin form submission ✅ | 6× | Use existing FormToastHandler |
 | 10 | API response error | 8+× | Consistent error format |
 | 11 | Search navigation | 2× | DRY hook |
 | 12 | Admin fetch pattern | 3× | DRY utility |
