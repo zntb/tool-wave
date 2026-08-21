@@ -59,29 +59,8 @@ Created `lib/hooks/use-search-navigation.ts` — a `useSearchNavigation(onAfterS
 
 ---
 
-## 12. Fetch Response Handling Pattern in Admin Components
-
-**Duplicate locations (3 occurrences):**
-- `components/admin/AnalyticsDashboard.tsx` (lines 12-25, `fetchAnalytics`)
-- `components/admin/SubmissionsReview.tsx` (lines 17-26, `fetchSubmissions`)
-- `components/admin/BulkImportForm.tsx` (lines 22-33, import)
-
-**Similar pattern:**
-```ts
-try {
-  const response = await fetchWithRetry('/api/...');
-  const data = await response.json();
-  if (data.success) {
-    setData(data.data);
-  } else {
-    toast.error(data.error || 'Failed to ...');
-  }
-} catch {
-  toast.error('Failed to ...');
-}
-```
-
-**Recommendation:** Create a `fetchAdminApi<T>(url, options?)` utility that handles the fetch, JSON parsing, success check, and error toasting in one call. Returns `T | null`.
+## 12. Fetch Response Handling Pattern in Admin Components ✅
+Created `fetchAdminApi<T>(url, options?)` in `lib/fetch-with-retry.ts` — fetches with retry, parses JSON, checks `data.success`, shows toast on error, returns `T | null`. Applied to `AnalyticsDashboard.tsx` (generic `fetchAnalytics<T>`), `SubmissionsReview.tsx` (fetch + status change), and `BulkImportForm.tsx` (JSON and CSV import).
 
 ---
 
@@ -152,6 +131,6 @@ try {
 | 9 | Admin form submission ✅ | 6× | Use existing FormToastHandler |
 | 10 | API response error ✅ | 8+× | Consistent error format |
 | 11 | Search navigation ✅ | 2× | DRY hook |
-| 12 | Admin fetch pattern | 3× | DRY utility |
+| 12 | Admin fetch pattern ✅ | 3× | DRY utility |
 | 15 | console.error → logger | 3× | Structured logging consistency |
 | 16 | Admin tab navigation | 1× | Use UI component |

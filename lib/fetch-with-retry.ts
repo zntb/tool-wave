@@ -66,3 +66,30 @@ export async function fetchWithRetry(
 
   throw lastError;
 }
+
+/**
+ * Fetch an admin API endpoint and handle the standard response pattern.
+ * Returns data on success, or null on failure (after showing a toast).
+ *
+ * Usage:
+ *   const data = await fetchAdminApi<PopularResource[]>('/api/analytics?type=popular');
+ *   if (data) setPopularResources(data);
+ */
+export async function fetchAdminApi<T>(
+  url: string,
+  options?: RequestInit,
+): Promise<T | null> {
+  const { toast } = await import('sonner');
+  try {
+    const response = await fetchWithRetry(url, options);
+    const data = await response.json();
+    if (data.success) {
+      return data.data as T;
+    }
+    toast.error(data.error || 'Request failed');
+    return null;
+  } catch {
+    toast.error('Network error — please try again');
+    return null;
+  }
+}

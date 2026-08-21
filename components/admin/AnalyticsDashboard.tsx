@@ -9,21 +9,12 @@ import {
   TrendData,
   TimeRange,
 } from '@/lib/types';
-import { fetchWithRetry } from '@/lib/fetch-with-retry';
+import { fetchAdminApi } from '@/lib/fetch-with-retry';
 
-async function fetchAnalytics(type: string, timeRange?: TimeRange) {
+async function fetchAnalytics<T>(type: string, timeRange?: TimeRange): Promise<T | null> {
   const params = new URLSearchParams({ type });
   if (timeRange) params.set('timeRange', timeRange);
-
-  const response = await fetchWithRetry(`/api/analytics?${params.toString()}`);
-  if (!response.ok) {
-    throw new Error('Failed to fetch analytics');
-  }
-  const data = await response.json();
-  if (!data.success) {
-    throw new Error(data.error || 'Failed to fetch analytics');
-  }
-  return data.data;
+  return fetchAdminApi<T>(`/api/analytics?${params.toString()}`);
 }
 
 export function AnalyticsDashboard() {
@@ -40,20 +31,15 @@ export function AnalyticsDashboard() {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      try {
-        const [resources, categories, trends] = await Promise.all([
-          fetchAnalytics('popular'),
-          fetchAnalytics('categories'),
-          fetchAnalytics('trends', timeRange),
-        ]);
-        setPopularResources(resources);
-        setPopularCategories(categories);
-        setTrendData(trends);
-      } catch (error) {
-        console.error('Failed to fetch analytics:', error);
-      } finally {
-        setLoading(false);
-      }
+      const [resources, categories, trends] = await Promise.all([
+        fetchAnalytics<PopularResource[]>('popular'),
+        fetchAnalytics<PopularCategory[]>('categories'),
+        fetchAnalytics<TrendData[]>('trends', timeRange),
+      ]);
+      if (resources) setPopularResources(resources);
+      if (categories) setPopularCategories(categories);
+      if (trends) setTrendData(trends);
+      setLoading(false);
     };
     fetchData();
   }, [timeRange]);

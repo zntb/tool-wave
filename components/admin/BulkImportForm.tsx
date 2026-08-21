@@ -5,7 +5,7 @@ import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { ImportResource, ImportResult } from '@/lib/types';
-import { fetchWithRetry } from '@/lib/fetch-with-retry';
+import { fetchAdminApi } from '@/lib/fetch-with-retry';
 
 export function BulkImportForm() {
   const [jsonInput, setJsonInput] = useState('');
@@ -28,24 +28,20 @@ export function BulkImportForm() {
         throw new Error('Input must be a JSON array');
       }
 
-      const response = await fetchWithRetry('/api/bulk-import', {
+      const data = await fetchAdminApi<ImportResult>('/api/bulk-import', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ resources }),
       });
 
-      const data = await response.json();
-      if (!data.success) {
-        throw new Error(data.error || 'Failed to import resources');
-      }
-
-      setResult(data.data);
-
-      if (data.data.success > 0) {
-        toast.success(`Successfully imported ${data.data.success} resources`);
-      }
-      if (data.data.failed > 0) {
-        toast.error(`${data.data.failed} resources failed to import`);
+      if (data) {
+        setResult(data);
+        if (data.success > 0) {
+          toast.success(`Successfully imported ${data.success} resources`);
+        }
+        if (data.failed > 0) {
+          toast.error(`${data.failed} resources failed to import`);
+        }
       }
     } catch (error) {
       toast.error(
@@ -101,24 +97,20 @@ export function BulkImportForm() {
         return resource;
       });
 
-      const response = await fetchWithRetry('/api/bulk-import', {
+      const data = await fetchAdminApi<ImportResult>('/api/bulk-import', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ resources }),
       });
 
-      const data = await response.json();
-      if (!data.success) {
-        throw new Error(data.error || 'Failed to import resources');
-      }
-
-      setResult(data.data);
-
-      if (data.data.success > 0) {
-        toast.success(`Successfully imported ${data.data.success} resources`);
-      }
-      if (data.data.failed > 0) {
-        toast.error(`${data.data.failed} resources failed to import`);
+      if (data) {
+        setResult(data);
+        if (data.success > 0) {
+          toast.success(`Successfully imported ${data.success} resources`);
+        }
+        if (data.failed > 0) {
+          toast.error(`${data.failed} resources failed to import`);
+        }
       }
     } catch (error) {
       toast.error(

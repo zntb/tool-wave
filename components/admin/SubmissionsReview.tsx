@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ResourceSubmission } from '@/lib/types';
-import { fetchWithRetry } from '@/lib/fetch-with-retry';
+import { fetchAdminApi } from '@/lib/fetch-with-retry';
 
 export function SubmissionsReview() {
   const [submissions, setSubmissions] = useState<ResourceSubmission[]>([]);
@@ -14,17 +14,9 @@ export function SubmissionsReview() {
 
   useEffect(() => {
     const fetchSubmissions = async () => {
-      try {
-        const response = await fetchWithRetry('/api/submissions?status=PENDING');
-        const data = await response.json();
-        if (data.success) {
-          setSubmissions(data.data);
-        }
-      } catch {
-        toast.error('Failed to fetch submissions');
-      } finally {
-        setLoading(false);
-      }
+      const data = await fetchAdminApi<ResourceSubmission[]>('/api/submissions?status=PENDING');
+      if (data) setSubmissions(data);
+      setLoading(false);
     };
     fetchSubmissions();
   }, []);
@@ -33,22 +25,14 @@ export function SubmissionsReview() {
     id: string,
     status: 'APPROVED' | 'REJECTED',
   ) => {
-    try {
-      const response = await fetchWithRetry('/api/submissions', {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id, status }),
-      });
-
-      const data = await response.json();
-      if (data.success) {
-        toast.success(`Submission ${status.toLowerCase()}`);
-        setSubmissions(submissions.filter(s => s.id !== id));
-      } else {
-        toast.error(data.error || 'Failed to update submission');
-      }
-    } catch {
-      toast.error('Failed to update submission');
+    const data = await fetchAdminApi<ResourceSubmission>('/api/submissions', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id, status }),
+    });
+    if (data) {
+      toast.success(`Submission ${status.toLowerCase()}`);
+      setSubmissions(submissions.filter(s => s.id !== id));
     }
   };
 
