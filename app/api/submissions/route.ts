@@ -5,9 +5,8 @@ import {
   updateResourceSubmissionStatus,
   deleteResourceSubmission,
 } from '@/lib/analytics';
-import { requireAdmin } from '@/lib/admin-auth';
+import { requireAdmin, requireAuthenticatedAdmin } from '@/lib/admin-auth';
 import { checkRateLimit } from '@/lib/rate-limit';
-import { requireCsrfToken } from '@/lib/csrf';
 import { sanitizeString, sanitizeOptional } from '@/lib/sanitize';
 import { checkSSRF } from '@/lib/ssrf-prevention';
 
@@ -111,11 +110,8 @@ export async function GET(request: NextRequest) {
 
 // Update submission status (admin only)
 export async function PATCH(request: NextRequest) {
-  const authResult = await requireAdmin();
+  const authResult = await requireAuthenticatedAdmin(request);
   if (authResult instanceof NextResponse) return authResult;
-
-  const csrfResult = await requireCsrfToken(request);
-  if (csrfResult !== true) return csrfResult;
 
   try {
     const data = await request.json();
@@ -158,11 +154,8 @@ export async function PATCH(request: NextRequest) {
 
 // Delete submission (admin only)
 export async function DELETE(request: NextRequest) {
-  const authResult = await requireAdmin();
+  const authResult = await requireAuthenticatedAdmin(request);
   if (authResult instanceof NextResponse) return authResult;
-
-  const csrfResult = await requireCsrfToken(request);
-  if (csrfResult !== true) return csrfResult;
 
   const { searchParams } = new URL(request.url);
   const id = searchParams.get('id');

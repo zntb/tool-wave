@@ -140,6 +140,29 @@ export async function requireAdmin(): Promise<string | NextResponse> {
   return adminEmail;
 }
 
+/**
+ * Require admin authentication AND a valid CSRF token.
+ * Combines requireAdmin() + requireCsrfToken() for write operations.
+ * Returns the admin email if both checks pass, or a NextResponse error.
+ *
+ * Usage:
+ *   const result = await requireAuthenticatedAdmin(request);
+ *   if (result instanceof NextResponse) return result;
+ *   const email = result;
+ */
+export async function requireAuthenticatedAdmin(
+  request: Request,
+): Promise<string | Response> {
+  const adminResult = await requireAdmin();
+  if (adminResult instanceof NextResponse) return adminResult;
+
+  const { requireCsrfToken } = await import('@/lib/csrf');
+  const csrfResult = await requireCsrfToken(request);
+  if (csrfResult !== true) return csrfResult;
+
+  return adminResult;
+}
+
 export async function validateAdminLogin(
   email: string,
   password: string,

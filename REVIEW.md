@@ -39,18 +39,8 @@ Created `requireAdmin()` in `lib/admin-auth.ts` returning `string | NextResponse
 
 ---
 
-## 8. CSRF Token Check Pattern
-
-**Duplicate locations (2 occurrences):**
-- `app/api/submissions/route.ts` (lines 108-109, 132-133)
-
-**Identical pattern:**
-```ts
-const csrfResult = await requireCsrfToken(request);
-if (csrfResult !== true) return csrfResult;
-```
-
-**Recommendation:** Consider combining with the admin auth check into a single `requireAuthenticatedAdmin(request)` helper.
+## 8. CSRF Token Check Pattern ✅
+Created `requireAuthenticatedAdmin(request)` in `lib/admin-auth.ts` combining admin auth + CSRF token validation. Applied to `PATCH /api/submissions` and `DELETE /api/submissions`, replacing the 2-step `requireAdmin()` + `requireCsrfToken()` pattern. Updated test mocks to use `requireAuthenticatedAdmin`.
 
 ---
 
@@ -217,7 +207,7 @@ try {
 | 5 | Pagination URL builder ✅ | 3× | DRY utility |
 | 6 | Server action error handling ✅ | 8× | Consistent error responses |
 | 7 | Admin auth check ✅ | 6× | Security + DRY |
-| 8 | CSRF check | 2× | Security + DRY |
+| 8 | CSRF check ✅ | 2× | Security + DRY |
 | 9 | Admin form submission | 6× | Use existing FormToastHandler |
 | 10 | API response error | 8+× | Consistent error format |
 | 11 | Search navigation | 2× | DRY hook |
