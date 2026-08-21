@@ -16,8 +16,7 @@ import { NavSkeleton, LoadingState } from '@/components/skeletons';
 import { BreadcrumbJsonLd } from '@/components/json-ld';
 import { Breadcrumbs } from '@/components/breadcrumbs';
 import { LinkGrid } from '@/components/link-grid';
-import { BackgroundPattern } from '@/components/background-pattern';
-import { Footer } from '@/components/footer';
+import { PageLayout } from '@/components/page-layout';
 import type { ViewMode, SortOrder } from '@/lib/types';
 import { parseSearchParams } from '@/lib/utils';
 import { PaginationControls } from '@/components/pagination-controls';
@@ -176,42 +175,35 @@ export default async function CategoryPage({
           ]}
         />
       )}
-      <div className='min-h-screen bg-slate-50 dark:bg-slate-950'>
-        <BackgroundPattern />
+      <PageLayout>
+        {/* Breadcrumbs */}
+        {category && (
+          <Breadcrumbs
+            items={[
+              { label: 'Home', href: '/' },
+              { label: category.name },
+            ]}
+            className='mb-6'
+          />
+        )}
 
-        <main className='container mx-auto px-4 py-8 md:py-12 lg:py-16 max-w-7xl'>
-          {/* Breadcrumbs */}
-          {category && (
-            <Breadcrumbs
-              items={[
-                { label: 'Home', href: '/' },
-                { label: category.name },
-              ]}
-              className='mb-6'
-            />
-          )}
-
-          {/* Category Navigation */}
-          <div className='mb-12'>
-            <Suspense fallback={<NavSkeleton />}>
-              <CategoriesNav />
-            </Suspense>
-          </div>
-
-          {/* Category Content */}
-          <Suspense fallback={<LoadingState />}>
-            <CategoryContent
-              slug={slug}
-              page={validPage}
-              view={currentView}
-              sortBy={currentSort}
-            />
+        {/* Category Navigation */}
+        <div className='mb-12'>
+          <Suspense fallback={<NavSkeleton />}>
+            <CategoriesNav />
           </Suspense>
-        </main>
+        </div>
 
-        {/* Footer */}
-        <Footer />
-      </div>
+        {/* Category Content */}
+        <Suspense fallback={<LoadingState />}>
+          <CategoryContent
+            slug={slug}
+            page={validPage}
+            view={currentView}
+            sortBy={currentSort}
+          />
+        </Suspense>
+      </PageLayout>
     </>
   );
 }

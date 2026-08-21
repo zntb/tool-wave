@@ -8,8 +8,7 @@ import { ViewToggleWrapper } from '@/components/view-toggle';
 import type { Link as LinkType, ViewMode } from '@/lib/types';
 import { parseSearchParams } from '@/lib/utils';
 import { LinkGrid } from '@/components/link-grid';
-import { BackgroundPattern } from '@/components/background-pattern';
-import { Footer } from '@/components/footer';
+import { PageLayout } from '@/components/page-layout';
 import { Breadcrumbs } from '@/components/breadcrumbs';
 import { PaginationControls } from '@/components/pagination-controls';
 import { EmptyState } from '@/components/empty-state';
@@ -150,45 +149,38 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
   const searchQuery = query || '';
 
   return (
-    <div className='min-h-screen bg-slate-50 dark:bg-slate-950'>
-      <BackgroundPattern />
+    <PageLayout>
+      {/* Breadcrumbs */}
+      <Breadcrumbs
+        items={[
+          { label: 'Home', href: '/' },
+          { label: 'Search Results' },
+        ]}
+        className='mb-6'
+      />
 
-      <main className='container mx-auto px-4 py-8 md:py-12 lg:py-16 max-w-7xl'>
-        {/* Breadcrumbs */}
-        <Breadcrumbs
-          items={[
-            { label: 'Home', href: '/' },
-            { label: 'Search Results' },
-          ]}
-          className='mb-6'
-        />
-
-        {/* Category Navigation */}
-        <div className='mb-8'>
-          <Suspense fallback={<NavSkeleton />}>
-            <CategoriesNav />
-          </Suspense>
-        </div>
-
-        {/* View Toggle */}
-        <div className='flex justify-end mb-4'>
-          <Suspense fallback={null}>
-            <ViewToggleWrapper />
-          </Suspense>
-        </div>
-
-        {/* Search Results */}
-        <Suspense fallback={<LoadingState />}>
-          <SearchResults
-            query={searchQuery}
-            page={validPage}
-            view={currentView}
-          />
+      {/* Category Navigation */}
+      <div className='mb-8'>
+        <Suspense fallback={<NavSkeleton />}>
+          <CategoriesNav />
         </Suspense>
-      </main>
+      </div>
 
-      {/* Footer */}
-      <Footer />
-    </div>
+      {/* View Toggle */}
+      <div className='flex justify-end mb-4'>
+        <Suspense fallback={null}>
+          <ViewToggleWrapper />
+        </Suspense>
+      </div>
+
+      {/* Search Results */}
+      <Suspense fallback={<LoadingState />}>
+        <SearchResults
+          query={searchQuery}
+          page={validPage}
+          view={currentView}
+        />
+      </Suspense>
+    </PageLayout>
   );
 }

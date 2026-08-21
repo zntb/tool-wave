@@ -10,8 +10,7 @@ import { getAllCategoriesWithLinksAction } from '@/app/actions';
 import type { Link as LinkType, CategoryWithLinks, ViewMode } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { LinkGrid } from '@/components/link-grid';
-import { BackgroundPattern } from '@/components/background-pattern';
-import { Footer } from '@/components/footer';
+import { PageLayout } from '@/components/page-layout';
 import { getStoredFavorites } from '@/lib/favorites-storage';
 
 export function FavoritesClient() {
@@ -89,15 +88,9 @@ export function FavoritesClient() {
   }
 
   return (
-    <div
-      className='min-h-screen bg-slate-50 dark:bg-slate-950'
-      data-testid='favorites-page'
-    >
-      <BackgroundPattern />
-
-      <main className='container mx-auto px-4 py-8 md:py-12 lg:py-16 max-w-7xl'>
-        {/* Header */}
-        <header className='mb-8 space-y-4 animate-fade-in'>
+    <PageLayout testId='favorites-page' footerClassName='animate-fade-in' footerStyle={{ animationDelay: '300ms' }}>
+      {/* Header */}
+      <header className='mb-8 space-y-4 animate-fade-in'>
           <div className='flex items-center gap-3'>
             <div className='p-3 rounded-xl bg-red-100 dark:bg-red-900/30'>
               <Heart className='w-8 h-8 text-red-500 fill-current' />
@@ -256,10 +249,6 @@ export function FavoritesClient() {
             ))}
           </LinkGrid>
         )}
-      </main>
-
-      {/* Footer */}
-      <Footer className='animate-fade-in' style={{ animationDelay: '300ms' }} />
-    </div>
+    </PageLayout>
   );
 }

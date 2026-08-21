@@ -11,8 +11,7 @@ import { CategoriesNav } from '@/components/category-nav-server';
 import { ViewToggleWrapper } from '@/components/view-toggle';
 import { SearchInput } from '@/components/search-input';
 import { LinkGrid } from '@/components/link-grid';
-import { BackgroundPattern } from '@/components/background-pattern';
-import { Footer } from '@/components/footer';
+import { PageLayout } from '@/components/page-layout';
 import { Breadcrumbs } from '@/components/breadcrumbs';
 import type { ViewMode } from '@/lib/types';
 import { parseSearchParams } from '@/lib/utils';
@@ -156,55 +155,48 @@ export default async function CategorySearchPage({
   }
 
   return (
-    <div className='min-h-screen bg-slate-50 dark:bg-slate-950'>
-      <BackgroundPattern />
+    <PageLayout>
+      {/* Breadcrumbs */}
+      <Breadcrumbs
+        items={[
+          { label: 'Home', href: '/' },
+          { label: category.name, href: `/${slug}` },
+          { label: 'Search Results' },
+        ]}
+        className='mb-6'
+      />
 
-      <main className='container mx-auto px-4 py-8 md:py-12 lg:py-16 max-w-7xl'>
-        {/* Breadcrumbs */}
-        <Breadcrumbs
-          items={[
-            { label: 'Home', href: '/' },
-            { label: category.name, href: `/${slug}` },
-            { label: 'Search Results' },
-          ]}
-          className='mb-6'
-        />
-
-        {/* Category Navigation */}
-        <div className='mb-8'>
-          <Suspense fallback={<NavSkeleton />}>
-            <CategoriesNav />
-          </Suspense>
-        </div>
-
-        {/* View Toggle */}
-        <div className='flex justify-end mb-4'>
-          <Suspense fallback={null}>
-            <ViewToggleWrapper />
-          </Suspense>
-        </div>
-
-        {/* Search Input */}
-        <div className='max-w-md mx-auto mb-8'>
-          <SearchInput
-            placeholder={`Search in ${category.name}...`}
-            categorySlug={slug}
-          />
-        </div>
-
-        {/* Search Results */}
-        <Suspense fallback={<LoadingState />}>
-          <CategorySearchResults
-            slug={slug}
-            query={searchQuery}
-            page={validPage}
-            view={currentView}
-          />
+      {/* Category Navigation */}
+      <div className='mb-8'>
+        <Suspense fallback={<NavSkeleton />}>
+          <CategoriesNav />
         </Suspense>
-      </main>
+      </div>
 
-      {/* Footer */}
-      <Footer />
-    </div>
+      {/* View Toggle */}
+      <div className='flex justify-end mb-4'>
+        <Suspense fallback={null}>
+          <ViewToggleWrapper />
+        </Suspense>
+      </div>
+
+      {/* Search Input */}
+      <div className='max-w-md mx-auto mb-8'>
+        <SearchInput
+          placeholder={`Search in ${category.name}...`}
+          categorySlug={slug}
+        />
+      </div>
+
+      {/* Search Results */}
+      <Suspense fallback={<LoadingState />}>
+        <CategorySearchResults
+          slug={slug}
+          query={searchQuery}
+          page={validPage}
+          view={currentView}
+        />
+      </Suspense>
+    </PageLayout>
   );
 }

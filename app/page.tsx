@@ -11,7 +11,7 @@ import { SortDropdown } from '@/components/sort-dropdown';
 import { LinkCard } from '@/components/link-card';
 import { LinkGridSkeleton, NavSkeleton } from '@/components/skeletons';
 import { LinkGrid } from '@/components/link-grid';
-import { BackgroundPattern } from '@/components/background-pattern';
+import { PageLayout } from '@/components/page-layout';
 import type { ViewMode, SortOrder } from '@/lib/types';
 import { parseSearchParams } from '@/lib/utils';
 import { PaginationControls } from '@/components/pagination-controls';
@@ -169,45 +169,41 @@ export default async function HomePage({ searchParams }: HomePageProps) {
   const { page: validPage, view: currentView, sort: currentSort } = parseSearchParams({ page: pageStr, view: viewStr, sort: sortStr });
 
   return (
-    <div className='min-h-screen bg-slate-50 dark:bg-slate-950'>
-      <BackgroundPattern />
+    <PageLayout showFooter={false}>
+      {/* Header */}
+      <header className='text-center mb-12 space-y-4 animate-fade-in'>
+        <h1 className='text-4xl md:text-5xl lg:text-6xl font-display font-bold tracking-tight'>
+          <span className='gradient-text'>Tool Wave</span>
+        </h1>
+        <p className='text-lg md:text-xl text-slate-500 dark:text-slate-400 max-w-2xl mx-auto'>
+          A curated collection of design resources for developers
+        </p>
+        <StatsDisplay />
+      </header>
 
-      <main className='container mx-auto px-4 py-8 md:py-12 lg:py-16 max-w-7xl'>
-        {/* Header */}
-        <header className='text-center mb-12 space-y-4 animate-fade-in'>
-          <h1 className='text-4xl md:text-5xl lg:text-6xl font-display font-bold tracking-tight'>
-            <span className='gradient-text'>Tool Wave</span>
-          </h1>
-          <p className='text-lg md:text-xl text-slate-500 dark:text-slate-400 max-w-2xl mx-auto'>
-            A curated collection of design resources for developers
-          </p>
-          <StatsDisplay />
-        </header>
-
-        {/* Category Navigation with Suspense */}
-        <div className='mb-8 animate-fade-in'>
-          <Suspense fallback={<NavSkeleton />}>
-            <CategoriesNav />
-          </Suspense>
-        </div>
-
-        {/* View Toggle and Sort */}
-        <div className='flex justify-end items-center gap-2 mb-6 animate-fade-in'>
-          <Suspense fallback={null}>
-            <ViewToggleWrapper />
-          </Suspense>
-          <SortDropdown defaultValue={currentSort} />
-        </div>
-
-        {/* Links Grid/List */}
-        <Suspense fallback={<LinkGridSkeleton />}>
-          <LinksByCategory
-            page={validPage}
-            view={currentView}
-            sortBy={currentSort}
-          />
+      {/* Category Navigation with Suspense */}
+      <div className='mb-8 animate-fade-in'>
+        <Suspense fallback={<NavSkeleton />}>
+          <CategoriesNav />
         </Suspense>
-      </main>
-    </div>
+      </div>
+
+      {/* View Toggle and Sort */}
+      <div className='flex justify-end items-center gap-2 mb-6 animate-fade-in'>
+        <Suspense fallback={null}>
+          <ViewToggleWrapper />
+        </Suspense>
+        <SortDropdown defaultValue={currentSort} />
+      </div>
+
+      {/* Links Grid/List */}
+      <Suspense fallback={<LinkGridSkeleton />}>
+        <LinksByCategory
+          page={validPage}
+          view={currentView}
+          sortBy={currentSort}
+        />
+      </Suspense>
+    </PageLayout>
   );
 }

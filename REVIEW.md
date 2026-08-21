@@ -9,27 +9,8 @@ Created `parseSearchParams()` in `lib/utils.ts` returning `{ page, view, sort }`
 
 ---
 
-## 2. Page Layout Wrapper Pattern
-
-**Duplicate locations (5 occurrences):**
-- `app/page.tsx` (lines 161-164, 198-215)
-- `app/[slug]/page.tsx` (lines 182-184, 199-218)
-- `app/[slug]/search/page.tsx` (lines 156-158, 166-211)
-- `app/search/page.tsx` (lines 151-153, 157-195)
-- `components/favorites-client.tsx` (lines 103-107)
-
-**Identical wrapper:**
-```tsx
-<div className='min-h-screen bg-slate-50 dark:bg-slate-950'>
-  <BackgroundPattern />
-  <main className='container mx-auto px-4 py-8 md:py-12 lg:py-16 max-w-7xl'>
-    {children}
-  </main>
-  <Footer />
-</div>
-```
-
-**Recommendation:** Create a `<PageLayout>` wrapper component in `components/` that accepts `children` and optional `header`/`footer` slots.
+## 2. Page Layout Wrapper Pattern ✅
+Created `components/page-layout.tsx` — a reusable `<PageLayout>` component that encapsulates `BackgroundPattern`, the `<main>` container, and `<Footer>`. Props: `showFooter` (default true), `footerClassName`, `footerStyle`, `className`, `testId`. Applied to all 5 locations: `app/page.tsx` (with `showFooter={false}`), `app/[slug]/page.tsx`, `app/[slug]/search/page.tsx`, `app/search/page.tsx`, and `components/favorites-client.tsx`.
 
 ---
 
@@ -309,7 +290,7 @@ try {
 | # | Issue | Occurrences | Impact |
 |---|-------|-------------|--------|
 | 1 | Search params parsing ✅ | 4× | Boilerplate reduction |
-| 2 | Page layout wrapper | 5× | Consistent layout, easy global changes |
+| 2 | Page layout wrapper ✅ | 5× | Consistent layout, easy global changes |
 | 3 | CategoriesNav Suspense | 4× | Boilerplate reduction |
 | 4 | View + Sort controls | 2× | Component cohesion |
 | 5 | Pagination URL builder | 3× | DRY utility |
