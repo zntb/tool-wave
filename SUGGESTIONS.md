@@ -130,8 +130,8 @@ Added `@media print` rules in `globals.css`: hides header, nav, footer, search i
 ### 8. Accessibility Audit ✅
 Added `aria-live="polite"` to LinkGrid (announces view changes), search results count in global/category search pages, and favorites badge (sr-only text). Added `role="region"` with `aria-label` to LinkGrid. Added `aria-label` to autocomplete listbox. Added live region in layout for view toggle announcements. Made favorites badge `aria-hidden` with sr-only count text for screen readers. Updated tests to match new sr-only text.
 
-### 9. Onboarding Tooltip
-On first visit, show a brief tooltip or walkthrough highlighting key features: search, favorites, view toggle, and submit a resource.
+### 9. Onboarding Tooltip ✅
+Created `components/onboarding-tooltip.tsx` — a 4-step walkthrough shown on first visit (tracked via `tool-wave-onboarded` localStorage key). Steps cover Search, Favorites, View Toggle, and Submit Resource. Each step has an icon, title, and description. Includes step indicator dots, Next/Skip all buttons, backdrop overlay, and dismiss on click-outside. 1-second delay on mount so page loads first.
 
 ### 10. Favorites Export/Import ✅
 Added `exportFavorites()` and `importFavorites()` to `useFavorites` hook. Export downloads a versioned JSON file (`tool-wave-favorites-YYYY-MM-DD.json`). Import validates the file format, deduplicates by ID, and merges with existing favorites. Added Export/Import buttons to the favorites page header with status feedback.

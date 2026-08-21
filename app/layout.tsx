@@ -10,6 +10,7 @@ import { Toaster } from 'sonner';
 import { ThemeProvider } from 'next-themes';
 import { BackToTop } from '@/components/back-to-top';
 import { PageTransition } from '@/components/page-transition';
+import { OnboardingTooltip } from '@/components/onboarding-tooltip';
 
 const geistMono = Geist_Mono({
   subsets: ['latin'],
@@ -137,6 +138,7 @@ export default function RootLayout({
             </main>
             <Toaster position='top-right' richColors />
             <BackToTop />
+            <OnboardingTooltip />
 
             {/* Live region for dynamic announcements (view changes, etc.) */}
             <div
