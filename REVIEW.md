@@ -34,22 +34,8 @@ Created `ActionResult` type and `withErrorHandling(fn, fallbackMessage)` in `lib
 
 ---
 
-## 7. Admin API Authentication Check
-
-**Duplicate locations (6 occurrences):**
-- `app/api/submissions/route.ts` (lines 56, 79, 106, 130)
-- `app/api/bulk-import/route.ts` (lines 10-13)
-- `app/api/admin/logout/route.ts`
-
-**Identical pattern:**
-```ts
-const adminEmail = await getCurrentAdminEmail();
-if (!adminEmail) {
-  return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-}
-```
-
-**Recommendation:** Create a `requireAdmin(request)` helper that returns either the admin email or a `NextResponse` error. Use it as: `const result = await requireAdmin(request); if (result instanceof NextResponse) return result; const email = result;`
+## 7. Admin API Authentication Check ✅
+Created `requireAdmin()` in `lib/admin-auth.ts` returning `string | NextResponse`. Applied to 4 API routes: `GET/PATCH/DELETE /api/submissions` and `POST /api/bulk-import`. Each route now uses `const authResult = await requireAdmin(); if (authResult instanceof NextResponse) return authResult;`. Updated test mocks to use `requireAdmin` with `NextResponse.json()` for unauthorized cases.
 
 ---
 
@@ -230,7 +216,7 @@ try {
 | 4 | View + Sort controls ✅ | 2× | Component cohesion |
 | 5 | Pagination URL builder ✅ | 3× | DRY utility |
 | 6 | Server action error handling ✅ | 8× | Consistent error responses |
-| 7 | Admin auth check | 6× | Security + DRY |
+| 7 | Admin auth check ✅ | 6× | Security + DRY |
 | 8 | CSRF check | 2× | Security + DRY |
 | 9 | Admin form submission | 6× | Use existing FormToastHandler |
 | 10 | API response error | 8+× | Consistent error format |

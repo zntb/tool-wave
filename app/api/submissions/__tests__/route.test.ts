@@ -6,7 +6,8 @@ import {
   deleteResourceSubmission,
 } from '@/lib/analytics';
 import type { ResourceSubmission } from '@/lib/types';
-import { getCurrentAdminEmail } from '@/lib/admin-auth';
+import { requireAdmin } from '@/lib/admin-auth';
+import { NextResponse } from 'next/server';
 import { POST, GET, PATCH, DELETE } from '../route';
 
 // Mock the dependencies
@@ -30,8 +31,8 @@ const mockDeleteResourceSubmission =
   deleteResourceSubmission as jest.MockedFunction<
     typeof deleteResourceSubmission
   >;
-const mockGetCurrentAdminEmail = getCurrentAdminEmail as jest.MockedFunction<
-  typeof getCurrentAdminEmail
+const mockRequireAdmin = requireAdmin as jest.MockedFunction<
+  typeof requireAdmin
 >;
 
 describe('POST /api/submissions', () => {
@@ -137,7 +138,7 @@ describe('GET /api/submissions', () => {
   });
 
   it('should return all submissions for admin', async () => {
-    mockGetCurrentAdminEmail.mockResolvedValue('admin@example.com');
+    mockRequireAdmin.mockResolvedValue('admin@example.com');
     const now = new Date();
     const mockSubmissions: ResourceSubmission[] = [
       {
@@ -180,7 +181,7 @@ describe('GET /api/submissions', () => {
   });
 
   it('should return submissions filtered by status', async () => {
-    mockGetCurrentAdminEmail.mockResolvedValue('admin@example.com');
+    mockRequireAdmin.mockResolvedValue('admin@example.com');
     const now = new Date();
     const mockSubmissions: ResourceSubmission[] = [
       {
@@ -203,7 +204,9 @@ describe('GET /api/submissions', () => {
   });
 
   it('should return 401 if not admin', async () => {
-    mockGetCurrentAdminEmail.mockResolvedValue(null);
+    mockRequireAdmin.mockResolvedValue(
+      NextResponse.json({ error: 'Unauthorized' }, { status: 401 }),
+    );
 
     const request = new NextRequest('http://localhost:3000/api/submissions');
     const response = await GET(request);
@@ -214,7 +217,7 @@ describe('GET /api/submissions', () => {
   });
 
   it('should return 500 on error', async () => {
-    mockGetCurrentAdminEmail.mockResolvedValue('admin@example.com');
+    mockRequireAdmin.mockResolvedValue('admin@example.com');
     mockGetResourceSubmissions.mockRejectedValue(new Error('Database error'));
 
     const request = new NextRequest('http://localhost:3000/api/submissions');
@@ -232,7 +235,7 @@ describe('PATCH /api/submissions', () => {
   });
 
   it('should update submission status', async () => {
-    mockGetCurrentAdminEmail.mockResolvedValue('admin@example.com');
+    mockRequireAdmin.mockResolvedValue('admin@example.com');
     const now = new Date();
     const updatedSubmission: ResourceSubmission = {
       id: '123',
@@ -269,7 +272,7 @@ describe('PATCH /api/submissions', () => {
   });
 
   it('should return 400 if id or status is missing', async () => {
-    mockGetCurrentAdminEmail.mockResolvedValue('admin@example.com');
+    mockRequireAdmin.mockResolvedValue('admin@example.com');
 
     const request = new NextRequest('http://localhost:3000/api/submissions', {
       method: 'PATCH',
@@ -287,7 +290,7 @@ describe('PATCH /api/submissions', () => {
   });
 
   it('should return 404 if submission not found', async () => {
-    mockGetCurrentAdminEmail.mockResolvedValue('admin@example.com');
+    mockRequireAdmin.mockResolvedValue('admin@example.com');
     mockUpdateResourceSubmissionStatus.mockResolvedValue(null);
 
     const request = new NextRequest('http://localhost:3000/api/submissions', {
@@ -306,7 +309,9 @@ describe('PATCH /api/submissions', () => {
   });
 
   it('should return 401 if not admin', async () => {
-    mockGetCurrentAdminEmail.mockResolvedValue(null);
+    mockRequireAdmin.mockResolvedValue(
+      NextResponse.json({ error: 'Unauthorized' }, { status: 401 }),
+    );
 
     const request = new NextRequest('http://localhost:3000/api/submissions', {
       method: 'PATCH',
@@ -327,7 +332,7 @@ describe('DELETE /api/submissions', () => {
   });
 
   it('should delete a submission', async () => {
-    mockGetCurrentAdminEmail.mockResolvedValue('admin@example.com');
+    mockRequireAdmin.mockResolvedValue('admin@example.com');
     mockDeleteResourceSubmission.mockResolvedValue(true);
 
     const request = new NextRequest(
@@ -346,7 +351,7 @@ describe('DELETE /api/submissions', () => {
   });
 
   it('should return 400 if id is missing', async () => {
-    mockGetCurrentAdminEmail.mockResolvedValue('admin@example.com');
+    mockRequireAdmin.mockResolvedValue('admin@example.com');
 
     const request = new NextRequest('http://localhost:3000/api/submissions', {
       method: 'DELETE',
@@ -360,7 +365,9 @@ describe('DELETE /api/submissions', () => {
   });
 
   it('should return 401 if not admin', async () => {
-    mockGetCurrentAdminEmail.mockResolvedValue(null);
+    mockRequireAdmin.mockResolvedValue(
+      NextResponse.json({ error: 'Unauthorized' }, { status: 401 }),
+    );
 
     const request = new NextRequest(
       'http://localhost:3000/api/submissions?id=123',

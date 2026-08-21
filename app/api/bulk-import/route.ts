@@ -1,15 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { bulkImportResources } from '@/lib/analytics';
-import { getCurrentAdminEmail } from '@/lib/admin-auth';
+import { requireAdmin } from '@/lib/admin-auth';
 
 const MAX_BODY_SIZE_BYTES = 1 * 1024 * 1024; // 1 MB
 const MAX_RESOURCES = 500;
 
 export async function POST(request: NextRequest) {
-  const adminEmail = await getCurrentAdminEmail();
-  if (!adminEmail) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
+  const authResult = await requireAdmin();
+  if (authResult instanceof NextResponse) return authResult;
 
   // Check Content-Length header before parsing
   const contentLength = request.headers.get('content-length');

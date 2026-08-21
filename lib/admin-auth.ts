@@ -1,5 +1,6 @@
 import { createHmac, randomUUID, timingSafeEqual } from 'crypto';
 import { cookies } from 'next/headers';
+import { NextResponse } from 'next/server';
 
 const ADMIN_SESSION_COOKIE = 'admin_session';
 const SESSION_MAX_AGE_SECONDS = 60 * 60 * 8;
@@ -120,6 +121,23 @@ export async function getCurrentAdminEmail(): Promise<string | null> {
   if (!raw) return null;
 
   return verifySessionValue(raw);
+}
+
+/**
+ * Require admin authentication for an API route.
+ * Returns the admin email if authenticated, or a NextResponse 401 error.
+ *
+ * Usage:
+ *   const result = await requireAdmin();
+ *   if (result instanceof NextResponse) return result;
+ *   const email = result;
+ */
+export async function requireAdmin(): Promise<string | NextResponse> {
+  const adminEmail = await getCurrentAdminEmail();
+  if (!adminEmail) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+  return adminEmail;
 }
 
 export async function validateAdminLogin(
