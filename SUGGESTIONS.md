@@ -118,8 +118,8 @@ Created `components/breadcrumbs.tsx` — a server component with accessible `<na
 ### 4. Back-to-Top Button ✅
 Created `components/back-to-top.tsx` — a floating button fixed at bottom-right that appears after scrolling 400px. Uses opacity and translate-y transitions for smooth fade-in/out. `window.scrollTo({ behavior: 'smooth' })` for smooth return. Includes `aria-label` and `title` for accessibility. Added to root layout.
 
-### 5. Better Empty States
-When search returns no results, show an illustration and suggestions (popular resources, recent additions) instead of just "No results found."
+### 5. Better Empty States ✅
+Created `components/empty-state.tsx` — a server component with a search icon illustration, customizable title/description/query, and a "Popular Resources" section fetched from `getPopularResources()` showing the top 5 most-clicked links. Applied to 4 pages: global search, category search, category page (empty category), and homepage (no resources). Replaced plain text empty states across the app.
 
 ### 6. Search History
 Store the last 5 searches in localStorage and show them as suggestions when the search input is focused but empty.

@@ -20,6 +20,7 @@ import { BackgroundPattern } from '@/components/background-pattern';
 import { Footer } from '@/components/footer';
 import type { ViewMode, SortOrder } from '@/lib/types';
 import { PaginationControls } from '@/components/pagination-controls';
+import { EmptyState } from '@/components/empty-state';
 
 interface CategoryPageProps {
   params: Promise<{
@@ -133,11 +134,10 @@ async function CategoryContent({
       </LinkGrid>
 
       {category.links.length === 0 && (
-        <div className='text-center py-12'>
-          <p className='text-slate-500 dark:text-slate-400'>
-            No links found in this category yet.
-          </p>
-        </div>
+        <EmptyState
+          title='No links in this category yet'
+          description='Be the first to add a resource!'
+        />
       )}      {/* Pagination */}
       <PaginationControls
         page={page}

@@ -14,6 +14,7 @@ import { LinkGrid } from '@/components/link-grid';
 import { BackgroundPattern } from '@/components/background-pattern';
 import type { ViewMode, SortOrder } from '@/lib/types';
 import { PaginationControls } from '@/components/pagination-controls';
+import { EmptyState } from '@/components/empty-state';
 
 export const metadata: Metadata = {
   title: 'Tool Wave',
@@ -63,11 +64,10 @@ async function LinksByCategory({
 
   if (links.length === 0) {
     return (
-      <div className='text-center py-12'>
-        <p className='text-slate-500 dark:text-slate-400'>
-          No links found. Add some links to get started!
-        </p>
-      </div>
+      <EmptyState
+        title='No resources yet'
+        description='Be the first to add a resource! Check out popular resources below.'
+      />
     );
   }
 

@@ -11,6 +11,7 @@ import { BackgroundPattern } from '@/components/background-pattern';
 import { Footer } from '@/components/footer';
 import { Breadcrumbs } from '@/components/breadcrumbs';
 import { PaginationControls } from '@/components/pagination-controls';
+import { EmptyState } from '@/components/empty-state';
 
 interface SearchPageProps {
   searchParams: Promise<{
@@ -74,11 +75,11 @@ async function SearchResults({
 
   if (!paginatedLinks || paginatedLinks.length === 0) {
     return (
-      <div className='text-center py-12'>
-        <p className='text-slate-500 dark:text-slate-400'>
-          No results found for &quot;{query}&quot;. Try a different search term.
-        </p>
-      </div>
+      <EmptyState
+        title='No results found'
+        description='Try a different search term or browse popular resources below.'
+        query={query}
+      />
     );
   }
 
