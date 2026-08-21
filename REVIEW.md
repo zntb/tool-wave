@@ -54,25 +54,8 @@ Created `handleApiError(error, fallbackMessage)` in `lib/utils.ts` returning a `
 
 ---
 
-## 11. Search Params to URL Building in Header/MobileNav
-
-**Duplicate locations (2 occurrences):**
-- `components/header.tsx` (lines 107-113, `handleSearch`)
-- `components/mobile-nav-drawer.tsx` (lines 72-77, `handleSearch`)
-
-**Identical pattern:**
-```ts
-const handleSearch = (query: string) => {
-  if (query.trim()) {
-    const params = new URLSearchParams(searchParams.toString());
-    params.set('q', query.trim());
-    router.push(`/search?${params.toString()}`);
-    setIsMobileMenuOpen(false); // header only
-  }
-};
-```
-
-**Recommendation:** Create a `useSearchNavigation()` hook that returns a `handleSearch(query)` function, or add the search navigation logic to the `SearchInput` component.
+## 11. Search Params to URL Building in Header/MobileNav ✅
+Created `lib/hooks/use-search-navigation.ts` — a `useSearchNavigation(onAfterSearch?)` hook returning `{ handleSearch }`. Applied to `components/header.tsx` (closes mobile menu after search) and `components/mobile-nav-drawer.tsx` (calls `onClose` after search). Removed `searchParams` prop from `MobileNavDrawer` since the hook handles it internally.
 
 ---
 
@@ -168,7 +151,7 @@ try {
 | 8 | CSRF check ✅ | 2× | Security + DRY |
 | 9 | Admin form submission ✅ | 6× | Use existing FormToastHandler |
 | 10 | API response error ✅ | 8+× | Consistent error format |
-| 11 | Search navigation | 2× | DRY hook |
+| 11 | Search navigation ✅ | 2× | DRY hook |
 | 12 | Admin fetch pattern | 3× | DRY utility |
 | 15 | console.error → logger | 3× | Structured logging consistency |
 | 16 | Admin tab navigation | 1× | Use UI component |

@@ -3,7 +3,8 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { LogOut, Menu } from 'lucide-react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
+import { useSearchNavigation } from '@/lib/hooks/use-search-navigation';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { FavoritesButton } from '@/components/favorites-button';
@@ -23,7 +24,6 @@ export function Header({ className }: HeaderProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const router = useRouter();
-  const searchParams = useSearchParams();
   const { getHeaders } = useCsrfHeaders();
 
   // Global keyboard navigation: / to focus search, arrow keys for cards
@@ -67,14 +67,7 @@ export function Header({ className }: HeaderProps) {
     router.push('/');
   };
 
-  const handleSearch = (query: string) => {
-    if (query.trim()) {
-      const params = new URLSearchParams(searchParams.toString());
-      params.set('q', query.trim());
-      router.push(`/search?${params.toString()}`);
-      setIsMobileMenuOpen(false);
-    }
-  };
+  const { handleSearch } = useSearchNavigation(() => setIsMobileMenuOpen(false));
 
   return (
     <>
@@ -200,7 +193,6 @@ export function Header({ className }: HeaderProps) {
         onClose={() => setIsMobileMenuOpen(false)}
         isAdmin={isAdmin}
         onLogout={handleLogout}
-        searchParams={searchParams}
       />
     </>
   );

@@ -9,6 +9,7 @@ import { ThemeToggle } from '@/components/theme-toggle';
 import { Autocomplete } from '@/components/autocomplete';
 import { FavoritesButton } from '@/components/favorites-button';
 import { useClickOutside } from '@/lib/hooks/use-click-outside';
+import { useSearchNavigation } from '@/lib/hooks/use-search-navigation';
 import { useRef } from 'react';
 
 interface MobileNavDrawerProps {
@@ -16,7 +17,6 @@ interface MobileNavDrawerProps {
   onClose: () => void;
   isAdmin: boolean;
   onLogout: () => void;
-  searchParams: URLSearchParams;
 }
 
 export function MobileNavDrawer({
@@ -24,10 +24,10 @@ export function MobileNavDrawer({
   onClose,
   isAdmin,
   onLogout,
-  searchParams,
 }: MobileNavDrawerProps) {
   const drawerRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
+  const { handleSearch } = useSearchNavigation(onClose);
 
   useClickOutside(drawerRef, useCallback(() => onClose(), [onClose]), isOpen);
 
@@ -55,15 +55,6 @@ export function MobileNavDrawer({
   const handleNavClick = (href: string) => {
     onClose();
     router.push(href);
-  };
-
-  const handleSearch = (query: string) => {
-    if (query.trim()) {
-      const params = new URLSearchParams(searchParams.toString());
-      params.set('q', query.trim());
-      onClose();
-      router.push(`/search?${params.toString()}`);
-    }
   };
 
   return (
