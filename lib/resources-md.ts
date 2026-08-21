@@ -398,49 +398,6 @@ export function addCategoryToResourcesMD(category: {
 }
 
 /**
- * Update the table of contents in resources.md
- */
-export function updateTableOfContents(): { success: boolean; error?: string } {
-  try {
-    if (!existsSync(RESOURCES_FILE)) {
-      return { success: false, error: 'resources.md file not found' };
-    }
-
-    const content = readFileSync(RESOURCES_FILE, 'utf-8').replace(/\r/g, '');
-    const lines = content.split('\n');
-    const sections = parseCategorySections(content);
-
-    const tocStart = lines.findIndex(l => l.includes('## Table of Contents'));
-    if (tocStart === -1) {
-      return { success: false, error: 'Table of contents not found' };
-    }
-
-    let tocEnd = tocStart + 1;
-    while (tocEnd < lines.length && !lines[tocEnd].startsWith('## ')) {
-      tocEnd++;
-    }
-
-    const tocEntries = sections.map(s => `- [${s.name}](#${s.slug})`);
-
-    const newLines = [
-      ...lines.slice(0, tocStart + 1),
-      '',
-      ...tocEntries,
-      '',
-      ...lines.slice(tocEnd),
-    ];
-
-    writeFileSync(RESOURCES_FILE, newLines.join('\n'), 'utf-8');
-
-    return { success: true };
-  } catch (error) {
-    const errorMessage =
-      error instanceof Error ? error.message : 'Unknown error';
-    return { success: false, error: errorMessage };
-  }
-}
-
-/**
  * Update a link entry in resources.md
  */
 export function updateLinkInResourcesMD(

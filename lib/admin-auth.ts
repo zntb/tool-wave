@@ -90,10 +90,6 @@ export async function getCurrentAdminEmail(): Promise<string | null> {
   return session.email;
 }
 
-export async function requireAdmin(): Promise<string | null> {
-  return getCurrentAdminEmail();
-}
-
 export async function validateAdminLogin(
   email: string,
   password: string,

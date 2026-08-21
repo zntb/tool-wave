@@ -39,25 +39,3 @@ export function BreadcrumbJsonLd({ items }: BreadcrumbJsonLdProps) {
 
   return <JsonLd data={data} />;
 }
-
-type ItemListElement = {
-  position: number;
-  name: string;
-  url: string;
-};
-
-type ItemListJsonLdProps = {
-  name: string;
-  items: ItemListElement[];
-};
-
-export function ItemListJsonLd({ name, items }: ItemListJsonLdProps) {
-  const data = {
-    '@context': 'https://schema.org',
-    '@type': 'ItemList',
-    name,
-    itemListElement: items,
-  };
-
-  return <JsonLd data={data} />;
-}

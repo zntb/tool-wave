@@ -41,6 +41,4 @@ export const deleteSchema = z.object({
 
 export type CategoryInput = z.infer<typeof categorySchema>;
 export type LinkInput = z.infer<typeof linkSchema>;
-export type UpdateCategoryInput = z.infer<typeof updateCategorySchema>;
-export type UpdateLinkInput = z.infer<typeof updateLinkSchema>;
-export type DeleteInput = z.infer<typeof deleteSchema>;
+

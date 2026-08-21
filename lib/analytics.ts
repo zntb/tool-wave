@@ -185,25 +185,6 @@ export async function getResourceSubmissions(
   }));
 }
 
-export async function getResourceSubmissionById(
-  id: string,
-): Promise<ResourceSubmission | null> {
-  const submission = await prisma.resourceSubmission.findUnique({
-    where: { id },
-  });
-
-  if (!submission) return null;
-
-  return {
-    ...submission,
-    description: submission.description ?? undefined,
-    icon: submission.icon ?? undefined,
-    category: submission.category ?? undefined,
-    submitter: submission.submitter ?? undefined,
-    email: submission.email ?? undefined,
-  };
-}
-
 export async function updateResourceSubmissionStatus(
   id: string,
   status: 'PENDING' | 'APPROVED' | 'REJECTED',
