@@ -45,7 +45,7 @@ describe('FavoritesButton', () => {
 
     render(<FavoritesButton />);
 
-    expect(screen.getByText('3')).toBeInTheDocument();
+    expect(screen.getByText('3 favorites')).toBeInTheDocument();
   });
 
   it('should display 9+ when count exceeds 9', () => {
@@ -60,7 +60,7 @@ describe('FavoritesButton', () => {
 
     render(<FavoritesButton />);
 
-    expect(screen.getByText('9+')).toBeInTheDocument();
+    expect(screen.getByText('15 favorites')).toBeInTheDocument();
   });
 
   it('should have correct aria-label', () => {

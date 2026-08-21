@@ -108,7 +108,7 @@ async function SearchResults({
         <h1 className='text-3xl md:text-4xl font-bold text-slate-900 dark:text-slate-100'>
           Search Results
         </h1>
-        <p className='mt-2 text-slate-500 dark:text-slate-400'>
+        <p className='mt-2 text-slate-500 dark:text-slate-400' aria-live='polite'>
           Found {totalLinks} result{totalLinks !== 1 ? 's' : ''} for &quot;
           {query}&quot; — Page {page} of {totalPages}
         </p>

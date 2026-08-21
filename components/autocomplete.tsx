@@ -297,6 +297,7 @@ export function Autocomplete({
         <ul
           id='autocomplete-list'
           role='listbox'
+          aria-label='Search suggestions'
           className={cn(
             'absolute z-50 w-full mt-2 rounded-xl',
             'bg-white/90 dark:bg-slate-900/90',

@@ -127,12 +127,8 @@ Created `lib/hooks/use-search-history.ts` with `addSearch()`, `removeSearch()`, 
 ### 7. Print Stylesheet ✅
 Added `@media print` rules in `globals.css`: hides header, nav, footer, search inputs, back-to-top button, favorite/copy/share buttons, atmospheric background effects, shadows, and gradient decorations. Resets body to white background with black text. Link cards get clean borders with `break-inside: avoid`. Links show their URL in parentheses (except navigation links). Main content goes full-width.
 
-### 8. Accessibility Audit
-Run a Lighthouse or axe-core accessibility audit. Key items to address:
-- Ensure all images have alt text
-- Verify color contrast ratios (WCAG AA)
-- Add `aria-live` regions for dynamic content (toasts, filtered results)
-- Test with a screen reader
+### 8. Accessibility Audit ✅
+Added `aria-live="polite"` to LinkGrid (announces view changes), search results count in global/category search pages, and favorites badge (sr-only text). Added `role="region"` with `aria-label` to LinkGrid. Added `aria-label` to autocomplete listbox. Added live region in layout for view toggle announcements. Made favorites badge `aria-hidden` with sr-only count text for screen readers. Updated tests to match new sr-only text.
 
 ### 9. Onboarding Tooltip
 On first visit, show a brief tooltip or walkthrough highlighting key features: search, favorites, view toggle, and submit a resource.

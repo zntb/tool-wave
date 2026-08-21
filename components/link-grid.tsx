@@ -21,6 +21,10 @@ export function LinkGrid({
           : 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4',
         className,
       )}
+      role='region'
+      aria-label={view === 'list' ? 'Resource list view' : 'Resource grid view'}
+      aria-live='polite'
+      aria-atomic='false'
     >
       {children}
     </div>

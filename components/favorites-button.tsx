@@ -21,10 +21,14 @@ export function FavoritesButton() {
     >
       <Heart className='w-5 h-5 text-slate-600 dark:text-slate-300' />
       {displayCount > 0 && (
-        <span className='absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] font-medium text-white'>
-          {displayCount > 9 ? '9+' : displayCount}
-        </span>
+        <span
+          className='absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] font-medium text-white'
+          aria-hidden='true'
+        />
       )}
+      <span className='sr-only' aria-live='polite'>
+        {displayCount > 0 ? `${displayCount} favorite${displayCount !== 1 ? 's' : ''}` : 'No favorites'}
+      </span>
     </Link>
   );
 }

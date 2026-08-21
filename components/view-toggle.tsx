@@ -35,6 +35,12 @@ export function ViewToggle({ className }: ViewToggleProps) {
     const newSearch = params.toString();
     const href = newSearch ? `${pathname}?${newSearch}` : pathname;
     router.push(href, { scroll: false });
+
+    // Announce view change to screen readers
+    const announcement = document.getElementById('view-change-announcement');
+    if (announcement) {
+      announcement.textContent = `Switched to ${view} view`;
+    }
   };
 
   return (

@@ -115,7 +115,7 @@ async function CategorySearchResults({
         <h1 className='text-3xl md:text-4xl font-bold text-slate-900 dark:text-slate-100'>
           Search Results in {category.name}
         </h1>
-        <p className='mt-2 text-slate-500 dark:text-slate-400'>
+        <p className='mt-2 text-slate-500 dark:text-slate-400' aria-live='polite'>
           Found {totalLinks} result{totalLinks !== 1 ? 's' : ''} for "{query}" —
           Page {page} of {totalPages}
         </p>

@@ -134,6 +134,15 @@ export default function RootLayout({
             </main>
             <Toaster position='top-right' richColors />
             <BackToTop />
+
+            {/* Live region for dynamic announcements (view changes, etc.) */}
+            <div
+              id='view-change-announcement'
+              role='status'
+              aria-live='polite'
+              aria-atomic='true'
+              className='sr-only'
+            />
           </TooltipProvider>
         </ThemeProvider>
       </body>
