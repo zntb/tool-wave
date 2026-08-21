@@ -74,8 +74,8 @@ Created `<IconFallback>` component with 3 size variants (sm/md/lg). URL icons fa
 ### 5. Smooth Page Transitions
 Add route transition animations (fade/slide) when navigating between pages. The `stagger-children` animation already exists — extend this concept to page-level transitions.
 
-### 6. Tooltip Consistency
-Some interactive elements have tooltips, some don't. Standardize: every icon-only button should have a tooltip explaining its action.
+### 6. Tooltip Consistency ✅
+Audited all icon-only buttons and added missing `title` attributes: Mobile Menu ("Open menu"), Favorite ("Add to favorites" / "Remove from favorites"), Copy ("Copy link" / "Copied!"), Close Menu ("Close menu"). Every icon-only button now has both `aria-label` and `title`.
 
 ---
 

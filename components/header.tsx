@@ -166,6 +166,7 @@ export function Header({ className }: HeaderProps) {
                 className='md:hidden relative'
                 onClick={toggleMobileMenu}
                 aria-label='Open menu'
+                title='Open menu'
               >
                 <Menu className='w-5 h-5' />
               </Button>

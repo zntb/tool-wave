@@ -93,6 +93,7 @@ export function MobileNavDrawer({
             size='icon'
             onClick={onClose}
             aria-label='Close menu'
+            title='Close menu'
             className='rounded-lg'
           >
             <X className='w-5 h-5' />

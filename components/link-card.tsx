@@ -243,6 +243,11 @@ export function LinkCard({
                       ? 'Remove from favorites'
                       : 'Add to favorites'
                   }
+                  title={
+                    displayIsFavorited
+                      ? 'Remove from favorites'
+                      : 'Add to favorites'
+                  }
                   aria-pressed={displayIsFavorited}
                 >
                   <Heart
@@ -277,6 +282,7 @@ export function LinkCard({
                   'transition-all duration-300 hover:scale-110',
                 )}
                 aria-label={copied ? 'Copied!' : 'Copy link'}
+                title={copied ? 'Copied!' : 'Copy link'}
               >
                 {copied ? (
                   <Check className='w-4 h-4 text-green-500' />
