@@ -1,4 +1,4 @@
-import { createHmac, timingSafeEqual } from 'crypto';
+import { createHmac, randomUUID, timingSafeEqual } from 'crypto';
 import { cookies } from 'next/headers';
 
 const ADMIN_SESSION_COOKIE = 'admin_session';
@@ -21,12 +21,38 @@ function sign(value: string): string {
   return createHmac('sha256', getSessionSecret()).update(value).digest('hex');
 }
 
+/**
+ * Parse a session cookie value.
+ * Format: `{email}:{sessionId}:{signature}`
+ * The signature covers `{email}:{sessionId}` to prevent session fixation.
+ */
 function parseSessionCookie(
   value: string,
-): { email: string; signature: string } | null {
-  const [email, signature] = value.split(':');
-  if (!email || !signature) return null;
-  return { email, signature };
+): { email: string; sessionId: string; signature: string } | null {
+  const parts = value.split(':');
+  if (parts.length !== 3) return null;
+  const [email, sessionId, signature] = parts;
+  if (!email || !sessionId || !signature) return null;
+  return { email, sessionId, signature };
+}
+
+/**
+ * Verify a session cookie value.
+ * Returns the admin email if valid, null otherwise.
+ */
+function verifySessionValue(raw: string): string | null {
+  const session = parseSessionCookie(raw);
+  if (!session) return null;
+
+  const expected = sign(`${session.email}:${session.sessionId}`);
+  const sigBuffer = Buffer.from(session.signature);
+  const expectedBuffer = Buffer.from(expected);
+
+  if (sigBuffer.length !== expectedBuffer.length) return null;
+  if (!timingSafeEqual(sigBuffer, expectedBuffer)) return null;
+  if (!isAllowedAdminEmail(session.email)) return null;
+
+  return session.email;
 }
 
 export function isAllowedAdminEmail(email: string): boolean {
@@ -35,16 +61,20 @@ export function isAllowedAdminEmail(email: string): boolean {
 
 export async function createAdminSession(email: string): Promise<void> {
   const normalizedEmail = email.trim().toLowerCase();
-  const signature = sign(normalizedEmail);
   const cookieStore = await cookies();
 
+  // Session rotation: generate a unique session ID on every login.
+  // This prevents session fixation attacks where an attacker pre-sets
+  // a cookie before the user authenticates.
+  const sessionId = randomUUID();
+  const signature = sign(`${normalizedEmail}:${sessionId}`);
+  const sessionValue = `${normalizedEmail}:${sessionId}:${signature}`;
+
   // In production (Vercel), always use secure cookies
-  // Vercel serves all sites over HTTPS
-  // Use VERCEL === '1' to detect Vercel environment, which is more reliable than NODE_ENV
   const isProduction =
     process.env.VERCEL === '1' || process.env.NODE_ENV === 'production';
 
-  cookieStore.set(ADMIN_SESSION_COOKIE, `${normalizedEmail}:${signature}`, {
+  cookieStore.set(ADMIN_SESSION_COOKIE, sessionValue, {
     httpOnly: true,
     sameSite: 'strict',
     secure: isProduction,
@@ -54,7 +84,7 @@ export async function createAdminSession(email: string): Promise<void> {
 
   // Generate CSRF token for API requests
   const hmac = createHmac('sha256', getSessionSecret());
-  hmac.update(`${normalizedEmail}:${signature}`);
+  hmac.update(sessionValue);
   const csrfToken = hmac.digest('hex');
 
   cookieStore.set('csrf_token', csrfToken, {
@@ -89,18 +119,7 @@ export async function getCurrentAdminEmail(): Promise<string | null> {
   const raw = cookieStore.get(ADMIN_SESSION_COOKIE)?.value;
   if (!raw) return null;
 
-  const session = parseSessionCookie(raw);
-  if (!session) return null;
-
-  const expected = sign(session.email);
-  const sigBuffer = Buffer.from(session.signature);
-  const expectedBuffer = Buffer.from(expected);
-
-  if (sigBuffer.length !== expectedBuffer.length) return null;
-  if (!timingSafeEqual(sigBuffer, expectedBuffer)) return null;
-  if (!isAllowedAdminEmail(session.email)) return null;
-
-  return session.email;
+  return verifySessionValue(raw);
 }
 
 export async function validateAdminLogin(

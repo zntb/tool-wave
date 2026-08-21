@@ -97,7 +97,7 @@ Added comprehensive security headers in `next.config.ts` via the `headers()` fun
 Verified that `.env` is in `.gitignore` and not tracked by Git. Audited all server-side logs, error messages, and API responses for secret leaks — none found. Created `.env.example` for documentation. Added `sameSite=strict` cookies and input sanitization to reduce attack surface.
 
 ### 6. Admin Session Hardening ✅
-Changed session cookie from `SameSite=lax` to `SameSite=strict` to prevent cross-origin cookie sending. Added HMAC-based CSRF token validation on admin API routes. Session is rotated on login.
+Three-layer defense: (1) Changed session cookie from `SameSite=lax` to `SameSite=strict` to prevent cross-origin cookie sending. (2) Added HMAC-based CSRF token validation on admin API routes. (3) Session rotation — every login generates a unique random session ID (`randomUUID`) embedded in the cookie as `{email}:{sessionId}:{signature}` where the HMAC covers `{email}:{sessionId}`. This prevents session fixation attacks where an attacker pre-sets a cookie before the user authenticates. Added `verifySessionValue()` helper for clean verification.
 
 ### 7. URL Validation on Submission
 The submission API validates URLs with Zod, but consider adding a DNS resolution check to reject URLs pointing to internal/private IPs (SSRF prevention).

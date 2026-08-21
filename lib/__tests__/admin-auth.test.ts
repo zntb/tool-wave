@@ -54,13 +54,14 @@ describe('admin-auth', () => {
   });
 
   describe('getCurrentAdminEmail', () => {
-    it('should return admin email from valid signed cookie', async () => {
+    it('should return admin email from valid signed cookie (3-part format)', async () => {
       const email = 'admin@example.com';
+      const sessionId = 'test-session-id-123';
       const { createHmac } = await import('crypto');
       const signature = createHmac('sha256', 'test-secret-key')
-        .update(email)
+        .update(`${email}:${sessionId}`)
         .digest('hex');
-      const cookieValue = `${email}:${signature}`;
+      const cookieValue = `${email}:${sessionId}:${signature}`;
       mockCookieStore.set('admin_session', cookieValue);
 
       const result = await getCurrentAdminEmail();
@@ -75,7 +76,7 @@ describe('admin-auth', () => {
     it('should return null if signature is invalid', async () => {
       mockCookieStore.set(
         'admin_session',
-        'admin@example.com:invalidsignature',
+        'admin@example.com:session-id:invalidsignature',
       );
       const result = await getCurrentAdminEmail();
       expect(result).toBeNull();
@@ -83,17 +84,24 @@ describe('admin-auth', () => {
 
     it('should return null if email is not in allowed list', async () => {
       const email = 'user@example.com';
+      const sessionId = 'test-session-id-456';
       const { createHmac } = await import('crypto');
       const signature = createHmac('sha256', 'test-secret-key')
-        .update(email)
+        .update(`${email}:${sessionId}`)
         .digest('hex');
-      mockCookieStore.set('admin_session', `${email}:${signature}`);
+      mockCookieStore.set('admin_session', `${email}:${sessionId}:${signature}`);
       const result = await getCurrentAdminEmail();
       expect(result).toBeNull();
     });
 
-    it('should return null if cookie format is invalid', async () => {
+    it('should return null if cookie format is invalid (too few parts)', async () => {
       mockCookieStore.set('admin_session', 'invalidformat');
+      const result = await getCurrentAdminEmail();
+      expect(result).toBeNull();
+    });
+
+    it('should return null if cookie has wrong number of parts', async () => {
+      mockCookieStore.set('admin_session', 'email:signature');
       const result = await getCurrentAdminEmail();
       expect(result).toBeNull();
     });
