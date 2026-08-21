@@ -9,6 +9,7 @@ import { useFavorites } from '@/lib/hooks/use-favorites';
 import { getAllCategoriesWithLinksAction } from '@/app/actions';
 import type { Link as LinkType, CategoryWithLinks, ViewMode } from '@/lib/types';
 import { cn } from '@/lib/utils';
+import { logger } from '@/lib/logger';
 import { LinkGrid } from '@/components/link-grid';
 import { PageLayout } from '@/components/page-layout';
 import { getStoredFavorites } from '@/lib/favorites-storage';
@@ -77,7 +78,7 @@ export function FavoritesClient() {
 
         setFavoriteLinks(favoritedLinks);
       } catch (error) {
-        console.error('Failed to load favorites:', error);
+        logger.error('Failed to load favorites', 'FavoritesClient', error);
       } finally {
         setIsLoading(false);
       }

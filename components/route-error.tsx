@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
+import { logger } from '@/lib/logger';
 
 interface RouteErrorProps {
   error: Error & { digest?: string };
@@ -13,7 +14,7 @@ export function RouteError({ error, reset }: RouteErrorProps) {
   const router = useRouter();
 
   useEffect(() => {
-    console.error('Route error:', error);
+    logger.error('Route error', 'RouteError', error);
   }, [error]);
 
   return (

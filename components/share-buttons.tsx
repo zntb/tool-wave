@@ -13,6 +13,7 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
+import { logger } from '@/lib/logger';
 
 interface ShareButtonsProps {
   url: string;
@@ -133,7 +134,7 @@ export function ShareButtons({
       } catch (err) {
         // User cancelled or error - fall through to show menu
         if ((err as Error).name !== 'AbortError') {
-          console.error('Error sharing:', err);
+          logger.error('Error sharing', 'ShareButtons', err);
         }
       }
     }
