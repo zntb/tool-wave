@@ -5,8 +5,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { LayoutGrid, List } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-
-type ViewMode = 'grid' | 'list';
+import type { ViewMode } from '@/lib/types';
 
 interface ViewToggleProps {
   className?: string;

@@ -13,12 +13,10 @@ import {
   DialogDescription,
 } from '@/components/ui/dialog';
 import { cn, isUrl } from '@/lib/utils';
-import type { Link as LinkType } from '@/lib/types';
+import type { Link as LinkType, ViewMode } from '@/lib/types';
 import { useFavorites } from '@/lib/hooks/use-favorites';
 import { ShareButtons } from '@/components/share-buttons';
 import { trackLinkClick } from '@/app/actions';
-
-type ViewMode = 'grid' | 'list';
 
 interface LinkCardProps {
   link: LinkType;

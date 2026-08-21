@@ -5,7 +5,7 @@ import { LinkCard } from '@/components/link-card';
 import { LinkGridSkeleton, NavSkeleton } from '@/components/skeletons';
 import { CategoryNav } from '@/components/category-nav';
 import { ViewToggle } from '@/components/view-toggle';
-import type { Link as LinkType } from '@/lib/types';
+import type { Link as LinkType, ViewMode } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import {
   Pagination,
@@ -16,8 +16,6 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '@/components/ui/pagination';
-
-type ViewMode = 'grid' | 'list';
 
 interface SearchPageProps {
   searchParams: Promise<{

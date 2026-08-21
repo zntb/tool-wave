@@ -12,6 +12,7 @@ import { CategoryNav } from '@/components/category-nav';
 import { ViewToggle } from '@/components/view-toggle';
 import { SearchInput } from '@/components/search-input';
 import { cn } from '@/lib/utils';
+import type { ViewMode } from '@/lib/types';
 import {
   Pagination,
   PaginationContent,
@@ -21,8 +22,6 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '@/components/ui/pagination';
-
-type ViewMode = 'grid' | 'list';
 
 interface CategorySearchPageProps {
   params: Promise<{

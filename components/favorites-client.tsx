@@ -7,7 +7,7 @@ import { LinkCard } from '@/components/link-card';
 import { Button } from '@/components/ui/button';
 import { useFavorites } from '@/lib/hooks/use-favorites';
 import { getAllCategoriesWithLinksAction } from '@/app/actions';
-import type { Link as LinkType, CategoryWithLinks } from '@/lib/types';
+import type { Link as LinkType, CategoryWithLinks, ViewMode } from '@/lib/types';
 import { cn } from '@/lib/utils';
 
 const FAVORITES_STORAGE_KEY = 'tool-wave';
@@ -26,8 +26,6 @@ function getStoredFavorites(): StoredFavorite[] {
     return [];
   }
 }
-
-type ViewMode = 'grid' | 'list';
 
 export function FavoritesClient() {
   const [, setFavoriteIds] = useState<Set<string>>(new Set());

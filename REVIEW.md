@@ -14,21 +14,9 @@ This document lists duplicate code patterns across the codebase that could be re
 
 ## 2. `ViewMode` Type
 
-**Duplicate locations (7 occurrences):**
-- `components/favorites-client.tsx` (line 30)
-- `components/link-card.tsx` (line 21)
-- `components/view-toggle.tsx` (line 9)
-- `app/page.tsx` (line 41)
-- `app/[slug]/page.tsx` (line 28)
-- `app/[slug]/search/page.tsx` (line 25)
-- `app/search/page.tsx` (line 20)
+**Status:** ✅ RESOLVED
 
-**Identical definition:**
-```ts
-type ViewMode = 'grid' | 'list';
-```
-
-**Recommendation:** Export from `lib/types.ts` and import everywhere.
+**Resolution:** Added `ViewMode` to `lib/types.ts` as a shared export. Updated all 7 files (`components/favorites-client.tsx`, `components/link-card.tsx`, `components/view-toggle.tsx`, `app/page.tsx`, `app/[slug]/page.tsx`, `app/[slug]/search/page.tsx`, `app/search/page.tsx`) to import from `@/lib/types`.
 
 ---
 
@@ -333,7 +321,7 @@ onSearch={query => {
 | # | Duplicate | Occurrences | Impact |
 |---|-----------|-------------|--------|
 | 1 | `isUrl` function | 2 | Low | ✅ RESOLVED |
-| 2 | `ViewMode` type | 7 | Medium |
+| 2 | `ViewMode` type | 7 | Medium | ✅ RESOLVED |
 | 3 | `SortOrder` type | 4 | Medium |
 | 4 | `StoredFavorite` / storage key | 2 | High |
 | 5 | Click-outside hook | 2 | Medium |

@@ -50,6 +50,9 @@ export interface UpdateCategoryInput extends Partial<CreateCategoryInput> {
   id: string;
 }
 
+// View types
+export type ViewMode = 'grid' | 'list';
+
 // Resource Submission types
 export type SubmissionStatus = 'PENDING' | 'APPROVED' | 'REJECTED';
 

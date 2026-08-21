@@ -15,6 +15,7 @@ import { LinkGridSkeleton, NavSkeleton } from '@/components/skeletons';
 import { getCategoriesAction } from '../actions';
 import { BreadcrumbJsonLd } from '@/components/json-ld';
 import { cn } from '@/lib/utils';
+import type { ViewMode } from '@/lib/types';
 import {
   Pagination,
   PaginationContent,
@@ -25,7 +26,6 @@ import {
   PaginationPrevious,
 } from '@/components/ui/pagination';
 
-type ViewMode = 'grid' | 'list';
 type SortOrder = 'newest' | 'popular' | 'az' | 'za';
 
 interface CategoryPageProps {

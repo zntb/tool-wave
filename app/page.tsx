@@ -12,6 +12,7 @@ import { SortDropdown } from '@/components/sort-dropdown';
 import { LinkCard } from '@/components/link-card';
 import { LinkGridSkeleton, NavSkeleton } from '@/components/skeletons';
 import { cn } from '@/lib/utils';
+import type { ViewMode } from '@/lib/types';
 import {
   Pagination,
   PaginationContent,
@@ -38,7 +39,6 @@ async function CategoriesNav() {
 
 const ITEMS_PER_PAGE = 12;
 
-type ViewMode = 'grid' | 'list';
 type SortOrder = 'newest' | 'popular' | 'az' | 'za';
 
 interface HomePageProps {
