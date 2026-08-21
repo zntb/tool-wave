@@ -34,8 +34,8 @@ Periodically check if linked URLs are still live (200 OK). Show a badge or toolt
 
 ## 🛡️ Stability
 
-### 1. Error Boundaries per Route
-Wrap each route in a React error boundary so a crash in one page doesn't blank the entire app. Show a friendly "Something went wrong" fallback with a retry button.
+### 1. Error Boundaries per Route ✅
+Created `components/route-error.tsx` with friendly error UI (warning icon, "Something went wrong" heading, error digest display, "Try again" and "Go home" buttons). Added `error.tsx` to all 8 page routes: homepage, category, category search, global search, favorites, submit, admin dashboard, and admin login. Each route's crash is isolated — a failure in one page won't blank the entire app.
 
 ### 2. API Retry with Exponential Backoff ✅
 Created `lib/fetch-with-retry.ts` — wraps `fetch()` with configurable exponential backoff (default: 3 retries, 300ms base delay, 5s max). Only retries on network errors (TypeError), not on HTTP errors or aborted requests. Includes jitter to prevent thundering herd. Applied to 8 fetch calls across autocomplete, header (admin check/logout), analytics dashboard, submissions review, and bulk import form.
